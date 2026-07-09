@@ -1,13 +1,17 @@
 function clockIn() {
   if (!requireNoticeConfirm()) return;
 
+  const time = getNowTime();
+
   clockRecords.push({
     user: currentUser,
     type: "출근",
-    time: getNowTime()
+    time
   });
 
   saveData();
+  addTimeline(currentUser, "출근", `${currentUser} 출근 기록 · ${time}`);
+
   renderClockLog();
   renderManagerDashboard();
 }
@@ -15,13 +19,17 @@ function clockIn() {
 function clockOut() {
   if (!requireNoticeConfirm()) return;
 
+  const time = getNowTime();
+
   clockRecords.push({
     user: currentUser,
     type: "퇴근",
-    time: getNowTime()
+    time
   });
 
   saveData();
+  addTimeline(currentUser, "퇴근", `${currentUser} 퇴근 기록 · ${time}`);
+
   renderClockLog();
   renderManagerDashboard();
 }
