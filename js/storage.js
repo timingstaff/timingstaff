@@ -1,37 +1,55 @@
-const STORAGE_KEY = "timing-manager-data";
+const STORAGE_KEY = "timingstaff_v04_data";
 
-export const defaultData = {
-  notices: [],
-  attendance: [],
-  catCare: [],
-  todos: [],
-  workLogs: [],
-  inventory: [],
-  sales: [],
-};
+function saveLocalData() {
+  const data = {
+    currentUser,
+    noticeConfirmedUsers,
+    clockRecords,
+    tasks
+  };
 
-export function loadData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadLocalData() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (!saved) return;
+
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const data = JSON.parse(saved);
 
-    if (!saved) {
-      return defaultData;
-    }
-
-    return {
-      ...defaultData,
-      ...JSON.parse(saved),
-    };
+    currentUser = data.currentUser || currentUser;
+    noticeConfirmedUsers = data.noticeConfirmedUsers || [];
+    clockRecords = data.clockRecords || [];
+    tasks = data.tasks || tasks;
   } catch (error) {
-    console.error("데이터 불러오기 실패:", error);
-    return defaultData;
+    console.log("저장 데이터 불러오기 실패", error);
   }
 }
 
-export function saveData(data) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch (error) {
-    console.error("데이터 저장 실패:", error);
+function saveData() {
+  saveLocalData();
+}
+
+function loadData() {
+  loadLocalData();
+}
+
+async function addTimeline(staffName, action, detail) {
+  if (!supabaseClient) return;
+
+  const { error } = await supabaseClient
+    .from("timeline")
+    .insert([
+      {
+        staff_name: staffName,
+        action: action,
+        detail: detail
+      }
+    ]);
+
+  if (error) {
+    console.log("타임라인 저장 실패", error);
   }
 }
