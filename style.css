@@ -1,1 +1,309 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+}
 
+body {
+  background: #f3eee5;
+  color: #2f2924;
+}
+
+.app {
+  max-width: 480px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 18px;
+  background: #fffaf2;
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.date-text {
+  font-size: 14px;
+  font-weight: 800;
+  color: #7a6a5d;
+  margin-bottom: 4px;
+}
+
+.top-header h1 {
+  font-size: 26px;
+  letter-spacing: -0.04em;
+}
+
+.weather-box {
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: right;
+  color: #6d6258;
+  white-space: nowrap;
+}
+
+.greeting-card,
+.card {
+  background: #ffffff;
+  border: 1px solid #eadfce;
+  border-radius: 18px;
+  padding: 16px;
+  margin: 13px 0;
+  box-shadow: 0 8px 22px rgba(61, 42, 25, 0.08);
+}
+
+.greeting-card h2 {
+  font-size: 21px;
+  margin-bottom: 6px;
+}
+
+.greeting-card p {
+  font-size: 14px;
+  color: #8a6240;
+  line-height: 1.5;
+}
+
+.card h3 {
+  font-size: 17px;
+  margin-bottom: 12px;
+}
+
+select {
+  width: 100%;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1px solid #eadfce;
+  background: #fffaf2;
+  font-size: 15px;
+}
+
+.status-card {
+  border-radius: 18px;
+  padding: 15px;
+  margin: 13px 0;
+  color: #ffffff;
+}
+
+.status-card strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.status-card p {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.status-green {
+  background: #2f8f5b;
+}
+
+.status-yellow {
+  background: #d49a21;
+}
+
+.status-red {
+  background: #c43d32;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+button {
+  border: none;
+  border-radius: 14px;
+  padding: 14px 12px;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.green-btn {
+  background: #2f8f5b;
+  color: white;
+}
+
+.red-btn {
+  background: #c43d32;
+  color: white;
+}
+
+.main-btn {
+  width: 100%;
+  background: #6f4a2e;
+  color: white;
+  margin-top: 10px;
+}
+
+.blue-btn {
+  background: #3f6f9f;
+  color: white;
+}
+
+.gray-btn {
+  background: #82766d;
+  color: white;
+}
+
+.small-text {
+  font-size: 12px;
+  color: #7c6f65;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.notice-box {
+  background: #fff3d8;
+  border: 1px solid #f0d49b;
+  border-radius: 14px;
+  padding: 13px;
+  margin-bottom: 12px;
+  line-height: 1.55;
+}
+
+.notice-box strong {
+  color: #b43b28;
+}
+
+.log-list {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #5f554d;
+  margin-top: 12px;
+}
+
+.sales-number {
+  font-size: 30px;
+  font-weight: 1000;
+  letter-spacing: -0.04em;
+  margin-bottom: 5px;
+}
+
+.sales-message {
+  margin: 12px 0;
+  font-weight: 900;
+  color: #6f4a2e;
+}
+
+.progress-bar {
+  height: 14px;
+  background: #eee1d2;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 65%;
+  background: #6f4a2e;
+}
+
+.task {
+  border-bottom: 1px solid #eee1d2;
+  padding: 12px 0;
+}
+
+.task:last-child {
+  border-bottom: none;
+}
+
+.task-title {
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.task-log {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #5f554d;
+  margin: 8px 0;
+}
+
+.task-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: white;
+  margin-right: 6px;
+  font-weight: 800;
+}
+
+.badge.red {
+  background: #c43d32;
+}
+
+.badge.yellow {
+  background: #d49a21;
+}
+
+.badge.green {
+  background: #2f8f5b;
+}
+
+.badge.blue {
+  background: #3f6f9f;
+}
+
+.stock-list {
+  list-style: none;
+}
+
+.stock-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee1d2;
+  font-size: 14px;
+}
+
+.stock-list li:last-child {
+  border-bottom: none;
+}
+
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  padding: 8px 0;
+  margin-top: 20px;
+  background: #fffaf2;
+  border-top: 1px solid #eadfce;
+}
+
+.bottom-nav button {
+  background: #efe3d2;
+  color: #4b392c;
+  font-size: 12px;
+  padding: 9px 4px;
+}
+
+@media (max-width: 360px) {
+  .top-header {
+    flex-direction: column;
+  }
+
+  .weather-box {
+    text-align: left;
+  }
+
+  .button-grid,
+  .task-actions {
+    grid-template-columns: 1fr;
+  }
+}
