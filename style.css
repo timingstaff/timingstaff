@@ -6,16 +6,16 @@
 }
 
 body {
-  background: #f3eee5;
-  color: #2f2924;
+  background: #efe7dc;
+  color: #2e2924;
 }
 
 .app {
   max-width: 480px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 18px;
-  background: #fffaf2;
+  padding: 18px 18px 28px;
+  background: linear-gradient(180deg, #fffaf1 0%, #f9f0e5 100%);
 }
 
 .top-header {
@@ -23,24 +23,24 @@ body {
   justify-content: space-between;
   gap: 12px;
   align-items: flex-start;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .date-text {
   font-size: 14px;
   font-weight: 800;
   color: #7a6a5d;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .top-header h1 {
-  font-size: 26px;
-  letter-spacing: -0.04em;
+  font-size: 27px;
+  letter-spacing: -0.05em;
 }
 
 .weather-box {
   font-size: 12px;
-  line-height: 1.6;
+  line-height: 1.65;
   text-align: right;
   color: #6d6258;
   white-space: nowrap;
@@ -48,17 +48,18 @@ body {
 
 .greeting-card,
 .card {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.94);
   border: 1px solid #eadfce;
-  border-radius: 18px;
-  padding: 16px;
-  margin: 13px 0;
-  box-shadow: 0 8px 22px rgba(61, 42, 25, 0.08);
+  border-radius: 20px;
+  padding: 18px;
+  margin: 16px 0;
+  box-shadow: 0 10px 26px rgba(69, 47, 29, 0.09);
 }
 
 .greeting-card h2 {
-  font-size: 21px;
-  margin-bottom: 6px;
+  font-size: 22px;
+  margin-bottom: 7px;
+  letter-spacing: -0.04em;
 }
 
 .greeting-card p {
@@ -69,61 +70,67 @@ body {
 
 .card h3 {
   font-size: 17px;
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 }
 
 select {
   width: 100%;
-  padding: 13px;
-  border-radius: 14px;
+  padding: 14px;
+  border-radius: 15px;
   border: 1px solid #eadfce;
   background: #fffaf2;
   font-size: 15px;
 }
 
 .status-card {
-  border-radius: 18px;
-  padding: 15px;
-  margin: 13px 0;
+  border-radius: 22px;
+  padding: 18px;
+  margin: 16px 0;
   color: #ffffff;
+  box-shadow: 0 12px 28px rgba(61, 42, 25, 0.12);
 }
 
 .status-card strong {
   display: block;
-  font-size: 18px;
-  margin-bottom: 5px;
+  font-size: 20px;
+  margin-bottom: 6px;
 }
 
 .status-card p {
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .status-green {
-  background: #2f8f5b;
+  background: linear-gradient(135deg, #2f8f5b, #256b47);
 }
 
 .status-yellow {
-  background: #d49a21;
+  background: linear-gradient(135deg, #d49a21, #a86f13);
 }
 
 .status-red {
-  background: #c43d32;
+  background: linear-gradient(135deg, #c43d32, #8f2b25);
 }
 
 .button-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 
 button {
   border: none;
-  border-radius: 14px;
-  padding: 14px 12px;
+  border-radius: 16px;
+  padding: 16px 12px;
   font-size: 15px;
   font-weight: 900;
   cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 .green-btn {
@@ -156,17 +163,21 @@ button {
 .small-text {
   font-size: 12px;
   color: #7c6f65;
-  margin-top: 8px;
+  margin-top: 9px;
   line-height: 1.5;
+}
+
+.notice-card {
+  border-color: #f0d49b;
 }
 
 .notice-box {
   background: #fff3d8;
   border: 1px solid #f0d49b;
-  border-radius: 14px;
-  padding: 13px;
+  border-radius: 16px;
+  padding: 14px;
   margin-bottom: 12px;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .notice-box strong {
@@ -175,41 +186,75 @@ button {
 
 .log-list {
   font-size: 13px;
-  line-height: 1.8;
+  line-height: 1.9;
   color: #5f554d;
-  margin-top: 12px;
+  margin-top: 13px;
+}
+
+.sales-card {
+  background: #fffdf8;
 }
 
 .sales-number {
-  font-size: 30px;
+  font-size: 33px;
   font-weight: 1000;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   margin-bottom: 5px;
 }
 
 .sales-message {
-  margin: 12px 0;
+  margin: 13px 0;
   font-weight: 900;
   color: #6f4a2e;
 }
 
 .progress-bar {
-  height: 14px;
+  height: 15px;
   background: #eee1d2;
   border-radius: 999px;
   overflow: hidden;
-  margin-top: 8px;
+  margin-top: 9px;
 }
 
 .progress-fill {
   height: 100%;
+  border-radius: 999px;
+}
+
+.sales-fill {
   width: 65%;
+  background: linear-gradient(90deg, #6f4a2e, #b98250);
+}
+
+.task-progress {
+  margin-bottom: 14px;
+}
+
+.task-fill {
+  width: 0%;
+  background: linear-gradient(90deg, #2f8f5b, #6fbf8d);
+}
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.mini-badge {
+  font-size: 12px;
+  font-weight: 900;
+  color: white;
   background: #6f4a2e;
+  padding: 6px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .task {
   border-bottom: 1px solid #eee1d2;
-  padding: 12px 0;
+  padding: 14px 0;
 }
 
 .task:last-child {
@@ -223,9 +268,9 @@ button {
 
 .task-log {
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: #5f554d;
-  margin: 8px 0;
+  margin: 8px 0 10px;
 }
 
 .task-actions {
@@ -241,7 +286,7 @@ button {
   font-size: 12px;
   color: white;
   margin-right: 6px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .badge.red {
@@ -265,7 +310,7 @@ button {
 }
 
 .stock-list li {
-  padding: 10px 0;
+  padding: 11px 0;
   border-bottom: 1px solid #eee1d2;
   font-size: 14px;
 }
@@ -279,9 +324,9 @@ button {
   bottom: 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-  padding: 8px 0;
-  margin-top: 20px;
+  gap: 5px;
+  padding: 9px 0;
+  margin-top: 22px;
   background: #fffaf2;
   border-top: 1px solid #eadfce;
 }
@@ -290,7 +335,7 @@ button {
   background: #efe3d2;
   color: #4b392c;
   font-size: 12px;
-  padding: 9px 4px;
+  padding: 10px 4px;
 }
 
 @media (max-width: 360px) {
