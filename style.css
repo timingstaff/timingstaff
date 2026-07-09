@@ -1,354 +1,41 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+.hidden {
+  display: none;
 }
 
-body {
-  background: #efe7dc;
-  color: #2e2924;
-}
-
-.app {
-  max-width: 480px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 18px 18px 28px;
-  background: linear-gradient(180deg, #fffaf1 0%, #f9f0e5 100%);
-}
-
-.top-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: flex-start;
-  margin-bottom: 16px;
-}
-
-.date-text {
-  font-size: 14px;
-  font-weight: 800;
-  color: #7a6a5d;
-  margin-bottom: 5px;
-}
-
-.top-header h1 {
-  font-size: 27px;
-  letter-spacing: -0.05em;
-}
-
-.weather-box {
-  font-size: 12px;
-  line-height: 1.65;
-  text-align: right;
-  color: #6d6258;
-  white-space: nowrap;
-}
-
-.greeting-card,
-.card {
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid #eadfce;
-  border-radius: 20px;
-  padding: 18px;
-  margin: 16px 0;
-  box-shadow: 0 10px 26px rgba(69, 47, 29, 0.09);
-}
-
-.greeting-card h2 {
-  font-size: 22px;
-  margin-bottom: 7px;
-  letter-spacing: -0.04em;
-}
-
-.greeting-card p {
-  font-size: 14px;
-  color: #8a6240;
-  line-height: 1.5;
-}
-
-.card h3 {
-  font-size: 17px;
-  margin-bottom: 13px;
-}
-
-select {
-  width: 100%;
-  padding: 14px;
-  border-radius: 15px;
-  border: 1px solid #eadfce;
-  background: #fffaf2;
-  font-size: 15px;
-}
-
-.status-card {
+.manager-header {
+  background: linear-gradient(135deg, #4b392c, #7a4d2b);
+  color: white;
   border-radius: 22px;
-  padding: 18px;
+  padding: 20px;
   margin: 16px 0;
-  color: #ffffff;
   box-shadow: 0 12px 28px rgba(61, 42, 25, 0.12);
 }
 
-.status-card strong {
-  display: block;
-  font-size: 20px;
+.manager-header h2 {
+  font-size: 24px;
   margin-bottom: 6px;
 }
 
-.status-card p {
+.manager-header p {
   font-size: 14px;
-  line-height: 1.5;
+  opacity: 0.9;
 }
 
-.status-green {
-  background: linear-gradient(135deg, #2f8f5b, #256b47);
-}
-
-.status-yellow {
-  background: linear-gradient(135deg, #d49a21, #a86f13);
-}
-
-.status-red {
-  background: linear-gradient(135deg, #c43d32, #8f2b25);
-}
-
-.button-grid {
+.manager-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
 }
 
-button {
-  border: none;
-  border-radius: 16px;
-  padding: 16px 12px;
-  font-size: 15px;
-  font-weight: 900;
-  cursor: pointer;
-  transition: transform 0.12s ease, opacity 0.12s ease;
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-.green-btn {
-  background: #2f8f5b;
-  color: white;
-}
-
-.red-btn {
-  background: #c43d32;
-  color: white;
-}
-
-.main-btn {
-  width: 100%;
-  background: #6f4a2e;
-  color: white;
-  margin-top: 10px;
-}
-
-.blue-btn {
-  background: #3f6f9f;
-  color: white;
-}
-
-.gray-btn {
-  background: #82766d;
-  color: white;
-}
-
-.small-text {
-  font-size: 12px;
-  color: #7c6f65;
-  margin-top: 9px;
-  line-height: 1.5;
-}
-
-.notice-card {
-  border-color: #f0d49b;
-}
-
-.notice-box {
-  background: #fff3d8;
-  border: 1px solid #f0d49b;
+.manager-box {
+  background: #fff6e8;
+  border: 1px solid #eadfce;
   border-radius: 16px;
   padding: 14px;
-  margin-bottom: 12px;
-  line-height: 1.6;
 }
 
-.notice-box strong {
-  color: #b43b28;
-}
-
-.log-list {
-  font-size: 13px;
-  line-height: 1.9;
-  color: #5f554d;
-  margin-top: 13px;
-}
-
-.sales-card {
-  background: #fffdf8;
-}
-
-.sales-number {
-  font-size: 33px;
-  font-weight: 1000;
-  letter-spacing: -0.05em;
-  margin-bottom: 5px;
-}
-
-.sales-message {
-  margin: 13px 0;
-  font-weight: 900;
-  color: #6f4a2e;
-}
-
-.progress-bar {
-  height: 15px;
-  background: #eee1d2;
-  border-radius: 999px;
-  overflow: hidden;
-  margin-top: 9px;
-}
-
-.progress-fill {
-  height: 100%;
-  border-radius: 999px;
-}
-
-.sales-fill {
-  width: 65%;
-  background: linear-gradient(90deg, #6f4a2e, #b98250);
-}
-
-.task-progress {
-  margin-bottom: 14px;
-}
-
-.task-fill {
-  width: 0%;
-  background: linear-gradient(90deg, #2f8f5b, #6fbf8d);
-}
-
-.section-title-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: center;
-}
-
-.mini-badge {
-  font-size: 12px;
-  font-weight: 900;
-  color: white;
-  background: #6f4a2e;
-  padding: 6px 9px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-.task {
-  border-bottom: 1px solid #eee1d2;
-  padding: 14px 0;
-}
-
-.task:last-child {
-  border-bottom: none;
-}
-
-.task-title {
-  font-weight: 900;
-  margin-bottom: 8px;
-}
-
-.task-log {
-  font-size: 13px;
-  line-height: 1.75;
-  color: #5f554d;
-  margin: 8px 0 10px;
-}
-
-.task-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.badge {
-  display: inline-block;
-  border-radius: 999px;
-  padding: 4px 8px;
-  font-size: 12px;
-  color: white;
-  margin-right: 6px;
-  font-weight: 900;
-}
-
-.badge.red {
-  background: #c43d32;
-}
-
-.badge.yellow {
-  background: #d49a21;
-}
-
-.badge.green {
-  background: #2f8f5b;
-}
-
-.badge.blue {
-  background: #3f6f9f;
-}
-
-.stock-list {
-  list-style: none;
-}
-
-.stock-list li {
-  padding: 11px 0;
-  border-bottom: 1px solid #eee1d2;
-  font-size: 14px;
-}
-
-.stock-list li:last-child {
-  border-bottom: none;
-}
-
-.bottom-nav {
-  position: sticky;
-  bottom: 0;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
-  padding: 9px 0;
-  margin-top: 22px;
-  background: #fffaf2;
-  border-top: 1px solid #eadfce;
-}
-
-.bottom-nav button {
-  background: #efe3d2;
-  color: #4b392c;
-  font-size: 12px;
-  padding: 10px 4px;
-}
-
-@media (max-width: 360px) {
-  .top-header {
-    flex-direction: column;
-  }
-
-  .weather-box {
-    text-align: left;
-  }
-
-  .button-grid,
-  .task-actions {
-    grid-template-columns: 1fr;
-  }
+.manager-box strong {
+  display: block;
+  font-size: 20px;
+  margin-top: 4px;
 }
