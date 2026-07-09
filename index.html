@@ -63,7 +63,7 @@ button{border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:900;c
   <div class="lock-box">
     <h2>⚠ 중요 공지 확인 필요</h2>
     <p>
-      오늘 고양이 약 18:00 투약<br>
+      애디 설사,구토 확인<br>
       POS 마감 전 현금함 확인<br><br>
       공지를 확인해야 다른 기능을 사용할 수 있습니다.
     </p>
@@ -82,17 +82,17 @@ button{border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:900;c
   </div>
 
   <section class="greeting">
-    <h1><span id="userName">마리엔</span>님, 안녕하세요.</h1>
+    <h1><span id="userName">마린</span>님, 안녕하세요.</h1>
     <div class="phrase">🌿 오늘도 작은 디테일이 큰 감동을 만듭니다.</div>
   </section>
 
   <section class="card">
     <h2>👤 오늘 사용자</h2>
     <select id="staffSelect" onchange="changeUser()">
-      <option>마리엔</option>
-      <option>민지</option>
-      <option>수현</option>
-      <option>지용</option>
+      <option>마린</option>
+      <option>애디</option>
+      <option>타마</option>
+      <option>도트</option>
     </select>
   </section>
 
@@ -114,7 +114,7 @@ button{border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:900;c
     <h2>📢 공지</h2>
     <div class="notice">
       <strong>중요</strong><br>
-      오늘 고양이 약 18:00 투약<br>
+      애디 설사, 구토 확인<br>
       POS 마감 전 현금함 확인
     </div>
     <div class="read-list" id="readList"></div>
@@ -153,7 +153,7 @@ button{border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:900;c
 </div>
 
 <script>
-let currentUser = "마리엔";
+let currentUser = "마린";
 let noticeConfirmedUsers = [];
 let clockText = "";
 let tasks = [
@@ -190,7 +190,7 @@ function confirmNotice(){
 }
 
 function renderReadList(){
-  const staff = ["마리엔","민지","수현","지용"];
+  const staff = ["마린","애디","타마","도트"];
   let html = `읽음 ${noticeConfirmedUsers.length} / ${staff.length}<br>`;
   staff.forEach(name=>{
     const found = noticeConfirmedUsers.find(x=>x.name===name);
