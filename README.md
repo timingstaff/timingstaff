@@ -1,16 +1,78 @@
-## Hi there 👋
+# 🎵 TimingStaff
 
-<!--
-**timingstaff/timingstaff** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+라이브바 운영을 위한 올인원 직원 관리 시스템
 
-Here are some ideas to get you started:
+---
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## 소개
+
+TimingStaff는 라이브바 운영에 필요한 업무를 하나의 시스템으로 관리하기 위해 개발 중인 프로젝트입니다.
+
+직원과 관리자가 함께 사용하는 모바일 기반 웹앱이며,
+출퇴근부터 재고관리, 업무일지, 매출관리, 공연관리까지 하나의 화면에서 관리하는 것을 목표로 합니다.
+
+---
+
+## 주요 기능
+
+- 출퇴근 관리
+- 공지 및 읽음 확인
+- 오늘 해야 할 일 관리
+- 재고 관리
+- 고양이 케어 관리
+- 업무일지
+- 매출 현황
+- AI 패턴 분석
+- 관리자 전용 메뉴
+
+---
+
+## 개발 목표
+
+✔ 직원 교육 시간을 줄인다.
+
+✔ 반복 업무를 자동화한다.
+
+✔ 운영 데이터를 축적하여 AI가 패턴을 분석한다.
+
+✔ 라이브바 운영에 최적화된 시스템을 만든다.
+
+---
+
+## 개발 현황
+
+현재 개발 단계
+
+- [x] 프로젝트 생성
+- [x] 첫 화면 디자인
+- [ ] 출퇴근 기능
+- [ ] 공지 시스템
+- [ ] 오늘 해야 할 일
+- [ ] 재고 관리
+- [ ] 업무일지
+- [ ] AI 분석
+
+---
+
+## 프로젝트 구조
+
+```
+index.html
+
+docs/
+├── development.md
+├── roadmap.md
+├── changelog.md
+├── ideas.md
+├── specification.md
+```
+
+---
+
+## 제작
+
+Developer
+Marien
+
+AI Development Partner
+ChatGPT
