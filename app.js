@@ -1,15 +1,28 @@
 const staffMembers = ["마린", "애디", "타마", "도트"];
 
-let currentUser = "마린";
-let noticeConfirmedUsers = [];
-let clockRecords = [];
+let state = {
+  currentUser: "마린",
+  noticeConfirmedUsers: [],
+  clockRecords: [],
+  tasks: [
+    { title: "주류 재고 체크", logs: [] },
+    { title: "소스통 청소", logs: [] },
+    { title: "고양이방 소독", logs: [] },
+    { title: "고양이방 소독", logs: [] },
+    { title: "고양이방 소독", logs: [] }
+  ]
+};
 
-let tasks = [
-  { title: "주류 재고 체크", logs: [] },
-  { title: "소스통 청소", logs: [] },
-  { title: "고양이방 소독", logs: [] },
-  { title: "고양이방 소독", logs: [] }
-];
+function saveData() {
+  localStorage.setItem("timingStaffData", JSON.stringify(state));
+}
+
+function loadData() {
+  const saved = localStorage.getItem("timingStaffData");
+  if (saved) {
+    state = JSON.parse(saved);
+  }
+}
 
 function getNowTime() {
   return new Date().toLocaleTimeString("ko-KR", {
@@ -22,26 +35,22 @@ function setTodayDate() {
   const days = ["일", "월", "화", "수", "목", "금", "토"];
   const today = new Date();
 
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const date = String(today.getDate()).padStart(2, "0");
-  const day = days[today.getDay()];
-
   document.getElementById("todayDate").textContent =
-    `${year}.${month}.${date} (${day})`;
+    `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} (${days[today.getDay()]})`;
 }
 
 function updateCurrentUser() {
-  currentUser = document.getElementById("staffSelect").value;
-  document.getElementById("userName").textContent = currentUser;
+  state.currentUser = document.getElementById("staffSelect").value;
+  document.getElementById("userName").textContent = state.currentUser;
+  saveData();
 }
 
-function isCurrentUserNoticeConfirmed() {
-  return noticeConfirmedUsers.some(user => user.name === currentUser);
+function isNoticeConfirmed() {
+  return state.noticeConfirmedUsers.some(user => user.name === state.currentUser);
 }
 
 function requireNoticeConfirm() {
-  if (!isCurrentUserNoticeConfirmed()) {
+  if (!isNoticeConfirmed()) {
     alert("중요 공지를 먼저 확인해주세요.");
     return false;
   }
@@ -49,25 +58,25 @@ function requireNoticeConfirm() {
 }
 
 function confirmNotice() {
-  if (!isCurrentUserNoticeConfirmed()) {
-    noticeConfirmedUsers.push({
-      name: currentUser,
+  if (!isNoticeConfirmed()) {
+    state.noticeConfirmedUsers.push({
+      name: state.currentUser,
       time: getNowTime()
     });
   }
 
-  renderNoticeReadList();
-  updateStatusBox();
+  saveData();
+  renderAll();
 }
 
 function renderNoticeReadList() {
-  let html = `<strong>읽음 ${noticeConfirmedUsers.length} / ${staffMembers.length}</strong><br>`;
+  let html = `<strong>읽음 ${state.noticeConfirmedUsers.length} / ${staffMembers.length}</strong><br>`;
 
   staffMembers.forEach(name => {
-    const confirmed = noticeConfirmedUsers.find(user => user.name === name);
+    const found = state.noticeConfirmedUsers.find(user => user.name === name);
 
-    if (confirmed) {
-      html += `✅ ${name} · ${confirmed.time}<br>`;
+    if (found) {
+      html += `✅ ${name} · ${found.time}<br>`;
     } else {
       html += `⏳ ${name} · 미확인<br>`;
     }
@@ -77,13 +86,13 @@ function renderNoticeReadList() {
 }
 
 function getCompletedTaskCount() {
-  return tasks.filter(task =>
+  return state.tasks.filter(task =>
     task.logs.some(log => log.type === "완료" || log.type === "재확인 완료")
   ).length;
 }
 
 function updateTaskProgress() {
-  const total = tasks.length;
+  const total = state.tasks.length;
   const completed = getCompletedTaskCount();
   const percent = Math.round((completed / total) * 100);
 
@@ -97,16 +106,15 @@ function updateTaskProgress() {
 function updateStatusBox() {
   const statusBox = document.getElementById("statusBox");
 
-  const unread = staffMembers.length - noticeConfirmedUsers.length;
+  const unread = staffMembers.length - state.noticeConfirmedUsers.length;
   const completed = getCompletedTaskCount();
-  const total = tasks.length;
-  const salesPercent = 65;
+  const total = state.tasks.length;
 
   if (unread > 0) {
     statusBox.className = "status-card status-red";
     statusBox.innerHTML = `
       <strong>🔴 중요 공지 미확인 ${unread}명</strong>
-      <p>공지 ${noticeConfirmedUsers.length}/${staffMembers.length} 확인 · 업무 ${completed}/${total} 완료 · 매출 ${salesPercent}%</p>
+      <p>공지 ${state.noticeConfirmedUsers.length}/${staffMembers.length} 확인 · 업무 ${completed}/${total} 완료 · 매출 65%</p>
     `;
     return;
   }
@@ -115,7 +123,7 @@ function updateStatusBox() {
     statusBox.className = "status-card status-yellow";
     statusBox.innerHTML = `
       <strong>🟡 오늘 해야 할 일 남음</strong>
-      <p>공지 ${staffMembers.length}/${staffMembers.length} 확인 · 업무 ${completed}/${total} 완료 · 재고 확인 3건</p>
+      <p>공지 완료 · 업무 ${completed}/${total} 완료 · 재고 확인 3건</p>
     `;
     return;
   }
@@ -123,41 +131,43 @@ function updateStatusBox() {
   statusBox.className = "status-card status-green";
   statusBox.innerHTML = `
     <strong>🟢 정상 운영</strong>
-    <p>공지 완료 · 업무 완료 · 매출 ${salesPercent}% · 현재 순조롭게 운영 중입니다.</p>
+    <p>공지 완료 · 업무 완료 · 매출 65% · 순조롭게 운영 중입니다.</p>
   `;
 }
 
 function clockIn() {
   if (!requireNoticeConfirm()) return;
 
-  clockRecords.push({
-    user: currentUser,
+  state.clockRecords.push({
+    user: state.currentUser,
     type: "출근",
     time: getNowTime()
   });
 
+  saveData();
   renderClockLog();
 }
 
 function clockOut() {
   if (!requireNoticeConfirm()) return;
 
-  clockRecords.push({
-    user: currentUser,
+  state.clockRecords.push({
+    user: state.currentUser,
     type: "퇴근",
     time: getNowTime()
   });
 
+  saveData();
   renderClockLog();
 }
 
 function renderClockLog() {
-  if (clockRecords.length === 0) {
+  if (state.clockRecords.length === 0) {
     document.getElementById("clockLog").textContent = "아직 기록이 없습니다.";
     return;
   }
 
-  const latest = clockRecords[clockRecords.length - 1];
+  const latest = state.clockRecords[state.clockRecords.length - 1];
 
   document.getElementById("clockLog").textContent =
     `${latest.user} ${latest.type} 기록 · ${latest.time}`;
@@ -166,49 +176,39 @@ function renderClockLog() {
 function completeTask(index) {
   if (!requireNoticeConfirm()) return;
 
-  const task = tasks[index];
+  const task = state.tasks[index];
 
   const hasComplete = task.logs.some(log =>
     log.type === "완료" || log.type === "재확인 완료"
   );
 
   task.logs.push({
-    user: currentUser,
+    user: state.currentUser,
     time: getNowTime(),
     type: hasComplete ? "재확인 완료" : "완료"
   });
 
-  renderTasks();
-  updateTaskProgress();
-  updateStatusBox();
+  saveData();
+  renderAll();
 }
 
 function requestRecheck(index) {
   if (!requireNoticeConfirm()) return;
 
-  const task = tasks[index];
-
-  task.logs.push({
-    user: currentUser,
+  state.tasks[index].logs.push({
+    user: state.currentUser,
     time: getNowTime(),
     type: "재확인 요청"
   });
 
-  renderTasks();
-  updateTaskProgress();
-
-  const statusBox = document.getElementById("statusBox");
-  statusBox.className = "status-card status-yellow";
-  statusBox.innerHTML = `
-    <strong>🟡 재확인 요청 있음</strong>
-    <p>${task.title} 재확인이 필요합니다.</p>
-  `;
+  saveData();
+  renderAll();
 }
 
 function renderTasks() {
   const taskList = document.getElementById("taskList");
 
-  taskList.innerHTML = tasks.map((task, index) => {
+  taskList.innerHTML = state.tasks.map((task, index) => {
     const logsHtml = task.logs.length
       ? task.logs.map(log => {
           if (log.type === "완료") {
@@ -227,8 +227,6 @@ function renderTasks() {
       log.type === "완료" || log.type === "재확인 완료"
     );
 
-    const buttonText = hasComplete ? "재확인 완료" : "완료";
-
     return `
       <div class="task">
         <div class="task-title">${task.title}</div>
@@ -236,7 +234,7 @@ function renderTasks() {
 
         <div class="task-actions">
           <button class="green-btn" onclick="completeTask(${index})">
-            ${buttonText}
+            ${hasComplete ? "재확인 완료" : "완료"}
           </button>
 
           <button class="gray-btn" onclick="requestRecheck(${index})">
@@ -253,12 +251,21 @@ function handleLockedMenuClick(menuName) {
   alert(`${menuName} 메뉴는 다음 버전에서 연결됩니다.`);
 }
 
-function initializeApp() {
-  setTodayDate();
+function renderAll() {
+  document.getElementById("staffSelect").value = state.currentUser;
+  document.getElementById("userName").textContent = state.currentUser;
+
   renderNoticeReadList();
+  renderClockLog();
   renderTasks();
   updateTaskProgress();
   updateStatusBox();
+}
+
+function initializeApp() {
+  loadData();
+  setTodayDate();
+  renderAll();
 
   document.getElementById("staffSelect").addEventListener("change", updateCurrentUser);
   document.getElementById("noticeConfirmBtn").addEventListener("click", confirmNotice);
