@@ -19,7 +19,6 @@ function updateTaskProgress() {
 }
 
 function completeTask(index) {
-
   if (!requireNoticeConfirm()) return;
 
   const task = tasks[index];
@@ -28,13 +27,17 @@ function completeTask(index) {
     log.type === "완료" || log.type === "재확인 완료"
   );
 
+  const actionType = hasCompleted ? "재확인 완료" : "완료";
+  const time = getNowTime();
+
   task.logs.push({
     user: currentUser,
-    time: getNowTime(),
-    type: hasCompleted ? "재확인 완료" : "완료"
+    time,
+    type: actionType
   });
 
   saveData();
+  addTimeline(currentUser, actionType, `${task.title} · ${actionType} · ${time}`);
 
   renderTasks();
   updateTaskProgress();
@@ -43,16 +46,18 @@ function completeTask(index) {
 }
 
 function requestRecheck(index) {
-
   if (!requireNoticeConfirm()) return;
+
+  const time = getNowTime();
 
   tasks[index].logs.push({
     user: currentUser,
-    time: getNowTime(),
+    time,
     type: "재확인 요청"
   });
 
   saveData();
+  addTimeline(currentUser, "재확인 요청", `${tasks[index].title} · 재확인 요청 · ${time}`);
 
   renderTasks();
   renderManagerDashboard();
@@ -68,7 +73,6 @@ function requestRecheck(index) {
 }
 
 function renderTasks() {
-
   const taskList = document.getElementById("taskList");
 
   taskList.innerHTML = tasks.map((task,index)=>{
@@ -106,9 +110,7 @@ function renderTasks() {
       : "완료";
 
     return `
-
       <div class="task">
-
         <div class="task-title">
           ${task.title}
         </div>
@@ -118,29 +120,20 @@ function renderTasks() {
         </div>
 
         <div class="task-actions">
-
           <button
             class="green-btn"
             onclick="completeTask(${index})">
-
             ${buttonText}
-
           </button>
 
           <button
             class="gray-btn"
             onclick="requestRecheck(${index})">
-
             재확인 요청
-
           </button>
-
         </div>
-
       </div>
-
     `;
 
   }).join("");
-
-            }
+}
