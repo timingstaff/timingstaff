@@ -27,8 +27,8 @@ function updateStatusBox() {
   if (unread > 0) {
     statusBox.className = "status-card status-red";
     statusBox.innerHTML = `
-      <strong>🔴 중요 공지 미확인 ${unread}명</strong>
-      <p>공지 ${noticeConfirmedUsers.length}/${staffMembers.length} 확인 · 업무 ${completed}/${total} 완료 · 매출 ${salesPercent}%</p>
+      <strong>🔴 공지 ${noticeConfirmedUsers.length}/${staffMembers.length} │ 업무 ${completed}/${total} │ 매출 ${salesPercent}%</strong>
+      <p>중요 공지를 먼저 확인해주세요.</p>
     `;
     return;
   }
@@ -36,16 +36,16 @@ function updateStatusBox() {
   if (completed < total) {
     statusBox.className = "status-card status-yellow";
     statusBox.innerHTML = `
-      <strong>🟡 오늘 해야 할 일 남음</strong>
-      <p>공지 완료 · 업무 ${completed}/${total} 완료 · 재고 확인 ${getCheckInventoryCount()}건</p>
+      <strong>🟡 공지 완료 │ 업무 ${completed}/${total} │ 매출 ${salesPercent}%</strong>
+      <p>아직 완료되지 않은 업무가 있습니다.</p>
     `;
     return;
   }
 
   statusBox.className = "status-card status-green";
   statusBox.innerHTML = `
-    <strong>🟢 정상 운영</strong>
-    <p>공지 완료 · 업무 완료 · 매출 ${salesPercent}% · 현재 순조롭게 운영 중입니다.</p>
+    <strong>🟢 공지 완료 │ 업무 완료 │ 매출 ${salesPercent}%</strong>
+    <p>현재 순조롭게 운영 중입니다.</p>
   `;
 }
 
