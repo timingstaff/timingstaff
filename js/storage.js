@@ -19,7 +19,6 @@ function loadLocalData() {
   try {
     const data = JSON.parse(saved);
 
-    currentUser = data.currentUser || currentUser;
     noticeConfirmedUsers = data.noticeConfirmedUsers || [];
     clockRecords = data.clockRecords || [];
     tasks = data.tasks || tasks;
