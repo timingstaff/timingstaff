@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimingStaff</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f2ec;
+    color:#333;
+}
+
+header{
+    background:#6f4a2e;
+    color:white;
+    padding:25px;
+    text-align:center;
+}
+
+header h1{
+    font-size:32px;
+}
+
+header p{
+    margin-top:8px;
+    opacity:.9;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
+
+.button{
+    display:block;
+    text-decoration:none;
+    text-align:center;
+    background:#6f4a2e;
+    color:white;
+    padding:18px;
+    border-radius:12px;
+    font-size:18px;
+    transition:.2s;
+}
+
+.button:hover{
+    background:#8b5b38;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+<h1>🎵 TimingStaff</h1>
+<p>라이브바 운영 시스템</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>환영합니다.</h2>
+<p style="margin-top:10px;">
+타이밍스태프 개발 프로젝트입니다.
+이 화면은 앞으로 직원관리, 출퇴근, 급여계산,
+업무일지, 공연관리의 시작 화면이 됩니다.
+</p>
+</div>
+
+<div class="grid">
+
+<a href="#" class="button">
+👤 직원관리
+</a>
+
+<a href="#" class="button">
+🕒 출퇴근
+</a>
+
+<a href="#" class="button">
+💰 급여계산
+</a>
+
+<a href="#" class="button">
+📝 업무일지
+</a>
+
+<a href="#" class="button">
+🎤 공연관리
+</a>
+
+<a href="#" class="button">
+⚙ 관리자
+</a>
+
+</div>
+
+</div>
+
+<footer>
+TimingStaff v0.1<br>
+Made for Timing Music Bar
+</footer>
+
+</body>
+</html>
