@@ -1,83 +1,219 @@
-.hidden {
-  display: none;
+* {
+  box-sizing: border-box;
 }
 
-.manager-header {
-  background: linear-gradient(135deg, #4b392c, #7a4d2b);
+body {
+  margin: 0;
+  font-family: Pretendard, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f7f1e8;
+  color: #2b2420;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: #2b2420;
   color: white;
-  border-radius: 22px;
-  padding: 20px;
-  margin: 16px 0;
-  box-shadow: 0 12px 28px rgba(61, 42, 25, 0.12);
+  cursor: pointer;
 }
 
-.manager-header h2 {
-  font-size: 24px;
-  margin-bottom: 6px;
+button:hover {
+  opacity: 0.85;
 }
 
-.manager-header p {
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-.manager-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.manager-box {
-  background: #fff6e8;
-  border: 1px solid #eadfce;
-  border-radius: 16px;
-  padding: 14px;
-}
-
-.manager-box strong {
-  display: block;
-  font-size: 20px;
-  margin-top: 4px;
-}
-.login-screen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.login-card {
+input,
+textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid #eadfce;
-  border-radius: 24px;
-  padding: 28px 20px;
-  box-shadow: 0 14px 34px rgba(69, 47, 29, 0.12);
-  text-align: center;
+  border: 1px solid #d7c6b5;
+  border-radius: 12px;
+  padding: 12px;
+  background: white;
+  color: #2b2420;
 }
 
-.login-card h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
+textarea {
+  min-height: 90px;
+  resize: vertical;
 }
 
-.login-card p {
-  color: #7c6f65;
-  margin-bottom: 22px;
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.login-buttons {
-  display: grid;
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 12px;
+  margin-bottom: 18px;
 }
 
-.login-buttons button {
-  background: #6f4a2e;
+.top h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.top p {
+  margin: 6px 0 0;
+  color: #7b6758;
+}
+
+.dangerBtn {
+  background: #9b3d30;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.nav button {
+  background: #d8c3ad;
+  color: #2b2420;
+}
+
+.nav button.active {
+  background: #2b2420;
   color: white;
-  font-size: 17px;
 }
 
-#appScreen {
-  display: none;
+.main {
+  min-height: 60vh;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: #fffaf4;
+  border: 1px solid #eadbca;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(80, 50, 20, 0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  font-size: 21px;
+}
+
+.bigText {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.muted {
+  color: #8b7a6b;
+}
+
+.inputArea {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 16px;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.list,
+.miniList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eadbca;
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list p {
+  margin: 0 0 4px;
+}
+
+.list small {
+  color: #8b7a6b;
+}
+
+.list button {
+  background: #b15f4a;
+  flex-shrink: 0;
+}
+
+.miniList li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eadbca;
+}
+
+.done {
+  text-decoration: line-through;
+  color: #8b7a6b;
+  cursor: pointer;
+}
+
+.adminBox {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.adminBox p {
+  margin: 0;
+  padding: 10px;
+  background: #f1e2d2;
+  border-radius: 12px;
+}
+
+@media (max-width: 720px) {
+  .app {
+    padding: 14px;
+  }
+
+  .top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav button {
+    width: 100%;
+  }
 }
