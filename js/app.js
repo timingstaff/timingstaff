@@ -1,6 +1,6 @@
 const staffMembers = ["마린", "애디", "타마", "도트"];
 
-let currentUser = localStorage.getItem("currentUser") || "";
+let currentUser = localStorage.getItem("timingstaff_current_user") || "";
 
 let noticeConfirmedUsers = [];
 let clockRecords = [];
@@ -14,7 +14,7 @@ let tasks = [
 function loginAsStaff(name) {
   currentUser = name;
 
-  localStorage.setItem("currentUser", name);
+  localStorage.setItem("timingstaff_current_user", name);
 
   document.getElementById("loginScreen").style.display = "none";
   document.getElementById("appScreen").style.display = "block";
@@ -22,29 +22,25 @@ function loginAsStaff(name) {
   document.getElementById("staffSelect").value = name;
   document.getElementById("userName").textContent = name;
 
+  saveData();
   updateStatusBox();
 }
 
-function logout() {
-  localStorage.removeItem("currentUser");
-
-  document.getElementById("loginScreen").style.display = "flex";
-  document.getElementById("appScreen").style.display = "none";
+function updateCurrentUser() {
+  const selected = document.getElementById("staffSelect").value;
+  loginAsStaff(selected);
 }
 
-function updateCurrentUser() {
-  currentUser = document.getElementById("staffSelect").value;
-
-  localStorage.setItem("currentUser", currentUser);
-
-  document.getElementById("userName").textContent = currentUser;
-
-  saveData();
+function handleLockedMenuClick(menuName) {
+  if (!requireNoticeConfirm()) return;
+  alert(`${menuName} 메뉴는 다음 버전에서 연결됩니다.`);
 }
 
 function initializeApp() {
-
   loadData();
+
+  const savedUser =
+    localStorage.getItem("timingstaff_current_user") || currentUser;
 
   setTodayDate();
 
@@ -55,35 +51,19 @@ function initializeApp() {
   updateStatusBox();
   renderManagerDashboard();
 
-  document.getElementById("staffSelect")
-    .addEventListener("change", updateCurrentUser);
+  document.getElementById("staffSelect").addEventListener("change", updateCurrentUser);
+  document.getElementById("noticeConfirmBtn").addEventListener("click", confirmNotice);
+  document.getElementById("clockInBtn").addEventListener("click", clockIn);
+  document.getElementById("clockOutBtn").addEventListener("click", clockOut);
 
-  document.getElementById("noticeConfirmBtn")
-    .addEventListener("click", confirmNotice);
+  document.getElementById("homeBtn").addEventListener("click", showHome);
+  document.getElementById("workLogBtn").addEventListener("click", () => handleLockedMenuClick("업무일지"));
+  document.getElementById("inventoryBtn").addEventListener("click", () => handleLockedMenuClick("재고"));
+  document.getElementById("catCareBtn").addEventListener("click", () => handleLockedMenuClick("고양이"));
+  document.getElementById("managerBtn").addEventListener("click", showManager);
 
-  document.getElementById("clockInBtn")
-    .addEventListener("click", clockIn);
-
-  document.getElementById("clockOutBtn")
-    .addEventListener("click", clockOut);
-
-  document.getElementById("homeBtn")
-    .addEventListener("click", showHome);
-
-  document.getElementById("workLogBtn")
-    .addEventListener("click", () => handleLockedMenuClick("업무일지"));
-
-  document.getElementById("inventoryBtn")
-    .addEventListener("click", () => handleLockedMenuClick("재고"));
-
-  document.getElementById("catCareBtn")
-    .addEventListener("click", () => handleLockedMenuClick("고양이"));
-
-  document.getElementById("managerBtn")
-    .addEventListener("click", showManager);
-
-  if (currentUser) {
-    loginAsStaff(currentUser);
+  if (savedUser) {
+    loginAsStaff(savedUser);
   } else {
     document.getElementById("loginScreen").style.display = "flex";
     document.getElementById("appScreen").style.display = "none";
