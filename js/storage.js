@@ -1,8 +1,7 @@
 const STORAGE_KEY = "timingstaff_v04_data";
 
-function saveLocalData() {
+function saveData() {
   const data = {
-    currentUser,
     noticeConfirmedUsers,
     clockRecords,
     tasks
@@ -11,9 +10,8 @@ function saveLocalData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-function loadLocalData() {
+function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
-
   if (!saved) return;
 
   try {
@@ -27,28 +25,14 @@ function loadLocalData() {
   }
 }
 
-function saveData() {
-  saveLocalData();
-}
-
-function loadData() {
-  loadLocalData();
-}
-
 async function addTimeline(staffName, action, detail) {
   if (!supabaseClient) return;
 
-  const { error } = await supabaseClient
-    .from("timeline")
-    .insert([
-      {
-        staff_name: staffName,
-        action: action,
-        detail: detail
-      }
-    ]);
-
-  if (error) {
-    console.log("타임라인 저장 실패", error);
-  }
+  await supabaseClient.from("timeline").insert([
+    {
+      staff_name: staffName,
+      action: action,
+      detail: detail
+    }
+  ]);
 }
