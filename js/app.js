@@ -82,3 +82,10 @@ function initializeApp() {
 }
 
 document.addEventListener("DOMContentLoaded", initializeApp);
+function resetLogin() {
+  localStorage.removeItem("timingstaff_current_user");
+  localStorage.removeItem("currentUser");
+  document.cookie = "timingstaff_current_user=; path=/; max-age=0";
+  alert("로그인 기록을 초기화했습니다.");
+  location.reload();
+}
