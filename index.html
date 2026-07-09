@@ -11,13 +11,25 @@
   <main class="app">
 
     <header class="top-header">
-      <div>
-        <p id="todayDate" class="date-text">날짜 불러오는 중</p>
+      <div class="header-top-row">
         <h1>🎵 TimingStaff</h1>
+
+        <div class="staff-select-box">
+          <span>👤</span>
+          <select id="staffSelect">
+            <option value="마린">마린</option>
+            <option value="애디">애디</option>
+            <option value="타마">타마</option>
+            <option value="도트">도트</option>
+          </select>
+        </div>
       </div>
 
-      <div class="weather-box weather-inline">
-        ☀️ 31°C · 🌧 20% · 😷 좋음
+      <div class="header-bottom-row">
+        <span id="todayDate">날짜 불러오는 중</span>
+        <span>🌤31°C</span>
+        <span>☔20%</span>
+        <span>😷좋음</span>
       </div>
     </header>
 
@@ -29,18 +41,8 @@
     <section id="homeScreen">
 
       <section class="greeting-card">
-        <h2><span id="userName">마린</span>님, 안녕하세요.</h2>
-        <p>🌿 오늘도 작은 디테일이 큰 감동을 만듭니다.</p>
-      </section>
-
-      <section class="card">
-        <h3>🐈 오늘 사용자</h3>
-        <select id="staffSelect">
-          <option value="마린">🐈 마린</option>
-          <option value="애디">🐈 애디</option>
-          <option value="타마">🐈 타마</option>
-          <option value="도트">🐈 도트</option>
-        </select>
+        <h2>안녕하세요 👋</h2>
+        <p><span id="userName">마린</span>님, 오늘도 좋은 하루 되세요.</p>
       </section>
 
       <section class="card notice-card">
@@ -150,8 +152,9 @@
     </nav>
 
   </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/attendance.js"></script>
