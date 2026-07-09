@@ -13,10 +13,14 @@ function requireNoticeConfirm() {
 
 function confirmNotice() {
   if (!isCurrentUserNoticeConfirmed()) {
+    const time = getNowTime();
+
     noticeConfirmedUsers.push({
       name: currentUser,
-      time: getNowTime()
+      time
     });
+
+    addTimeline(currentUser, "공지 확인", `${currentUser} 공지 확인 · ${time}`);
   }
 
   saveData();
