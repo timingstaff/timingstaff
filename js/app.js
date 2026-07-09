@@ -10,9 +10,25 @@ let tasks = [
   { title: "고양이방 소독", logs: [] }
 ];
 
+function saveCurrentUser(name) {
+  localStorage.setItem("timingstaff_current_user", name);
+  document.cookie = `timingstaff_current_user=${name}; path=/; max-age=2592000`;
+}
+
+function getSavedCurrentUser() {
+  const localUser = localStorage.getItem("timingstaff_current_user");
+  if (localUser) return localUser;
+
+  const cookieUser = document.cookie
+    .split("; ")
+    .find(row => row.startsWith("timingstaff_current_user="));
+
+  return cookieUser ? cookieUser.split("=")[1] : "";
+}
+
 function loginAsStaff(name) {
   currentUser = name;
-  localStorage.setItem("timingstaff_current_user", name);
+  saveCurrentUser(name);
 
   document.getElementById("loginScreen").style.display = "none";
   document.getElementById("appScreen").style.display = "block";
@@ -36,7 +52,7 @@ function handleLockedMenuClick(menuName) {
 function initializeApp() {
   loadData();
 
-  const savedUser = localStorage.getItem("timingstaff_current_user");
+  const savedUser = getSavedCurrentUser();
 
   setTodayDate();
   renderNoticeReadList();
