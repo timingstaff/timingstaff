@@ -1,7 +1,6 @@
 const staffMembers = ["마린", "애디", "타마", "도트"];
 
-let currentUser = localStorage.getItem("timingstaff_current_user") || "";
-
+let currentUser = "";
 let noticeConfirmedUsers = [];
 let clockRecords = [];
 
@@ -13,7 +12,6 @@ let tasks = [
 
 function loginAsStaff(name) {
   currentUser = name;
-
   localStorage.setItem("timingstaff_current_user", name);
 
   document.getElementById("loginScreen").style.display = "none";
@@ -27,8 +25,7 @@ function loginAsStaff(name) {
 }
 
 function updateCurrentUser() {
-  const selected = document.getElementById("staffSelect").value;
-  loginAsStaff(selected);
+  loginAsStaff(document.getElementById("staffSelect").value);
 }
 
 function handleLockedMenuClick(menuName) {
@@ -39,11 +36,9 @@ function handleLockedMenuClick(menuName) {
 function initializeApp() {
   loadData();
 
-  const savedUser =
-    localStorage.getItem("timingstaff_current_user") || currentUser;
+  const savedUser = localStorage.getItem("timingstaff_current_user");
 
   setTodayDate();
-
   renderNoticeReadList();
   renderClockLog();
   renderTasks();
@@ -70,4 +65,4 @@ function initializeApp() {
   }
 }
 
-initializeApp();
+document.addEventListener("DOMContentLoaded", initializeApp);
