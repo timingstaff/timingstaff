@@ -51,8 +51,44 @@ function updateStatusBox() {
 
 function handleLockedMenuClick(menuName) {
   if (!requireNoticeConfirm()) return;
-
   alert(`${menuName} 메뉴는 다음 버전에서 연결됩니다.`);
+}
+
+function openManagerMode() {
+  if (!requireNoticeConfirm()) return;
+
+  showManager();
+
+  const managerSection = document.getElementById("managerSection");
+  const homeSection = document.getElementById("homeSection");
+
+  if (homeSection) {
+    homeSection.style.display = "none";
+  }
+
+  if (managerSection) {
+    managerSection.style.display = "block";
+    managerSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  renderManagerDashboard();
+}
+
+function openHomeMode() {
+  showHome();
+
+  const managerSection = document.getElementById("managerSection");
+  const homeSection = document.getElementById("homeSection");
+
+  if (managerSection) {
+    managerSection.style.display = "none";
+  }
+
+  if (homeSection) {
+    homeSection.style.display = "block";
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function initializeApp() {
@@ -70,16 +106,21 @@ function initializeApp() {
   updateStatusBox();
   renderManagerDashboard();
 
+  const managerSection = document.getElementById("managerSection");
+  if (managerSection) {
+    managerSection.style.display = "none";
+  }
+
   document.getElementById("staffSelect").addEventListener("change", updateCurrentUser);
   document.getElementById("noticeConfirmBtn").addEventListener("click", confirmNotice);
   document.getElementById("clockInBtn").addEventListener("click", clockIn);
   document.getElementById("clockOutBtn").addEventListener("click", clockOut);
 
-  document.getElementById("homeBtn").addEventListener("click", showHome);
+  document.getElementById("homeBtn").addEventListener("click", openHomeMode);
   document.getElementById("workLogBtn").addEventListener("click", () => handleLockedMenuClick("업무일지"));
   document.getElementById("inventoryBtn").addEventListener("click", () => handleLockedMenuClick("재고"));
   document.getElementById("catCareBtn").addEventListener("click", () => handleLockedMenuClick("고양이"));
-  document.getElementById("managerBtn").addEventListener("click", showManager);
+  document.getElementById("managerBtn").addEventListener("click", openManagerMode);
 }
 
 initializeApp();
