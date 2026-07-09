@@ -10,25 +10,13 @@ let tasks = [
   { title: "고양이방 소독", logs: [] }
 ];
 
-function saveCurrentUser(name) {
-  localStorage.setItem("timingstaff_current_user", name);
-  document.cookie = `timingstaff_current_user=${name}; path=/; max-age=2592000`;
-}
-
-function getSavedCurrentUser() {
-  const localUser = localStorage.getItem("timingstaff_current_user");
-  if (localUser) return localUser;
-
-  const cookieUser = document.cookie
-    .split("; ")
-    .find(row => row.startsWith("timingstaff_current_user="));
-
-  return cookieUser ? cookieUser.split("=")[1] : "";
+function getSavedUser() {
+  return localStorage.getItem("timingstaff_current_user") || "";
 }
 
 function loginAsStaff(name) {
   currentUser = name;
-  saveCurrentUser(name);
+  localStorage.setItem("timingstaff_current_user", name);
 
   document.getElementById("loginScreen").style.display = "none";
   document.getElementById("appScreen").style.display = "block";
@@ -36,12 +24,18 @@ function loginAsStaff(name) {
   document.getElementById("staffSelect").value = name;
   document.getElementById("userName").textContent = name;
 
-  saveData();
   updateStatusBox();
 }
 
+function resetLogin() {
+  localStorage.removeItem("timingstaff_current_user");
+  alert("로그인 기록을 초기화했습니다.");
+  location.reload();
+}
+
 function updateCurrentUser() {
-  loginAsStaff(document.getElementById("staffSelect").value);
+  const selected = document.getElementById("staffSelect").value;
+  loginAsStaff(selected);
 }
 
 function handleLockedMenuClick(menuName) {
@@ -51,10 +45,8 @@ function handleLockedMenuClick(menuName) {
 
 function initializeApp() {
   loadData();
-
-  const savedUser = getSavedCurrentUser();
-
   setTodayDate();
+
   renderNoticeReadList();
   renderClockLog();
   renderTasks();
@@ -73,6 +65,8 @@ function initializeApp() {
   document.getElementById("catCareBtn").addEventListener("click", () => handleLockedMenuClick("고양이"));
   document.getElementById("managerBtn").addEventListener("click", showManager);
 
+  const savedUser = getSavedUser();
+
   if (savedUser) {
     loginAsStaff(savedUser);
   } else {
@@ -81,11 +75,4 @@ function initializeApp() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", initializeApp);
-function resetLogin() {
-  localStorage.removeItem("timingstaff_current_user");
-  localStorage.removeItem("currentUser");
-  document.cookie = "timingstaff_current_user=; path=/; max-age=0";
-  alert("로그인 기록을 초기화했습니다.");
-  location.reload();
-}
+initializeApp();
