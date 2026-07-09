@@ -10,148 +10,167 @@
 <body>
   <main class="app">
 
-    <header class="top-header">
-      <div>
-        <p id="todayDate" class="date-text">날짜 불러오는 중</p>
-        <h1>🎵 TimingStaff</h1>
+    <section id="loginScreen" class="login-screen">
+      <div class="login-card">
+        <h2>🎵 TimingStaff</h2>
+        <p>오늘 사용할 직원을 선택해주세요.</p>
+
+        <div class="login-buttons">
+          <button onclick="loginAsStaff('마린')">🐈 마린</button>
+          <button onclick="loginAsStaff('애디')">🐈 애디</button>
+          <button onclick="loginAsStaff('타마')">🐈 타마</button>
+          <button onclick="loginAsStaff('도트')">🐈 도트</button>
+        </div>
       </div>
-
-      <div class="weather-box weather-inline">
-        ☀️ 31°C · 🌧 20% · 😷 좋음
-      </div>
-    </header>
-
-    <section id="statusBox" class="status-card status-red">
-      <strong>🔴 공지 0/4 │ 업무 0/3 │ 매출 65%</strong>
-      <p>중요 공지를 먼저 확인해주세요.</p>
     </section>
 
-    <section id="homeScreen">
+    <section id="appScreen">
 
-      <section class="greeting-card">
-        <h2><span id="userName">마린</span>님, 안녕하세요.</h2>
-        <p>🌿 오늘도 작은 디테일이 큰 감동을 만듭니다.</p>
-      </section>
-
-      <section class="card">
-        <h3>🐈 오늘 사용자</h3>
-        <select id="staffSelect">
-          <option value="마린">🐈 마린</option>
-          <option value="애디">🐈 애디</option>
-          <option value="타마">🐈 타마</option>
-          <option value="도트">🐈 도트</option>
-        </select>
-      </section>
-
-      <section class="card notice-card">
-        <h3>📢 공지</h3>
-        <div class="notice-box">
-          <strong>중요</strong>
-          <p>오늘 고양이 약 18:00 투약</p>
-          <p>POS 마감 전 현금함 확인</p>
-        </div>
-        <button id="noticeConfirmBtn" class="main-btn">확인했습니다</button>
-        <div id="readList" class="log-list"></div>
-      </section>
-
-      <section class="card">
-        <div class="section-title-row">
-          <h3>📋 오늘 해야 할 일</h3>
-          <span id="taskProgressText" class="mini-badge">0 / 3 완료</span>
+      <header class="top-header">
+        <div>
+          <p id="todayDate" class="date-text">날짜 불러오는 중</p>
+          <h1>🎵 TimingStaff</h1>
         </div>
 
-        <div class="progress-bar task-progress">
-          <div id="taskProgressFill" class="progress-fill task-fill"></div>
+        <div class="weather-box weather-inline">
+          ☀️ 31°C · 🌧 20% · 😷 좋음
         </div>
+      </header>
 
-        <div id="taskList"></div>
+      <section id="statusBox" class="status-card status-red">
+        <strong>🔴 공지 0/4 │ 업무 0/3 │ 매출 65%</strong>
+        <p>중요 공지를 먼저 확인해주세요.</p>
       </section>
 
-      <section class="card">
-        <h3>⏰ 출퇴근</h3>
-        <div class="button-grid">
-          <button id="clockInBtn" class="green-btn">출근하기</button>
-          <button id="clockOutBtn" class="red-btn">퇴근하기</button>
-        </div>
-        <p id="clockLog" class="small-text">아직 기록이 없습니다.</p>
+      <section id="homeScreen">
+
+        <section class="greeting-card">
+          <h2><span id="userName">마린</span>님, 안녕하세요.</h2>
+          <p>🌿 오늘도 작은 디테일이 큰 감동을 만듭니다.</p>
+        </section>
+
+        <section class="card">
+          <h3>🐈 오늘 사용자</h3>
+          <select id="staffSelect">
+            <option value="마린">🐈 마린</option>
+            <option value="애디">🐈 애디</option>
+            <option value="타마">🐈 타마</option>
+            <option value="도트">🐈 도트</option>
+          </select>
+        </section>
+
+        <section class="card notice-card">
+          <h3>📢 공지</h3>
+          <div class="notice-box">
+            <strong>중요</strong>
+            <p>오늘 고양이 약 18:00 투약</p>
+            <p>POS 마감 전 현금함 확인</p>
+          </div>
+          <button id="noticeConfirmBtn" class="main-btn">확인했습니다</button>
+          <div id="readList" class="log-list"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-title-row">
+            <h3>📋 오늘 해야 할 일</h3>
+            <span id="taskProgressText" class="mini-badge">0 / 3 완료</span>
+          </div>
+
+          <div class="progress-bar task-progress">
+            <div id="taskProgressFill" class="progress-fill task-fill"></div>
+          </div>
+
+          <div id="taskList"></div>
+        </section>
+
+        <section class="card">
+          <h3>⏰ 출퇴근</h3>
+          <div class="button-grid">
+            <button id="clockInBtn" class="green-btn">출근하기</button>
+            <button id="clockOutBtn" class="red-btn">퇴근하기</button>
+          </div>
+          <p id="clockLog" class="small-text">아직 기록이 없습니다.</p>
+        </section>
+
+        <section class="card sales-card">
+          <h3>💰 현재 매출</h3>
+          <p class="sales-number">520,000원</p>
+          <p class="small-text">오늘 목표 800,000원</p>
+          <p id="salesMessage" class="sales-message">목표까지 280,000원 남았습니다.</p>
+
+          <div class="progress-bar">
+            <div class="progress-fill sales-fill"></div>
+          </div>
+
+          <p class="small-text">65% 달성</p>
+        </section>
+
+        <section class="card">
+          <h3>📦 확인이 필요한 재고</h3>
+          <ul class="stock-list">
+            <li><span class="badge red">긴급</span> 치즈 종류</li>
+            <li><span class="badge yellow">확인</span> 레몬</li>
+            <li><span class="badge yellow">확인</span> 잭다니엘 바코드 확인</li>
+          </ul>
+        </section>
+
       </section>
 
-      <section class="card sales-card">
-        <h3>💰 현재 매출</h3>
-        <p class="sales-number">520,000원</p>
-        <p class="small-text">오늘 목표 800,000원</p>
-        <p id="salesMessage" class="sales-message">목표까지 280,000원 남았습니다.</p>
+      <section id="managerScreen" class="hidden">
 
-        <div class="progress-bar">
-          <div class="progress-fill sales-fill"></div>
-        </div>
+        <section class="manager-header">
+          <h2>👑 관리자 모드</h2>
+          <p>매장 전체 상태를 한눈에 확인합니다.</p>
+        </section>
 
-        <p class="small-text">65% 달성</p>
+        <section class="status-card status-yellow">
+          <strong>🚨 오늘 반드시 확인</strong>
+          <p>치즈 재고 부족 · 공지 미확인 직원 있음 · 고양이 약 투약 확인 필요</p>
+        </section>
+
+        <section class="card">
+          <h3>🧠 오늘의 운영 브리핑</h3>
+          <div id="managerBriefing" class="log-list">
+            매장 상태를 분석 중입니다.
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>📊 오늘 운영 요약</h3>
+          <div id="managerSummary" class="manager-grid"></div>
+        </section>
+
+        <section class="card">
+          <h3>👥 직원 출근 현황</h3>
+          <div id="managerStaffStatus" class="log-list"></div>
+        </section>
+
+        <section class="card">
+          <h3>📢 공지 확인 현황</h3>
+          <div id="managerNoticeStatus" class="log-list"></div>
+        </section>
+
+        <section class="card">
+          <h3>📋 업무 진행</h3>
+          <div id="managerTaskStatus" class="log-list"></div>
+        </section>
+
       </section>
 
-      <section class="card">
-        <h3>📦 확인이 필요한 재고</h3>
-        <ul class="stock-list">
-          <li><span class="badge red">긴급</span> 치즈 종류</li>
-          <li><span class="badge yellow">확인</span> 레몬</li>
-          <li><span class="badge yellow">확인</span> 잭다니엘 바코드 확인</li>
-        </ul>
-      </section>
+      <nav class="bottom-nav">
+        <button id="homeBtn">홈</button>
+        <button id="workLogBtn">업무일지</button>
+        <button id="inventoryBtn">재고</button>
+        <button id="catCareBtn">고양이</button>
+        <button id="managerBtn">관리자</button>
+      </nav>
 
     </section>
-
-    <section id="managerScreen" class="hidden">
-
-      <section class="manager-header">
-        <h2>👑 관리자 모드</h2>
-        <p>매장 전체 상태를 한눈에 확인합니다.</p>
-      </section>
-
-      <section class="status-card status-yellow">
-        <strong>🚨 오늘 반드시 확인</strong>
-        <p>치즈 재고 부족 · 공지 미확인 직원 있음 · 고양이 약 투약 확인 필요</p>
-      </section>
-
-      <section class="card">
-        <h3>🧠 오늘의 운영 브리핑</h3>
-        <div id="managerBriefing" class="log-list">
-          매장 상태를 분석 중입니다.
-        </div>
-      </section>
-
-      <section class="card">
-        <h3>📊 오늘 운영 요약</h3>
-        <div id="managerSummary" class="manager-grid"></div>
-      </section>
-
-      <section class="card">
-        <h3>👥 직원 출근 현황</h3>
-        <div id="managerStaffStatus" class="log-list"></div>
-      </section>
-
-      <section class="card">
-        <h3>📢 공지 확인 현황</h3>
-        <div id="managerNoticeStatus" class="log-list"></div>
-      </section>
-
-      <section class="card">
-        <h3>📋 업무 진행</h3>
-        <div id="managerTaskStatus" class="log-list"></div>
-      </section>
-
-    </section>
-
-    <nav class="bottom-nav">
-      <button id="homeBtn">홈</button>
-      <button id="workLogBtn">업무일지</button>
-      <button id="inventoryBtn">재고</button>
-      <button id="catCareBtn">고양이</button>
-      <button id="managerBtn">관리자</button>
-    </nav>
 
   </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/attendance.js"></script>
