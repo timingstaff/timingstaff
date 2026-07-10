@@ -1,16 +1,11 @@
 // js/app.js
 
-// ==========================================================
-// [가상 로그인 임시 세팅]
-// 실제 직원이 로그인했을 때를 대비해 비워두었습니다.
-// 테스트해보고 싶으시다면 "" 안에 "타마" 또는 "마린"을 적고 커밋해보세요!
-// ==========================================================
 const GLOBAL_USER = {
-  name: "", // 실제 직원이 로그인하면 여기에 이름이 주입됩니다.
+  name: "", // 테스트 시 "타마" 등 이름을 넣으면 정상 가동됩니다.
   role: "employee"
 };
 
-const DEFAULT_HOURLY_WAGE = 10000; // 기본 시급 세팅
+const DEFAULT_HOURLY_WAGE = 10000;
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("TimingStaff 통합 허브 가동 시작");
@@ -40,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const navItems = document.querySelectorAll(".nav-item");
 
-  // 3. 탭 전환 기능 (가장 안전한 방식)
   function switchTab(targetId) {
     Object.keys(screens).forEach(key => {
       if (screens[key]) {
@@ -62,13 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // 관리자 탭을 누르면 정산 대시보드 실시간 실행
     if (targetId === "nav-manager") {
       renderManagerDashboard();
     }
   }
 
-  // 하단 네비게이션 버튼에 클릭 이벤트 연결
   navItems.forEach(item => {
     item.onclick = function(e) {
       e.preventDefault();
@@ -76,14 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   });
 
-  // 4. 출퇴근 버튼 기능 구현
+  // 3. 출퇴근 기능
   const btnClockIn = document.getElementById("btnClockIn");
   const btnClockOut = document.getElementById("btnClockOut");
 
   if (btnClockIn) {
     btnClockIn.onclick = async function() {
       if (!GLOBAL_USER.name) {
-        alert("로그인된 직원 정보가 없습니다. 테스트하려면 소스코드의 GLOBAL_USER.name에 이름을 입력하세요!");
+        alert("로그인된 직원 정보가 없습니다. 상단 GLOBAL_USER.name에 이름을 입력해 보세요!");
         return;
       }
       const today = new Date().toISOString().split('T')[0];
@@ -97,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("출근 등록 완료!");
       } catch(err) {
         console.error(err);
-        alert("출근 실패: Supabase 연결이나 테이블을 확인하세요.");
+        alert("출근 실패");
       }
     };
   }
@@ -127,7 +119,47 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // 5. 관리자 대시보드 및 정산 기능 통합 구현
+  // 4. [신규 추가] 매출 및 시재 기록 저장 기능
+  const btnSaveSales = document.getElementById("btnSaveSales");
+  if (btnSaveSales) {
+    btnSaveSales.onclick = async function() {
+      if (!GLOBAL_USER.name) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+      const card = Number(document.getElementById("salesCard").value) || 0;
+      const cash = Number(document.getElementById("salesCash").value) || 0;
+      const transfer = Number(document.getElementById("salesTransfer").value) || 0;
+      const ready = Number(document.getElementById("salesReady").value) || 0;
+      const reserve = Number(document.getElementById("salesReserve").value) || 0;
+      const today = new Date().toISOString().split('T')[0];
+
+      try {
+        // Supabase의 'sales' 테이블에 데이터 정산 저장 (테이블명은 구조에 맞게 변경 가능)
+        const { error } = await supabaseClient
+          .from('sales')
+          .insert([{
+            work_date: today,
+            user_name: GLOBAL_USER.name,
+            card_sales: card,
+            cash_sales: cash,
+            transfer_sales: transfer,
+            ready_cash: ready,
+            reserve_cash: reserve,
+            created_at: new Date().toISOString()
+          }]);
+
+        if (error) throw error;
+        alert("오늘 자 매출 및 시재가 안전하게 기록되었습니다!");
+      } catch (err) {
+        console.error("매출 기록 에러:", err);
+        alert("저장 실패: Supabase 'sales' 테이블 구성을 확인해 주세요.");
+      }
+    };
+  }
+
+  // 5. 관리자 대시보드 연동
   async function renderManagerDashboard() {
     try {
       const today = new Date().toISOString().split('T')[0];
@@ -215,6 +247,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnRefreshSalary = document.getElementById("btnRefreshSalary");
   if (btnRefreshSalary) btnRefreshSalary.onclick = () => calculateMonthlySalary();
 
-  // 최초 홈 화면 열기 강제 지정
   switchTab("nav-home");
 });
