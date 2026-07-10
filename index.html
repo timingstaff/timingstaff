@@ -1,48 +1,149 @@
-<section id="homeScreen" class="app-screen">
-  <div class="card notice-card">
-    <div class="card-header">
-      <h3>📢 공지사항</h3>
-    </div>
-    <div class="notice-content">
-      <p id="noticeText">공지사항을 불러오는 중입니다...</p>
-    </div>
-    <button id="btnNoticeConfirm" class="btn btn-primary btn-block">확인했습니다</button>
-    <div id="noticeReadList" class="read-status-list"></div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TimingStaff Pro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    
+    <header class="main-header">
+      <div class="logo-row">
+        <h1>🎵 TimingStaff <span class="version-tag">Pro</span></h1>
+        <div id="userBadge" class="user-badge">👤 로그인 필요</div>
+      </div>
+      <div class="info-row">
+        <span id="headerDate" class="date-text">0000.00.00 (-)</span>
+        <div class="weather-group">
+          <span>🌤 31°C</span>
+          <span>☔ 20%</span>
+          <span>😷 좋음</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-body">
+      
+      <section id="homeScreen" class="app-screen">
+        <div class="card notice-card">
+          <div class="card-header">
+            <h3>📢 공지사항</h3>
+          </div>
+          <div class="notice-content">
+            <p id="noticeText">공지사항을 불러오는 중입니다...</p>
+          </div>
+          <button id="btnNoticeConfirm" class="btn btn-primary btn-block">확인했습니다</button>
+          <div id="noticeReadList" class="read-status-list"></div>
+        </div>
+
+        <div class="card attendance-card">
+          <div class="card-header">
+            <h3>⏰ 출퇴근 기록</h3>
+          </div>
+          <div class="btn-grid">
+            <button id="btnClockIn" class="btn btn-success">출근하기</button>
+            <button id="btnClockOut" class="btn btn-danger">퇴근하기</button>
+          </div>
+          <div class="status-footer">
+            <p id="txtClockStatus" class="status-text">아직 출근 기록이 없습니다.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>💰 당일 매출 기록</h3>
+          </div>
+          <div class="form-group-grid">
+            <div class="form-group"><label>카드</label><input type="number" id="salesCard" placeholder="0"></div>
+            <div class="form-group"><label>현금</label><input type="number" id="salesCash" placeholder="0"></div>
+            <div class="form-group"><label>계좌이체</label><input type="number" id="salesTransfer" placeholder="0"></div>
+            <div class="form-group"><label>준비시재</label><input type="number" id="salesReady" placeholder="0"></div>
+            <div class="form-group"><label>예비시재</label><input type="number" id="salesReserve" placeholder="0"></div>
+          </div>
+          <button id="btnSaveSales" class="btn btn-primary btn-block" style="margin-top:12px;">매출 기록하기</button>
+        </div>
+      </section>
+
+      <section id="workLogScreen" class="app-screen hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>📋 오늘 해야 할 일</h3>
+          </div>
+          <div id="divTaskList" class="list-group">
+            <p class="empty-text">업무 일지 기능을 준비 중입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="inventoryScreen" class="app-screen hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>📦 재고 현황</h3>
+          </div>
+          <div id="divInventoryList" class="list-group">
+            <p class="empty-text">재고 기능을 준비 중입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="catCareScreen" class="app-screen hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>🐱 냥케어 기록</h3>
+          </div>
+          <p class="section-desc">오픈/마감 케어 및 특이사항을 기록해 주세요.</p>
+        </div>
+      </section>
+
+      <section id="managerScreen" class="app-screen hidden">
+        <div class="card manager-summary-card">
+          <div class="card-header">
+            <h3>👑 관리자 대시보드</h3>
+          </div>
+          <div class="summary-grid">
+            <div class="summary-box"><h5>매출</h5><span id="mdSales">-</span></div>
+            <div class="summary-box"><h5>업무</h5><span id="mdTasks">-</span></div>
+            <div class="summary-box"><h5>공지미확인</h5><span id="mdNotice">-</span></div>
+            <div class="summary-box"><h5>재고확인</h5><span id="mdInventory">-</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>👤 실시간 직원 근무 현황</h3>
+          </div>
+          <div id="managerStaffStatus" class="status-log-list">
+            <p class="empty-text">데이터를 불러오는 중...</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h3>📊 월간 급여 정산</h3>
+            <button id="btnRefreshSalary" class="btn btn-sm btn-outline">🔄 갱신</button>
+          </div>
+          <div id="managerSalaryResult" class="salary-result-box">
+            <p class="empty-text">탭을 선택하면 자동으로 정산됩니다.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+      <button id="nav-home" class="nav-item active"><span>🏠</span><small>홈</small></button>
+      <button id="nav-workLog" class="nav-item"><span>📋</span><small>업무일지</small></button>
+      <button id="nav-inventory" class="nav-item"><span>📦</span><small>재고</small></button>
+      <button id="nav-catCare" class="nav-item"><span>🐱</span><small>고양이</small></button>
+      <button id="nav-manager" class="nav-item"><span>👑</span><small>관리자</small></button>
+    </nav>
+
   </div>
 
-  <div class="card attendance-card">
-    <div class="card-header">
-      <h3>⏰ 출퇴근 기록</h3>
-    </div>
-    <div class="btn-grid">
-      <button id="btnClockIn" class="btn btn-success">출근하기</button>
-      <button id="btnClockOut" class="btn btn-danger">퇴근하기</button>
-    </div>
-    <div class="status-footer">
-      <p id="txtClockStatus" class="status-text">아직 출근 기록이 없습니다.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <h3>💰 당일 매출 기록</h3>
-    </div>
-    <div class="form-group-grid">
-      <div class="form-group"><label>카드</label><input type="number" id="salesCard" placeholder="0"></div>
-      <div class="form-group"><label>현금</label><input type="number" id="salesCash" placeholder="0"></div>
-      <div class="form-group"><label>계좌이체</label><input type="number" id="salesTransfer" placeholder="0"></div>
-      <div class="form-group"><label>준비시재</label><input type="number" id="salesReady" placeholder="0"></div>
-      <div class="form-group"><label>예비시재</label><input type="number" id="salesReserve" placeholder="0"></div>
-    </div>
-    <button id="btnSaveSales" class="btn btn-primary btn-block" style="margin-top:12px;">매출 기록하기</button>
-  </div>
-</section>
-
-<section id="catCareScreen" class="app-screen hidden">
-  <div class="card">
-    <div class="card-header">
-      <h3>🐱 냥케어 기록</h3>
-    </div>
-    <p class="section-desc">오픈/마감 케어 및 특이사항을 기록해 주세요.</p>
-    </div>
-</section>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
