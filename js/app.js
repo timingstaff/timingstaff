@@ -1,7 +1,7 @@
 // js/app.js
 
 const GLOBAL_USER = {
-  name: "마린", // 테스트 시 "타마" 등 이름을 넣으면 정상 가동됩니다.
+  name: "", // 테스트할 때 "마린" 혹은 "타마" 등을 기입하고 테스트해보세요!
   role: "employee"
 };
 
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnClockIn) {
     btnClockIn.onclick = async function() {
       if (!GLOBAL_USER.name) {
-        alert("로그인된 직원 정보가 없습니다. 상단 GLOBAL_USER.name에 이름을 입력해 보세요!");
+        alert("로그인된 직원 정보가 없습니다. 소스코드 상단의 GLOBAL_USER.name에 가상 이름을 적고 테스트해 보세요!");
         return;
       }
       const today = new Date().toISOString().split('T')[0];
@@ -119,7 +119,33 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // 4. [신규 추가] 매출 및 시재 기록 저장 기능
+  // ==========================================================
+  // 4. [실시간 권종별 금액 계산기 시스템 구현]
+  // ==========================================================
+  function updateRealtimeTotal() {
+    // 준비시재 실시간 계산
+    const r50 = (Number(document.getElementById("ready50k").value) || 0) * 50000;
+    const r10 = (Number(document.getElementById("ready10k").value) || 0) * 10000;
+    const r5  = (Number(document.getElementById("ready5k").value) || 0) * 5000;
+    const r1  = (Number(document.getElementById("ready1k").value) || 0) * 1000;
+    const readySum = r50 + r10 + r5 + r1;
+    document.getElementById("readyTotalDisplay").textContent = readySum.toLocaleString() + "원";
+
+    // 예비시재 실시간 계산
+    const v50 = (Number(document.getElementById("reserve50k").value) || 0) * 50000;
+    const v10 = (Number(document.getElementById("reserve10k").value) || 0) * 10000;
+    const v5  = (Number(document.getElementById("reserve5k").value) || 0) * 5000;
+    const v1  = (Number(document.getElementById("reserve1k").value) || 0) * 1000;
+    const reserveSum = v50 + v10 + v5 + v1;
+    document.getElementById("reserveTotalDisplay").textContent = reserveSum.toLocaleString() + "원";
+  }
+
+  // 장수 입력창에 키가 입력되거나 바뀔 때 실시간 반영 이벤트 연결
+  document.querySelectorAll(".calc-ready, .calc-reserve").forEach(input => {
+    input.addEventListener("input", updateRealtimeTotal);
+  });
+
+  // 매출 및 시재 통합 저장 처리 기능
   const btnSaveSales = document.getElementById("btnSaveSales");
   if (btnSaveSales) {
     btnSaveSales.onclick = async function() {
@@ -131,12 +157,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = Number(document.getElementById("salesCard").value) || 0;
       const cash = Number(document.getElementById("salesCash").value) || 0;
       const transfer = Number(document.getElementById("salesTransfer").value) || 0;
-      const ready = Number(document.getElementById("salesReady").value) || 0;
-      const reserve = Number(document.getElementById("salesReserve").value) || 0;
+
+      // 준비시재 데이터 추출 및 합산
+      const r50_count = Number(document.getElementById("ready50k").value) || 0;
+      const r10_count = Number(document.getElementById("ready10k").value) || 0;
+      const r5_count  = Number(document.getElementById("ready5k").value) || 0;
+      const r1_count  = Number(document.getElementById("ready1k").value) || 0;
+      const totalReadyCash = (r50_count * 50000) + (r10_count * 10000) + (r5_count * 5000) + (r1_count * 1000);
+
+      // 예비시재 데이터 추출 및 합산
+      const v50_count = Number(document.getElementById("reserve50k").value) || 0;
+      const v10_count = Number(document.getElementById("reserve10k").value) || 0;
+      const v5_count  = Number(document.getElementById("reserve5k").value) || 0;
+      const v1_count  = Number(document.getElementById("reserve1k").value) || 0;
+      const totalReserveCash = (v50_count * 50000) + (v10_count * 10000) + (v5_count * 5000) + (v1_count * 1000);
+
       const today = new Date().toISOString().split('T')[0];
 
       try {
-        // Supabase의 'sales' 테이블에 데이터 정산 저장 (테이블명은 구조에 맞게 변경 가능)
         const { error } = await supabaseClient
           .from('sales')
           .insert([{
@@ -145,16 +183,36 @@ document.addEventListener("DOMContentLoaded", () => {
             card_sales: card,
             cash_sales: cash,
             transfer_sales: transfer,
-            ready_cash: ready,
-            reserve_cash: reserve,
+            
+            // 준비시재 (총액 및 권종 장수 수량 DB 백업)
+            ready_cash: totalReadyCash, 
+            ready_50k: r50_count,
+            ready_10k: r10_count,
+            ready_5k: r5_count,
+            ready_1k: r1_count,
+
+            // 예비시재 (총액 및 권종 장수 수량 DB 백업)
+            reserve_cash: totalReserveCash,
+            reserve_50k: v50_count,
+            reserve_10k: v10_count,
+            reserve_5k: v5_count,
+            reserve_1k: v1_count,
+
             created_at: new Date().toISOString()
           }]);
 
         if (error) throw error;
-        alert("오늘 자 매출 및 시재가 안전하게 기록되었습니다!");
+        
+        alert(
+          `🎉 매출 및 시재 기록 완료!\n\n` +
+          `💼 [준비시재 합계]: ${totalReadyCash.toLocaleString()}원\n` +
+          `🏦 [예비시재 합계]: ${totalReserveCash.toLocaleString()}원\n\n` +
+          `장수 기록과 자동 환산 금액이 모두 데이터베이스에 안전하게 기록되었습니다.`
+        );
+
       } catch (err) {
-        console.error("매출 기록 에러:", err);
-        alert("저장 실패: Supabase 'sales' 테이블 구성을 확인해 주세요.");
+        console.error("매출 기록 저장 에러:", err);
+        alert("저장 실패: Supabase 테이블 컬럼 설정을 확인해 주세요.");
       }
     };
   }
