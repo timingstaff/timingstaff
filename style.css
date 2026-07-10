@@ -39,3 +39,7 @@
   font-size: 20px;
   margin-top: 4px;
 }
+/* 화면 전환용 유틸리티 클래스 */
+.hidden {
+  display: none !important;
+}
