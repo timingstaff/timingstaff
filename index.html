@@ -7,162 +7,653 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-container">
-    
-    <header class="main-header">
-      <div class="logo-row">
-        <h1>🎵 TimingStaff <span class="version-tag">Pro</span></h1>
-        <div id="userBadge" class="user-badge">👤 로그인 필요</div>
-      </div>
-      <div class="info-row">
-        <span id="headerDate" class="date-text">0000.00.00 (-)</span>
-        <div class="weather-group">
-          <span>🌤 31°C</span>
-          <span>☔ 20%</span>
-          <span>😷 좋음</span>
-        </div>
-      </div>
-    </header>
+<div class="app-container">
 
-    <main class="content-body">
-      
-      <section id="homeScreen" class="app-screen">
-        <div class="card notice-card">
-          <div class="card-header">
-            <h3>📢 공지사항</h3>
-          </div>
-          <div class="notice-content">
-            <p id="noticeText">공지사항을 불러오는 중입니다...</p>
-          </div>
-          <button id="btnNoticeConfirm" class="btn btn-primary btn-block">확인했습니다</button>
-          <div id="noticeReadList" class="read-status-list"></div>
-        </div>
-
-        <div class="card attendance-card">
-          <div class="card-header">
-            <h3>⏰ 출퇴근 기록</h3>
-          </div>
-          <div class="btn-grid">
-            <button id="btnClockIn" class="btn btn-success">출근하기</button>
-            <button id="btnClockOut" class="btn btn-danger">퇴근하기</button>
-          </div>
-          <div class="status-footer">
-            <p id="txtClockStatus" class="status-text">아직 출근 기록이 없습니다.</p>
-          </div>
-        </div>
-
-        <div class="card">
-  <h3>💼 시재금 점검</h3>
-  
-  <div style="display:flex; gap:10px; margin-bottom:15px;">
-    <button class="tab-btn active" onclick="switchMode('open')">오픈(Open)</button>
-    <button class="tab-btn" onclick="switchMode('close')">마감(Close)</button>
-  </div>
-
-  <div class="grid-2-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-    <div>
-      <label style="font-size:0.7rem;">준비시재</label>
-      <input type="number" placeholder="5만원(장)" class="calc-input">
-      <input type="number" placeholder="1만원(장)" class="calc-input">
+  <header class="main-header">
+    <div class="logo-row">
+      <h1>🎵 TimingStaff <span class="version-tag">Pro</span></h1>
+      <div id="userBadge" class="user-badge">👤 로그인 필요</div>
     </div>
-    <div>
-      <label style="font-size:0.7rem;">예비시재</label>
-      <input type="number" placeholder="5만원(장)" class="calc-input">
-      <input type="number" placeholder="1만원(장)" class="calc-input">
+
+    <div class="info-row">
+      <span id="headerDate" class="date-text">0000.00.00 (-)</span>
+
+      <div class="weather-group">
+        <span>🌤 31°C</span>
+        <span>☔ 20%</span>
+        <span>😷 좋음</span>
+      </div>
     </div>
-  </div>
-  
-  <div style="margin-top:10px; text-align:right;">총 합계: <span id="total" style="color:#22c55e;">0원</span></div>
-  <button style="width:100%; padding:15px; margin-top:15px; background:#2563eb; border:none; border-radius:8px; color:white;">기록 저장하기</button>
+  </header>
+
+  <main class="content-body">
+
+    <section id="homeScreen" class="app-screen">
+
+      <div class="card notice-card">
+        <div class="card-header">
+          <h3>📢 공지사항</h3>
+        </div>
+
+        <div class="notice-content">
+          <p id="noticeText">공지사항을 불러오는 중입니다...</p>
+        </div>
+
+        <button id="btnNoticeConfirm" class="btn btn-primary btn-block">
+          확인했습니다
+        </button>
+
+        <div id="noticeReadList" class="read-status-list"></div>
+      </div>
+
+      <div class="card attendance-card">
+        <div class="card-header">
+          <h3>⏰ 출퇴근 기록</h3>
+        </div>
+
+        <div class="btn-grid">
+          <button id="btnClockIn" class="btn btn-success">
+            출근하기
+          </button>
+
+          <button id="btnClockOut" class="btn btn-danger">
+            퇴근하기
+          </button>
+        </div>
+
+        <div class="status-footer">
+          <p id="txtClockStatus" class="status-text">
+            아직 출근 기록이 없습니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="card cash-card">
+
+        <div class="card-header cash-title-row">
+          <div>
+            <h3>💰 시재금 점검</h3>
+            <p class="section-desc">
+              오픈과 마감 시재를 각각 기록합니다.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="cash-tab-list"
+          role="tablist"
+          aria-label="시재 구분"
+        >
+          <button
+            type="button"
+            class="cash-tab active"
+            data-cash-tab="open"
+          >
+            오픈 시재
+          </button>
+
+          <button
+            type="button"
+            class="cash-tab"
+            data-cash-tab="close"
+          >
+            마감 시재
+          </button>
+        </div>
+
+        <!-- 오픈 시재 -->
+        <section
+          id="cashPanelOpen"
+          class="cash-panel active"
+          data-cash-panel="open"
+        >
+
+          <div class="cash-meta-row">
+            <span class="cash-phase-label">🌅 오픈</span>
+
+            <span>
+              입력자
+              <strong id="openWriterName">로그인 필요</strong>
+            </span>
+          </div>
+
+          <div class="cash-box">
+
+            <div class="cash-box-title">
+              <h4>💼 준비금</h4>
+              <strong id="openReadyTotal">0원</strong>
+            </div>
+
+            <div class="denomination-list">
+
+              <label class="denomination-row">
+                <span>5만원권</span>
+
+                <input
+                  id="openReady50k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="ready"
+                  data-value="50000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1만원권</span>
+
+                <input
+                  id="openReady10k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="ready"
+                  data-value="10000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>5천원권</span>
+
+                <input
+                  id="openReady5k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="ready"
+                  data-value="5000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1천원권</span>
+
+                <input
+                  id="openReady1k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="ready"
+                  data-value="1000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+            </div>
+          </div>
+
+          <div class="cash-box">
+
+            <div class="cash-box-title reserve">
+              <h4>🏦 예비금</h4>
+              <strong id="openReserveTotal">0원</strong>
+            </div>
+
+            <div class="denomination-list">
+
+              <label class="denomination-row">
+                <span>5만원권</span>
+
+                <input
+                  id="openReserve50k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="reserve"
+                  data-value="50000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1만원권</span>
+
+                <input
+                  id="openReserve10k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="reserve"
+                  data-value="10000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>5천원권</span>
+
+                <input
+                  id="openReserve5k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="reserve"
+                  data-value="5000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1천원권</span>
+
+                <input
+                  id="openReserve1k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="open"
+                  data-group="reserve"
+                  data-value="1000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+            </div>
+          </div>
+
+          <div class="cash-grand-total">
+            <span>오픈 시재 총액</span>
+            <strong id="openGrandTotal">0원</strong>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-primary btn-block btn-save-cash"
+            data-phase="open"
+          >
+            오픈 시재 저장하기
+          </button>
+
+        </section>
+
+        <!-- 마감 시재 -->
+        <section
+          id="cashPanelClose"
+          class="cash-panel"
+          data-cash-panel="close"
+        >
+
+          <div class="cash-meta-row">
+            <span class="cash-phase-label close">🌙 마감</span>
+
+            <span>
+              입력자
+              <strong id="closeWriterName">로그인 필요</strong>
+            </span>
+          </div>
+
+          <div class="cash-box">
+
+            <div class="cash-box-title">
+              <h4>💼 준비금</h4>
+              <strong id="closeReadyTotal">0원</strong>
+            </div>
+
+            <div class="denomination-list">
+
+              <label class="denomination-row">
+                <span>5만원권</span>
+
+                <input
+                  id="closeReady50k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="ready"
+                  data-value="50000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1만원권</span>
+
+                <input
+                  id="closeReady10k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="ready"
+                  data-value="10000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>5천원권</span>
+
+                <input
+                  id="closeReady5k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="ready"
+                  data-value="5000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1천원권</span>
+
+                <input
+                  id="closeReady1k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="ready"
+                  data-value="1000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+            </div>
+          </div>
+
+          <div class="cash-box">
+
+            <div class="cash-box-title reserve">
+              <h4>🏦 예비금</h4>
+              <strong id="closeReserveTotal">0원</strong>
+            </div>
+
+            <div class="denomination-list">
+
+              <label class="denomination-row">
+                <span>5만원권</span>
+
+                <input
+                  id="closeReserve50k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="reserve"
+                  data-value="50000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1만원권</span>
+
+                <input
+                  id="closeReserve10k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="reserve"
+                  data-value="10000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>5천원권</span>
+
+                <input
+                  id="closeReserve5k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="reserve"
+                  data-value="5000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+              <label class="denomination-row">
+                <span>1천원권</span>
+
+                <input
+                  id="closeReserve1k"
+                  class="cash-count"
+                  type="number"
+                  min="0"
+                  inputmode="numeric"
+                  placeholder="0"
+                  data-phase="close"
+                  data-group="reserve"
+                  data-value="1000"
+                />
+
+                <span class="count-unit">장</span>
+                <span class="line-total">0원</span>
+              </label>
+
+            </div>
+          </div>
+
+          <div class="cash-grand-total">
+            <span>마감 시재 총액</span>
+            <strong id="closeGrandTotal">0원</strong>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-primary btn-block btn-save-cash"
+            data-phase="close"
+          >
+            마감 시재 저장하기
+          </button>
+
+        </section>
+
+      </div>
+    </section>
+
+    <section id="workLogScreen" class="app-screen hidden">
+      <div class="card">
+        <div class="card-header">
+          <h3>📋 오늘 해야 할 일</h3>
+        </div>
+
+        <div id="divTaskList" class="list-group">
+          <p class="empty-text">
+            업무 일지 기능을 준비 중입니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="inventoryScreen" class="app-screen hidden">
+      <div class="card">
+        <div class="card-header">
+          <h3>📦 재고 현황</h3>
+        </div>
+
+        <div id="divInventoryList" class="list-group">
+          <p class="empty-text">
+            재고 기능을 준비 중입니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="catCareScreen" class="app-screen hidden">
+      <div class="card">
+        <div class="card-header">
+          <h3>🐱 냥케어 기록</h3>
+        </div>
+
+        <p class="section-desc">
+          오픈/마감 케어 및 특이사항을 기록해 주세요.
+        </p>
+      </div>
+    </section>
+
+    <section id="managerScreen" class="app-screen hidden">
+
+      <div class="card manager-summary-card">
+        <div class="card-header">
+          <h3>👑 관리자 대시보드</h3>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-box">
+            <h5>매출</h5>
+            <span id="mdSales">-</span>
+          </div>
+
+          <div class="summary-box">
+            <h5>업무</h5>
+            <span id="mdTasks">-</span>
+          </div>
+
+          <div class="summary-box">
+            <h5>공지미확인</h5>
+            <span id="mdNotice">-</span>
+          </div>
+
+          <div class="summary-box">
+            <h5>재고확인</h5>
+            <span id="mdInventory">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>👤 실시간 직원 근무 현황</h3>
+        </div>
+
+        <div id="managerStaffStatus" class="status-log-list">
+          <p class="empty-text">
+            데이터를 불러오는 중...
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header-row">
+          <h3>📊 월간 급여 정산</h3>
+
+          <button
+            id="btnRefreshSalary"
+            class="btn btn-sm btn-outline"
+          >
+            🔄 갱신
+          </button>
+        </div>
+
+        <div id="managerSalaryResult" class="salary-result-box">
+          <p class="empty-text">
+            탭을 선택하면 자동으로 정산됩니다.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button id="nav-home" class="nav-item active">
+      <span>🏠</span>
+      <small>홈</small>
+    </button>
+
+    <button id="nav-workLog" class="nav-item">
+      <span>📋</span>
+      <small>업무일지</small>
+    </button>
+
+    <button id="nav-inventory" class="nav-item">
+      <span>📦</span>
+      <small>재고</small>
+    </button>
+
+    <button id="nav-catCare" class="nav-item">
+      <span>🐱</span>
+      <small>고양이</small>
+    </button>
+
+    <button id="nav-manager" class="nav-item">
+      <span>👑</span>
+      <small>관리자</small>
+    </button>
+  </nav>
+
 </div>
 
-<script>
-  function switchMode(mode) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    // 여기에 모드 전환 시 필요한 추가 로직을 넣으세요
-  }
-</script>
-
-
-      <section id="workLogScreen" class="app-screen hidden">
-        <div class="card">
-          <div class="card-header">
-            <h3>📋 오늘 해야 할 일</h3>
-          </div>
-          <div id="divTaskList" class="list-group">
-            <p class="empty-text">업무 일지 기능을 준비 중입니다.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="inventoryScreen" class="app-screen hidden">
-        <div class="card">
-          <div class="card-header">
-            <h3>📦 재고 현황</h3>
-          </div>
-          <div id="divInventoryList" class="list-group">
-            <p class="empty-text">재고 기능을 준비 중입니다.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="catCareScreen" class="app-screen hidden">
-        <div class="card">
-          <div class="card-header">
-            <h3>🐱 냥케어 기록</h3>
-          </div>
-          <p class="section-desc">오픈/마감 케어 및 특이사항을 기록해 주세요.</p>
-        </div>
-      </section>
-
-      <section id="managerScreen" class="app-screen hidden">
-        <div class="card manager-summary-card">
-          <div class="card-header">
-            <h3>👑 관리자 대시보드</h3>
-          </div>
-          <div class="summary-grid">
-            <div class="summary-box"><h5>매출</h5><span id="mdSales">-</span></div>
-            <div class="summary-box"><h5>업무</h5><span id="mdTasks">-</span></div>
-            <div class="summary-box"><h5>공지미확인</h5><span id="mdNotice">-</span></div>
-            <div class="summary-box"><h5>재고확인</h5><span id="mdInventory">-</span></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h3>👤 실시간 직원 근무 현황</h3>
-          </div>
-          <div id="managerStaffStatus" class="status-log-list">
-            <p class="empty-text">데이터를 불러오는 중...</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header-row">
-            <h3>📊 월간 급여 정산</h3>
-            <button id="btnRefreshSalary" class="btn btn-sm btn-outline">🔄 갱신</button>
-          </div>
-          <div id="managerSalaryResult" class="salary-result-box">
-            <p class="empty-text">탭을 선택하면 자동으로 정산됩니다.</p>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <nav class="bottom-nav">
-      <button id="nav-home" class="nav-item active"><span>🏠</span><small>홈</small></button>
-      <button id="nav-workLog" class="nav-item"><span>📋</span><small>업무일지</small></button>
-      <button id="nav-inventory" class="nav-item"><span>📦</span><small>재고</small></button>
-      <button id="nav-catCare" class="nav-item"><span>🐱</span><small>고양이</small></button>
-      <button id="nav-manager" class="nav-item"><span>👑</span><small>관리자</small></button>
-    </nav>
-
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js"></script>
-  <script src="js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
