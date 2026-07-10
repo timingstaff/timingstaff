@@ -5,72 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TimingStaff Pro</title>
   <style>
-    /* 필수 기본 스타일 */
-    body { margin: 0; background: #000; color: #fff; font-family: sans-serif; padding-bottom: 80px; }
+    body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
     .container { max-width: 600px; margin: 0 auto; }
+    /* 헤더 스타일 */
     .header { padding: 20px; border-bottom: 1px solid #333; }
-    .card { background: #111; padding: 20px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
-    
-    /* 입력 그리드 */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    input { background: #222; border: 1px solid #444; color: white; padding: 10px; width: 100%; border-radius: 6px; margin-top: 5px; }
-    
-    /* 하단 고정 네비게이션 (클릭 문제 해결) */
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; display: flex; border-top: 1px solid #333; z-index: 999; }
-    .nav button { flex: 1; padding: 15px; background: none; border: none; color: #fff; font-size: 0.8rem; cursor: pointer; }
-    .hidden { display: none !important; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; }
+    .user-badge { background: #222; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; }
+    /* 카드 스타일 */
+    .card { background: #111; padding: 15px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
+    /* 네비게이션 스타일 */
+    .nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; display: flex; border-top: 1px solid #333; padding: 10px 0; z-index: 999; }
+    .nav button { flex: 1; border: none; background: none; color: #aaa; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+    .nav button.active { color: #fff; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="header"><h1>TimingStaff Pro</h1></div>
-
-  <div id="homeScreen" class="screen">
-    <div class="card">
-      <h3>💼 시재금 점검</h3>
-      <input type="text" id="staffName" placeholder="기입자 이름">
-      
-      <h4 style="margin-top:20px;">[ 구분 선택 ]</h4>
-      <select id="workType" style="width:100%; padding:10px; background:#222; color:white;">
-        <option value="open">오픈 (Open)</option>
-        <option value="close">마감 (Close)</option>
-      </select>
-
-      <h4 style="margin-top:20px;">준비시재 (매장보관)</h4>
-      <div class="grid-2">
-        <input type="number" id="ready50k" placeholder="5만원(장)">
-        <input type="number" id="ready10k" placeholder="1만원(장)">
-      </div>
-
-      <h4 style="margin-top:20px;">예비시재 (금고/금전함)</h4>
-      <div class="grid-2">
-        <input type="number" id="reserve50k" placeholder="5만원(장)">
-        <input type="number" id="reserve10k" placeholder="1만원(장)">
-      </div>
-
-      <button onclick="saveCashData()" style="width:100%; padding:15px; margin-top:20px; background:blue; color:white; border:none; border-radius:8px;">기록 저장하기</button>
+  <header class="header">
+    <div class="header-top">
+      <h1>TimingStaff <span style="color:#6366f1">Pro</span></h1>
+      <div class="user-badge">👤 마린님</div>
     </div>
-  </div>
+    <div style="font-size:0.8rem; color:#888; margin-top:5px;">2026.07.10 (금) | 🌤 31°C ☔ 20%</div>
+  </header>
+
+  <main id="view-home" class="view">
+    <div class="card">
+      <h3>📢 공지사항</h3>
+      <p id="notice-text">공지사항을 불러오는 중입니다...</p>
+      <button style="width:100%; padding:10px; background:#4f46e5; color:white; border:none; border-radius:6px;">확인했습니다</button>
+    </div>
+    <div class="card">
+      <h3>⏰ 출퇴근 기록</h3>
+      <div style="display:flex; gap:10px;">
+        <button style="flex:1; padding:15px; background:green; color:white; border:none; border-radius:8px;">출근하기</button>
+        <button style="flex:1; padding:15px; background:red; color:white; border:none; border-radius:8px;">퇴근하기</button>
+      </div>
+    </div>
+  </main>
+
+  <main id="view-schedule" class="view hidden">
+    <div class="card">
+      <h3>🗓️ 이번 주 근무 일정표</h3>
+      <input type="text" placeholder="근무자 이름 (예: 마린)" style="width:100%; padding:10px; margin:5px 0; background:#222; color:white; border:1px solid #444;">
+      <button style="width:100%; padding:10px; background:#4f46e5; color:white; border:none; margin-top:10px;">등록</button>
+      <p style="text-align:center; margin-top:20px; color:#666;">데이터를 로드하는 중입니다...</p>
+    </div>
+  </main>
+
+  <nav class="nav">
+    <button onclick="showView('view-home', this)" class="active">🏠 홈</button>
+    <button onclick="showView('view-schedule', this)">🗓️ 일정표</button>
+    <button onclick="alert('업무일지')">📋 업무일지</button>
+    <button onclick="alert('재고')">📦 재고</button>
+    <button onclick="alert('고양이')">🐱 고양이</button>
+    <button onclick="alert('관리자')">👑 관리자</button>
+  </nav>
 </div>
 
-<nav class="nav">
-  <button onclick="showScreen('homeScreen')">🏠 홈</button>
-  <button onclick="alert('일정표 준비중')">🗓️ 일정표</button>
-  <button onclick="alert('관리자 모드')">👑 관리자</button>
-</nav>
-
 <script>
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  function showView(id, btn) {
+    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
-  }
-
-  async function saveCashData() {
-    const name = document.getElementById('staffName').value;
-    if(!name) { alert("기입자 이름을 입력하세요."); return; }
-    // 여기서 Supabase로 데이터를 전송합니다.
-    alert(name + "님의 " + document.getElementById('workType').value + " 기록이 저장되었습니다.");
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   }
 </script>
 </body>
