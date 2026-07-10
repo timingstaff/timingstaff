@@ -7,10 +7,10 @@
 <style>
 body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 90px; }
 .container { max-width: 600px; margin: 0 auto; }
-/* 헤더 스타일 */
+/* 헤더 스타일 /
 .header-main { padding: 20px; border-bottom: 1px solid #333; }
 .header-row { display: flex; justify-content: space-between; align-items: center; }
-/* 파티션 스타일 */
+/ 파티션 스타일 */
 .card { background: #111; padding: 15px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 input, select { background: #222; border: 1px solid #444; color: #fff; padding: 8px; width: 100%; border-radius: 4px; box-sizing: border-box; margin: 2px 0; }
@@ -24,7 +24,7 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 .tab-btn.active { background: #4f46e5; }
 </style>
 </head>
-<body> 
+<body>
 
 <div id="homeScreen" class="screen active">
 <div class="container">
@@ -35,7 +35,7 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 </div>
 <div style="color:#aaa; font-size:0.8rem; margin-top:8px;">2026.07.10 (금) | 🌤 31°C ☂️ 20% 😷 좋음</div>
 <div style="background:#222; padding:8px; border-radius:6px; margin-top:10px; font-size:0.85rem;">📢 [공지] 오늘 마감 시재 점검 필수!</div>
-</header> 
+</header>
 
 <div class="card">
 <h3>⏰ 출퇴근 기록</h3>
@@ -44,14 +44,14 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 <button onclick="recordTime('출근')" style="padding:12px; background:green; border:none; color:white; border-radius:8px;">출근하기</button>
 <button onclick="recordTime('퇴근')" style="padding:12px; background:red; border:none; color:white; border-radius:8px;">퇴근하기</button>
 </div>
-</div> 
+</div>
 
 <div class="card">
 <h3>💰 시재금 점검</h3>
 <div style="display:flex; gap:10px; margin-bottom:15px;">
 <button id="btn-open" class="tab-btn active" onclick="switchTab('open')">오픈(Open)</button>
 <button id="btn-close" class="tab-btn" onclick="switchTab('close')">마감(Close)</button>
-</div> 
+</div>
 
 <div id="form-open">
 <input type="text" placeholder="오픈 입력자 이름" style="margin-bottom:10px;">
@@ -70,7 +70,7 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 </div>
 </div>
 <div style="text-align:right; margin-top:10px;">총 합계: <span id="total-open">0</span>원</div>
-</div> 
+</div>
 
 <div id="form-close" style="display:none;">
 <input type="text" placeholder="마감 입력자 이름" style="margin-bottom:10px;">
@@ -92,36 +92,28 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 </div>
 </div>
 </div>
-</div> 
+</div>
 
 <div id="workLogScreen" class="screen"><div class="card"><h3>📋 업무일지</h3></div></div>
 <div id="inventoryScreen" class="screen"><div class="card"><h3>📦 재고관리</h3></div></div>
 <div id="catScreen" class="screen"><div class="card"><h3>🐱 고양이 기록</h3></div></div>
 
 <div id="adminScreen" class="screen">
-    <div class="card">
-        <h3>👑 관리자 모드: 근무 수정</h3>
-        <select id="adminName" style="width:100%; background:#222; color:#fff; padding:8px; margin:5px 0;">
-            <option value="마린">마린</option>
-            <option value="송">송</option>
-            <option value="우주">우주</option>
-        </select>
-        <input type="datetime-local" id="adminTime" style="width:100%; background:#222; color:#fff; padding:8px; margin:5px 0;">
-        <select id="adminType" style="width:100%; background:#222; color:#fff; padding:8px; margin:5px 0;">
-            <option value="출근">출근</option>
-            <option value="퇴근">퇴근</option>
-        </select>
-        <button onclick="manualAdd()" style="background:#4f46e5; color:white; padding:12px; width:100%; border:none; border-radius:5px; margin-top:5px;">수동 기록 추가</button>
-        
-        <hr style="margin:20px 0; border:0; border-top:1px solid #333;">
-        
-        <h3>💰 실시간 인건비 (월간 정산)</h3>
-        <input type="month" id="monthSelector" style="width:100%; background:#222; color:#fff; padding:8px; margin-bottom:10px;">
-        <button onclick="calcSalary()" style="background:#28a745; color:white; padding:12px; width:100%; border:none; border-radius:5px;">데이터 정산하기</button>
-        <div id="salaryResult" style="margin-top:15px; color:#fff;"></div>
-    </div>
-</div>
+<div class="card">
+<h3>👑 관리자 모드: 근무 수정</h3>
+<input type="text" id="adminName" placeholder="직원 이름">
+<input type="datetime-local" id="adminTime" style="width:100%; background:#222; color:#fff; border:1px solid #444; padding:8px; margin:5px 0;">
+<select id="adminType" style="width:100%; background:#222; color:#fff; border:1px solid #444; padding:8px; margin:5px 0;">
+<option value="출근">출근</option>
+<option value="퇴근">퇴근</option>
+</select>
+<button onclick="manualAdd()" style="background:#4f46e5; border:none; color:white; padding:12px; width:100%; border-radius:5px; margin-top:10px;">수동 기록 추가</button>
 
+<hr style="margin:20px 0; border:0; border-top:1px solid #333;">
+
+<h3>💰 실시간 인건비 (월간 정산)</h3>
+<button onclick="calcSalary()" style="background:#28a745; border:none; color:white; padding:12px; width:100%; border-radius:5px;">데이터 정산하기</button>
+<div id="salaryResult" style="margin-top:15px; font-size:0.9rem; color:#fff;"></div>
 </div>
 </div>
 
@@ -131,83 +123,66 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 <button onclick="showScreen('inventoryScreen')">📦 재고</button>
 <button onclick="showScreen('catScreen')">🐱 고양이</button>
 <button onclick="showScreen('adminScreen')">👑 관리자</button>
-</nav> 
+</nav>
 
 <script>
-// 직원별 시급 설정 (여기에 이름을 추가하세요)
-const wageConfig = { "마린": 10000, "송": 11000, "우주": 12000 };
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function switchTab(mode) { document.getElementById('btn-open').classList.toggle('active', mode === 'open'); document.getElementById('btn-close').classList.toggle('active', mode === 'close'); document.getElementById('form-open').style.display = (mode === 'open' ? 'block' : 'none'); document.getElementById('form-close').style.display = (mode === 'close' ? 'block' : 'none'); }
+function calc(mode) {
+let inputs = document.querySelectorAll('.calc-' + mode);
+let total = 0, units = [50000, 10000, 5000, 1000, 50000, 10000, 5000, 1000];
+inputs.forEach((input, i) => total += (parseInt(input.value) || 0) * units[i]);
+document.getElementById('total-' + mode).innerText = total.toLocaleString();
+}
 
-function showScreen(id) { 
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); 
-    document.getElementById(id).classList.add('active'); 
+function recordTime(type) {
+let name = "마린";
+let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
+if (!logs[name]) logs[name] = [];
+let last = logs[name].length > 0 ? logs[name][logs[name].length-1] : null;
+if(type === '출근' && last && last.type === '출근') return alert("이미 출근 중입니다!");
+if(type === '퇴근' && (!last || last.type === '퇴근')) return alert("출근 기록이 없습니다!");
+logs[name].push({type: type, time: new Date().getTime()});
+localStorage.setItem('attendanceLogs', JSON.stringify(logs));
+document.getElementById('statusMsg').innerText = "상태: " + type + " 완료";
+alert(type + " 기록 성공");
 }
 
 function manualAdd() {
-    let name = document.getElementById('adminName').value;
-    let timeStr = document.getElementById('adminTime').value;
-    let type = document.getElementById('adminType').value;
-    if(!name || !timeStr) return alert("항목을 모두 선택하세요.");
-    
-    let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
-    if (!logs[name]) logs[name] = [];
-    logs[name].push({type: type, time: new Date(timeStr).getTime()});
-    logs[name].sort((a,b) => a.time - b.time);
-    localStorage.setItem('attendanceLogs', JSON.stringify(logs));
-    alert("수동 기록 완료");
+let name = document.getElementById('adminName').value;
+let timeStr = document.getElementById('adminTime').value;
+let type = document.getElementById('adminType').value;
+if(!name || !timeStr) return alert("이름과 시간을 모두 선택해주세요.");
+let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
+if (!logs[name]) logs[name] = [];
+logs[name].push({type: type, time: new Date(timeStr).getTime()});
+logs[name].sort((a,b) => a.time - b.time);
+localStorage.setItem('attendanceLogs', JSON.stringify(logs));
+alert("수동 기록 완료");
 }
 
 function calcSalary() {
-    let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
-    let selectedMonth = document.getElementById('monthSelector').value;
-    if(!selectedMonth) return alert("월을 선택하세요.");
+let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
+let html = "<h4>📅 근무 상세 및 수정</h4>";
 
-    let html = `<h4>📅 ${selectedMonth} 상세 기록</h4>`;
-    let grandTotal = 0;
-
-    for (let name in logs) {
-        let hourlyWage = wageConfig[name] || 10000; // 설정된 시급, 없으면 1만원
-        let userTotalMins = 0;
-        let userHtml = "";
-        let hasData = false;
-
-        logs[name].forEach((log, index) => {
-            let logDate = new Date(log.time);
-            if(logDate.toISOString().slice(0, 7) === selectedMonth) {
-                hasData = true;
-                userHtml += `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #222;">
-                             <span>${logDate.toLocaleDateString()} ${log.type}</span>
-                             <button onclick="deleteLog('${name}', ${index})" style="background:#555; border:none; color:#fff; border-radius:4px;">삭제</button>
-                             </div>`;
-            }
-        });
-
-        // 근무시간 계산
-        for(let i=0; i<logs[name].length-1; i+=2) {
-            if(logs[name][i].type === '출근' && logs[name][i+1].type === '퇴근') {
-                let start = new Date(logs[name][i].time);
-                let end = new Date(logs[name][i+1].time);
-                if(start.toISOString().slice(0, 7) === selectedMonth) {
-                    userTotalMins += (end - start) / 60000;
-                }
-            }
-        }
-        
-        let cost = Math.floor(userTotalMins * (hourlyWage/60));
-        if(hasData) {
-            grandTotal += cost;
-            html += `<div class="card"><strong>👤 ${name} (시급:${hourlyWage.toLocaleString()})</strong><br>
-                     <strong>합계: ${cost.toLocaleString()}원</strong>${userHtml}</div>`;
-        }
-    }
-    document.getElementById('salaryResult').innerHTML = html + `<div style="padding:15px;"><strong>💰 총 인건비: ${grandTotal.toLocaleString()}원</strong></div>`;
+for (let name in logs) {
+html += <div style="margin-bottom:20px; border-bottom:1px solid #444;"&gt;&lt;strong&gt;👤 ${name}</strong>; logs[name].forEach((log, index) =&gt; { let dateStr = new Date(log.time).toLocaleString(); html +=
+<div style="display:flex; justify-content:space-between; padding:5px 0;">
+<span>${dateStr} (${log.type})</span>
+<button onclick="deleteLog('${name}', ${index})" style="background:#cc0000; color:white; border:none; padding:2px 8px; border-radius:4px; cursor:pointer;"&gt;삭제&lt;/button&gt; &lt;/div>;
+});
+html += </div>;
 }
-
+document.getElementById('salaryResult').innerHTML = html;
+}
 function deleteLog(name, index) {
-    let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
-    logs[name].splice(index, 1);
-    localStorage.setItem('attendanceLogs', JSON.stringify(logs));
-    calcSalary();
+if(!confirm("이 기록을 삭제하시겠습니까?")) return;
+let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
+logs[name].splice(index, 1);
+localStorage.setItem('attendanceLogs', JSON.stringify(logs));
+calcSalary(); // 삭제 후 목록 즉시 새로고침
 }
 </script>
 </body>
 </html>
+
