@@ -120,29 +120,56 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================
-  // 4. [실시간 권종별 금액 계산기 시스템 구현]
+  // 4. [실시간 권종별 금액 계산기 시스템 구현 - 오류 철통 방어형]
   // ==========================================================
   function updateRealtimeTotal() {
-    // 준비시재 실시간 계산
-    const r50 = (Number(document.getElementById("ready50k").value) || 0) * 50000;
-    const r10 = (Number(document.getElementById("ready10k").value) || 0) * 10000;
-    const r5  = (Number(document.getElementById("ready5k").value) || 0) * 5000;
-    const r1  = (Number(document.getElementById("ready1k").value) || 0) * 1000;
-    const readySum = r50 + r10 + r5 + r1;
-    document.getElementById("readyTotalDisplay").textContent = readySum.toLocaleString() + "원";
+    console.log("실시간 계산기 동작 중...");
 
-    // 예비시재 실시간 계산
-    const v50 = (Number(document.getElementById("reserve50k").value) || 0) * 50000;
-    const v10 = (Number(document.getElementById("reserve10k").value) || 0) * 10000;
-    const v5  = (Number(document.getElementById("reserve5k").value) || 0) * 5000;
-    const v1  = (Number(document.getElementById("reserve1k").value) || 0) * 1000;
-    const reserveSum = v50 + v10 + v5 + v1;
-    document.getElementById("reserveTotalDisplay").textContent = reserveSum.toLocaleString() + "원";
+    // 준비시재 엘리먼트 가져오기
+    const r50_el = document.getElementById("ready50k");
+    const r10_el = document.getElementById("ready10k");
+    const r5_el  = document.getElementById("ready5k");
+    const r1_el  = document.getElementById("ready1k");
+
+    if (r50_el && r10_el && r5_el && r1_el) {
+      const r50 = (Number(r50_el.value) || 0) * 50000;
+      const r10 = (Number(r10_el.value) || 0) * 10000;
+      const r5  = (Number(r5_el.value) || 0) * 5000;
+      const r1  = (Number(r1_el.value) || 0) * 1000;
+      const readySum = r50 + r10 + r5 + r1;
+
+      const readyDisplay = document.getElementById("readyTotalDisplay");
+      if (readyDisplay) {
+        readyDisplay.textContent = readySum.toLocaleString() + "원";
+      }
+    }
+
+    // 예비시재 엘리먼트 가져오기
+    const v50_el = document.getElementById("reserve50k");
+    const v10_el = document.getElementById("reserve10k");
+    const v5_el  = document.getElementById("reserve5k");
+    const v1_el  = document.getElementById("reserve1k");
+
+    if (v50_el && v10_el && v5_el && v1_el) {
+      const v50 = (Number(v50_el.value) || 0) * 50000;
+      const v10 = (Number(v10_el.value) || 0) * 10000;
+      const v5  = (Number(v5_el.value) || 0) * 5000;
+      const v1  = (Number(v1_el.value) || 0) * 1000;
+      const reserveSum = v50 + v10 + v5 + v1;
+
+      const reserveDisplay = document.getElementById("reserveTotalDisplay");
+      if (reserveDisplay) {
+        reserveDisplay.textContent = reserveSum.toLocaleString() + "원";
+      }
+    }
   }
 
-  // 장수 입력창에 키가 입력되거나 바뀔 때 실시간 반영 이벤트 연결
-  document.querySelectorAll(".calc-ready, .calc-reserve").forEach(input => {
+  // [중요] 사용자가 키보드를 칠 때(input), 값을 바꿀 때(change), 클릭에서 뗄 때(keyup) 모두 강제 계산 트리거
+  const inputFields = document.querySelectorAll(".calc-ready, .calc-reserve");
+  inputFields.forEach(input => {
     input.addEventListener("input", updateRealtimeTotal);
+    input.addEventListener("change", updateRealtimeTotal);
+    input.addEventListener("keyup", updateRealtimeTotal);
   });
 
   // 매출 및 시재 통합 저장 처리 기능
