@@ -12,7 +12,8 @@
 
     <header class="top-header">
       <div class="header-top-row">
-        <h1>🎵 TimingStaff</h1> <div class="staff-select-box">
+        <h1>🎵 TimingStaff</h1> 
+        <div class="staff-select-box">
           <span>👤</span>
           <select id="staffSelect">
             <option value="마린">마린</option>
@@ -31,9 +32,9 @@
       </div>
     </header>
 
-    <section id="statusBox" class="status-card status-red hidden">
-    </section>
-    <section id="homeScreen">
+    <section id="statusBox" class="status-card status-red hidden"></section>
+
+    <section id="homeScreen" class="menu-section">
       <section class="card notice-card">
         <h3>📢 공지</h3>
         <div class="notice-box">
@@ -57,26 +58,42 @@
           <h3>📋 오늘 해야 할 일</h3>
           <span id="taskProgressText" class="mini-badge">0 / 3 완료</span>
         </div>
-
         <div class="progress-bar task-progress">
           <div id="taskProgressFill" class="progress-fill task-fill"></div>
         </div>
-
         <div id="taskList"></div>
       </section>
+    </section>
 
+    <section id="workLogScreen" class="menu-section hidden">
+      <section class="card">
+        <h3>📋 업무 작업일지</h3>
+        <p class="small-text">오늘 진행한 업무 내용을 기록하세요.</p>
+        <textarea class="memo-input" id="workLogInput" placeholder="여기에 작업 내용을 입력하세요."></textarea>
+        <button id="saveWorkLogBtn" class="main-btn">작업일지 저장</button>
+      </section>
+    </section>
+
+    <section id="inventoryScreen" class="menu-section hidden">
+      <section class="card">
+        <h3>📦 재고 현황 및 관리</h3>
+        <div id="inventoryList">
+          <p class="small-text">재고 목록을 불러오는 중...</p>
+        </div>
+      </section>
+    </section>
+
+    <section id="catCareScreen" class="menu-section hidden">
       <section class="card cat-care-card">
         <h3>🐱 냥케어</h3>
 
         <div class="care-block">
           <h4>밥</h4>
-
           <div class="care-row">
             <span>오픈</span>
             <label><input type="checkbox" /> 애디</label>
             <label><input type="checkbox" /> 타마</label>
           </div>
-
           <div class="care-row">
             <span>마감</span>
             <label><input type="checkbox" /> 애디</label>
@@ -86,7 +103,6 @@
 
         <div class="care-block">
           <h4>배변</h4>
-
           <div class="care-row vertical">
             <span>오픈</span>
             <label><input type="checkbox" /> 왼쪽 응가</label>
@@ -94,7 +110,6 @@
             <label><input type="checkbox" /> 오른쪽 응가</label>
             <label><input type="checkbox" /> 오른쪽 쉬야</label>
           </div>
-
           <div class="care-row vertical">
             <span>마감</span>
             <label><input type="checkbox" /> 왼쪽 응가</label>
@@ -117,37 +132,29 @@
 
       <section class="card sales-input-card">
         <h3>💰 매출 기록</h3>
-
-        <label>
-          카드
-          <input type="number" placeplacehol="카드 매출" />
-        </label>
-
-        <label>
-          현금
-          <input type="number" placeholder="현금 매출" />
-        </label>
-
-        <label>
-          계좌이체
-          <input type="number" placeholder="계좌이체 매출" />
-        </label>
-
-        <label>
-          준비시재
-          <input type="number" placeholder="준비시재" />
-        </label>
-
-        <label>
-          예비시재
-          <input type="number" placeholder="예비시재" />
-        </label>
-
+        <label>카드 <input type="number" placeholder="카드 매출" /></label>
+        <label>현금 <input type="number" placeholder="현금 매출" /></label>
+        <label>계좌이체 <input type="number" placeholder="계좌이체 매출" /></label>
+        <label>준비시재 <input type="number" placeholder="준비시재" /></label>
+        <label>예비시재 <input type="number" placeholder="예비시재" /></label>
         <button type="button" class="main-btn">매출 기록하기</button>
       </section>
+    </section>
+
+    <section id="managerScreen" class="menu-section hidden">
+      <section class="card">
+        <h3>👑 관리자 대시보드</h3>
+        <p class="small-text">직원별 출퇴근 합산 및 한달 단위 급여 계산</p>
+        <div class="button-grid" style="margin-bottom: 15px;">
+          <button id="calcSalaryBtn" class="main-btn">📊 이번 달 급여 계산하기</button>
+        </div>
+        <div id="salaryResult" class="log-list">
+          </div>
+      </section>
+    </section>
 
     <nav class="bottom-nav">
-      <button id="homeBtn">홈</button>
+      <button id="homeBtn" class="active">홈</button>
       <button id="workLogBtn">작업일지</button>
       <button id="inventoryBtn">재고현황</button>
       <button id="catCareBtn">고양이</button>
