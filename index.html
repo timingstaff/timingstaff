@@ -53,16 +53,9 @@
 
         <div class="card">
           <div class="card-header">
-            <h3>💰 당일 매출 및 시재 기록</h3>
+            <h3>💰 퇴근 시재금 점검</h3>
           </div>
-          
-          <div class="form-group-grid" style="margin-bottom: 20px;">
-            <div class="form-group"><label>카드 매출 총액</label><input type="number" id="salesCard" placeholder="0"></div>
-            <div class="form-group"><label>현금 매출 총액</label><input type="number" id="salesCash" placeholder="0"></div>
-            <div class="form-group"><label>계좌이체 총액</label><input type="number" id="salesTransfer" placeholder="0"></div>
-          </div>
-
-          <hr style="border: 0; border-top: 1px dashed var(--border); margin: 16px 0;">
+          <p class="section-desc" style="margin-bottom: 16px;">금전함 및 금고의 현금 장수를 입력해 주세요.</p>
 
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
             <h4 style="font-size: 0.9rem; color: var(--primary);">💼 준비시재 (매장 보관용)</h4>
@@ -88,7 +81,31 @@
             <div class="form-group"><label>1천원권 (장)</label><input type="number" id="reserve1k" placeholder="0" class="calc-reserve"></div>
           </div>
 
-          <button id="btnSaveSales" class="btn btn-primary btn-block" style="margin-top:12px;">매출 및 시재 기록하기</button>
+          <button id="btnSaveSales" class="btn btn-primary btn-block" style="margin-top:12px;">시재 기록 저장하기</button>
+        </div>
+      </section>
+
+      <section id="scheduleScreen" class="app-screen hidden">
+        <div class="card">
+          <div class="card-header" style="display:flex; justify-content:between; align-items:center;">
+            <h3>🗓️ 이번 주 근무 일정표</h3>
+            <button id="btnAddSchedule" class="btn btn-sm btn-outline" style="margin-left:auto;">+ 일정추가</button>
+          </div>
+          <p class="section-desc" style="margin-bottom:12px;">전체 직원의 근무 스케줄을 공유하는 공간입니다.</p>
+          
+          <div id="scheduleForm" class="hidden" style="background:var(--bg-input); padding:14px; border-radius:10px; margin-bottom:16px; border:1px solid var(--border);">
+            <div class="form-group" style="margin-bottom:10px;"><label>근무자 이름</label><input type="text" id="schName" placeholder="예: 마린"></div>
+            <div class="form-group" style="margin-bottom:10px;"><label>근무 날짜</label><input type="date" id="schDate"></div>
+            <div class="form-group" style="margin-bottom:12px;"><label>근무 시간</label><input type="text" id="schTime" placeholder="예: 12:00 ~ 18:00"></div>
+            <div class="btn-grid">
+              <button id="btnSaveSchedule" class="btn btn-success btn-sm">등록</button>
+              <button id="btnCancelSchedule" class="btn btn-outline btn-sm">취소</button>
+            </div>
+          </div>
+
+          <div id="divScheduleList" class="list-group">
+            <p class="empty-text">등록된 근무 일정이 없습니다.</p>
+          </div>
         </div>
       </section>
 
@@ -160,6 +177,7 @@
 
     <nav class="bottom-nav">
       <button id="nav-home" class="nav-item active"><span>🏠</span><small>홈</small></button>
+      <button id="nav-schedule" class="nav-item"><span>🗓️</span><small>일정표</small></button>
       <button id="nav-workLog" class="nav-item"><span>📋</span><small>업무일지</small></button>
       <button id="nav-inventory" class="nav-item"><span>📦</span><small>재고</small></button>
       <button id="nav-catCare" class="nav-item"><span>🐱</span><small>고양이</small></button>
