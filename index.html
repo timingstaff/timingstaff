@@ -163,24 +163,28 @@ function manualAdd() {
 
 function calcSalary() {
     let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
-    let hourlyWage = 10000;
-    let html = "<h4>📅 월간 근무 기록</h4>";
-    let grandTotal = 0;
+    let html = "<h4>📅 근무 상세 및 수정</h4>";
+    
     for (let name in logs) {
-        let mins = 0;
-        html += `<div style="margin-bottom:15px; border-bottom:1px solid #333;"><strong>👤 ${name}</strong>`;
-        for(let i=0; i<logs[name].length-1; i+=2) {
-            if(logs[name][i].type === '출근' && logs[name][i+1].type === '퇴근') {
-                let sessionMins = (logs[name][i+1].time - logs[name][i].time) / 60000;
-                mins += sessionMins;
-                html += `<div>${new Date(logs[name][i].time).toLocaleDateString()}: ${Math.floor(sessionMins)}분</div>`;
-            }
-        }
-        let cost = Math.floor(mins * (hourlyWage/60));
-        grandTotal += cost;
-        html += `<strong>합계: ${cost.toLocaleString()}원</strong></div>`;
+        html += `<div style="margin-bottom:20px; border-bottom:1px solid #444;"><strong>👤 ${name}</strong>`;
+        logs[name].forEach((log, index) => {
+            let dateStr = new Date(log.time).toLocaleString();
+            html += `
+                <div style="display:flex; justify-content:space-between; padding:5px 0;">
+                    <span>${dateStr} (${log.type})</span>
+                    <button onclick="deleteLog('${name}', ${index})" style="background:#cc0000; color:white; border:none; padding:2px 8px; border-radius:4px; cursor:pointer;">삭제</button>
+                </div>`;
+        });
+        html += `</div>`;
     }
-    document.getElementById('salaryResult').innerHTML = html + `<strong>💰 총 인건비: ${grandTotal.toLocaleString()}원</strong>`;
+    document.getElementById('salaryResult').innerHTML = html;
+}
+function deleteLog(name, index) {
+    if(!confirm("이 기록을 삭제하시겠습니까?")) return;
+    let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
+    logs[name].splice(index, 1); 
+    localStorage.setItem('attendanceLogs', JSON.stringify(logs));
+    calcSalary(); // 삭제 후 목록 즉시 새로고침
 }
 </script>
 </body>
