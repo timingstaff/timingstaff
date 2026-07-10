@@ -1,126 +1,49 @@
-const staffMembers = ["마린", "애디", "타마", "도트"];
+// js/app.js
 
-let currentUser = "마린";
-let noticeConfirmedUsers = [];
-let clockRecords = [];
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. 탭 버튼들과 화면 섹션들을 모두 가져옵니다.
+  const buttons = {
+    homeBtn: document.getElementById("homeBtn"),
+    workLogBtn: document.getElementById("workLogBtn"),
+    inventoryBtn: document.getElementById("inventoryBtn"),
+    catCareBtn: document.getElementById("catCareBtn"),
+    managerBtn: document.getElementById("managerBtn")
+  };
 
-let tasks = [
-  { title: "주류 재고 체크", logs: [] },
-  { title: "소스통 청소", logs: [] },
-  { title: "고양이방 소독", logs: [] }
-];
+  const screens = {
+    homeBtn: document.getElementById("homeScreen"),
+    workLogBtn: document.getElementById("workLogScreen"),
+    inventoryBtn: document.getElementById("inventoryScreen"),
+    catCareBtn: document.getElementById("catCareScreen"),
+    managerBtn: document.getElementById("managerScreen")
+  };
 
-function updateCurrentUser() {
-  currentUser = document.getElementById("staffSelect").value;
-  document.getElementById("userName").textContent = currentUser;
-  saveData();
-}
+  // 2. 탭 전환 함수 선언
+  function switchTab(targetBtnId) {
+    // 모든 화면 숨기기 및 모든 버튼 활성화 클래스 제거
+    Object.keys(screens).forEach(key => {
+      if (screens[key]) screens[key].classList.add("hidden");
+      if (buttons[key]) buttons[key].classList.remove("active");
+    });
 
-function updateStatusBox() {
-  const statusBox = document.getElementById("statusBox");
-
-  const unread = staffMembers.length - noticeConfirmedUsers.length;
-  const completed = getCompletedTaskCount();
-  const total = tasks.length;
-  const salesPercent = 65;
-
-  if (unread > 0) {
-    statusBox.className = "status-card status-red";
-    statusBox.innerHTML = `
-      <strong>🔴 공지 ${noticeConfirmedUsers.length}/${staffMembers.length} │ 업무 ${completed}/${total} │ 매출 ${salesPercent}%</strong>
-      <p>중요 공지를 먼저 확인해주세요.</p>
-    `;
-    return;
+    // 선택한 화면만 보여주고 버튼 활성화
+    if (screens[targetBtnId]) screens[targetBtnId].classList.remove("hidden");
+    if (buttons[targetBtnId]) buttons[targetBtnId].classList.add("active");
   }
 
-  if (completed < total) {
-    statusBox.className = "status-card status-yellow";
-    statusBox.innerHTML = `
-      <strong>🟡 공지 완료 │ 업무 ${completed}/${total} │ 매출 ${salesPercent}%</strong>
-      <p>아직 완료되지 않은 업무가 있습니다.</p>
-    `;
-    return;
+  // 3. 각 버튼에 모바일 클릭(터치) 이벤트 바인딩
+  Object.keys(buttons).forEach(key => {
+    if (buttons[key]) {
+      buttons[key].addEventListener("click", () => switchTab(key));
+    }
+  });
+
+  // 임시 에러 방어: 로그인이 없으므로 스태프 선택상자(staffSelect) 변경 시 행동 지정 가능
+  const staffSelect = document.getElementById("staffSelect");
+  if (staffSelect) {
+    staffSelect.addEventListener("change", (e) => {
+      console.log(`현재 선택된 직원: ${e.target.value}`);
+      // 필요 시 선택된 직원에 맞춰 출퇴근 기록 로드 기능 추가 가능
+    });
   }
-
-  statusBox.className = "status-card status-green";
-  statusBox.innerHTML = `
-    <strong>🟢 공지 완료 │ 업무 완료 │ 매출 ${salesPercent}%</strong>
-    <p>현재 순조롭게 운영 중입니다.</p>
-  `;
-}
-
-function handleLockedMenuClick(menuName) {
-  if (!requireNoticeConfirm()) return;
-  alert(`${menuName} 메뉴는 다음 버전에서 연결됩니다.`);
-}
-
-function openManagerMode() {
-  if (!requireNoticeConfirm()) return;
-
-  showManager();
-
-  const managerSection = document.getElementById("managerSection");
-  const homeSection = document.getElementById("homeSection");
-
-  if (homeSection) {
-    homeSection.style.display = "none";
-  }
-
-  if (managerSection) {
-    managerSection.style.display = "block";
-    managerSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  renderManagerDashboard();
-}
-
-function openHomeMode() {
-  showHome();
-
-  const managerSection = document.getElementById("managerSection");
-  const homeSection = document.getElementById("homeSection");
-
-  if (managerSection) {
-    managerSection.style.display = "none";
-  }
-
-  if (homeSection) {
-    homeSection.style.display = "block";
-  }
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function initializeApp() {
-  loadData();
-
-  setTodayDate();
-
-  document.getElementById("staffSelect").value = currentUser;
-  document.getElementById("userName").textContent = currentUser;
-
-  renderNoticeReadList();
-  renderClockLog();
-  renderTasks();
-  updateTaskProgress();
-  updateStatusBox();
-  renderManagerDashboard();
-
-  const managerSection = document.getElementById("managerSection");
-  if (managerSection) {
-    managerSection.style.display = "none";
-  }
-
-  document.getElementById("staffSelect").addEventListener("change", updateCurrentUser);
-  document.getElementById("noticeConfirmBtn").addEventListener("click", confirmNotice);
-  document.getElementById("clockInBtn").addEventListener("click", clockIn);
-  document.getElementById("clockOutBtn").addEventListener("click", clockOut);
-
-  document.getElementById("homeBtn").addEventListener("click", openHomeMode);
-  document.getElementById("workLogBtn").addEventListener("click", () => handleLockedMenuClick("업무일지"));
-  document.getElementById("inventoryBtn").addEventListener("click", () => handleLockedMenuClick("재고"));
-  document.getElementById("catCareBtn").addEventListener("click", () => handleLockedMenuClick("고양이"));
-  document.getElementById("managerBtn").addEventListener("click", openManagerMode);
-}
-
-initializeApp();
+});
