@@ -35,13 +35,13 @@ body {
 /* 전체 화면 앱 컨테이너 */
 .app-container {
   width: 100%;
-  max-width: 480px; /* 모바일 사이즈 고정 */
+  max-width: 480px; /* 모바일 폭 고정 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
   background-color: var(--bg-main);
-  padding-bottom: 80px; /* 하단 탭바 여백 */
+  padding-bottom: 80px; /* 하단 네비게이션 여백 */
 }
 
 /* ==========================================================
@@ -117,12 +117,214 @@ body {
   width: 100%;
 }
 
+/* 오타 전면 수정 완료 */
 .hidden {
-  display: none !not-important;
+  display: none !important;
 }
 
 .card {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding:
+  padding: 18px;
+  margin-bottom: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-header {
+  margin-bottom: 14px;
+}
+
+.card-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ==========================================================
+   [인풋창 & 입력 그리드 (매출 칸 최적화 구조)]
+   ========================================================== */
+.form-group-grid {
+  display: flex;
+  flex-direction: column; /* 모바일 가로 제한을 깨지 않도록 기본 세로 1열 정렬 */
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  box-sizing: border-box; /* 패딩이 전체 폭을 탈출하는 것 방지 */
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+}
+
+/* 태블릿이나 가로가 살짝 여유 있는 모바일 기기 대응 */
+@media (min-width: 400px) {
+  .form-group-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 가로폭 확보 시 깔끔하게 2열 분할 */
+  }
+}
+
+/* ==========================================================
+   [공통 버튼 스타일]
+   ========================================================== */
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-success {
+  background-color: var(--success);
+  color: white;
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: white;
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.btn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  border-radius: 8px;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+}
+
+/* ==========================================================
+   [하단 고정 내비게이션 바]
+   ========================================================== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: 64px;
+  background-color: rgba(24, 24, 24, 0.95);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.nav-item span {
+  font-size: 1.25rem;
+}
+
+.nav-item small {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+/* ==========================================================
+   [기타 UI 세부 상태창]
+   ========================================================== */
+.status-footer {
+  text-align: center;
+  padding: 4px 0;
+}
+
+.status-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.empty-text {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 20px 0;
+}
