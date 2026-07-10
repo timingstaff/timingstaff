@@ -52,38 +52,38 @@
         </div>
 
         <div class="card">
-          <div class="card-header">
-            <h3>💰 퇴근 시재금 점검</h3>
-          </div>
-          <p class="section-desc" style="margin-bottom: 16px;">금전함 및 금고의 현금 장수를 입력해 주세요. (상세 매출은 페이히어 포스를 확인하므로 입력하지 않습니다.)</p>
+  <h3>💼 시재금 점검</h3>
+  
+  <div style="display:flex; gap:10px; margin-bottom:15px;">
+    <button class="tab-btn active" onclick="switchMode('open')">오픈(Open)</button>
+    <button class="tab-btn" onclick="switchMode('close')">마감(Close)</button>
+  </div>
 
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-            <h4 style="font-size: 0.9rem; color: var(--primary);">💼 준비시재 (매장 보관용)</h4>
-            <span id="readyTotalDisplay" style="font-size:0.9rem; font-weight:700; color:var(--primary);">0원</span>
-          </div>
-          <div class="form-group-grid" style="margin-bottom: 20px;">
-            <div class="form-group"><label>5만원권 (장)</label><input type="number" id="ready50k" placeholder="0" class="calc-ready"></div>
-            <div class="form-group"><label>1만원권 (장)</label><input type="number" id="ready10k" placeholder="0" class="calc-ready"></div>
-            <div class="form-group"><label>5천원권 (장)</label><input type="number" id="ready5k" placeholder="0" class="calc-ready"></div>
-            <div class="form-group"><label>1천원권 (장)</label><input type="number" id="ready1k" placeholder="0" class="calc-ready"></div>
-          </div>
+  <div class="grid-2-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div>
+      <label style="font-size:0.7rem;">준비시재</label>
+      <input type="number" placeholder="5만원(장)" class="calc-input">
+      <input type="number" placeholder="1만원(장)" class="calc-input">
+    </div>
+    <div>
+      <label style="font-size:0.7rem;">예비시재</label>
+      <input type="number" placeholder="5만원(장)" class="calc-input">
+      <input type="number" placeholder="1만원(장)" class="calc-input">
+    </div>
+  </div>
+  
+  <div style="margin-top:10px; text-align:right;">총 합계: <span id="total" style="color:#22c55e;">0원</span></div>
+  <button style="width:100%; padding:15px; margin-top:15px; background:#2563eb; border:none; border-radius:8px; color:white;">기록 저장하기</button>
+</div>
 
-          <hr style="border: 0; border-top: 1px dashed var(--border); margin: 16px 0;">
+<script>
+  function switchMode(mode) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    // 여기에 모드 전환 시 필요한 추가 로직을 넣으세요
+  }
+</script>
 
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-            <h4 style="font-size: 0.9rem; color: var(--success);">🏦 예비시재 (금고/금전함용)</h4>
-            <span id="reserveTotalDisplay" style="font-size:0.9rem; font-weight:700; color:var(--success);">0원</span>
-          </div>
-          <div class="form-group-grid" style="margin-bottom: 16px;">
-            <div class="form-group"><label>5만원권 (장)</label><input type="number" id="reserve50k" placeholder="0" class="calc-reserve"></div>
-            <div class="form-group"><label>1만원권 (장)</label><input type="number" id="reserve10k" placeholder="0" class="calc-reserve"></div>
-            <div class="form-group"><label>5천원권 (장)</label><input type="number" id="reserve5k" placeholder="0" class="calc-reserve"></div>
-            <div class="form-group"><label>1천원권 (장)</label><input type="number" id="reserve1k" placeholder="0" class="calc-reserve"></div>
-          </div>
-
-          <button id="btnSaveSales" class="btn btn-primary btn-block" style="margin-top:12px;">시재 기록 저장하기</button>
-        </div>
-      </section>
 
       <section id="workLogScreen" class="app-screen hidden">
         <div class="card">
