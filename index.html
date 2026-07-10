@@ -98,7 +98,7 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 <div id="inventoryScreen" class="screen"><div class="card"><h3>📦 재고관리</h3></div></div>
 <div id="catScreen" class="screen"><div class="card"><h3>🐱 고양이 기록</h3></div></div>
 
-div id="adminScreen" class="screen">
+<div id="adminScreen" class="screen">
 <div id="adminScreen" class="screen">
     <div class="card">
         <h3>👑 관리자 모드: 근무 수정</h3>
@@ -133,33 +133,20 @@ div id="adminScreen" class="screen">
 </nav> 
 
 <script>
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-function switchTab(mode) { document.getElementById('btn-open').classList.toggle('active', mode === 'open'); document.getElementById('btn-close').classList.toggle('active', mode === 'close'); document.getElementById('form-open').style.display = (mode === 'open' ? 'block' : 'none'); document.getElementById('form-close').style.display = (mode === 'close' ? 'block' : 'none'); }
-function calc(mode) {
-    let inputs = document.querySelectorAll('.calc-' + mode);
-    let total = 0, units = [50000, 10000, 5000, 1000, 50000, 10000, 5000, 1000];
-    inputs.forEach((input, i) => total += (parseInt(input.value) || 0) * units[i]);
-    document.getElementById('total-' + mode).innerText = total.toLocaleString();
-}
+// 직원별 시급 설정 (여기에 이름을 추가하세요)
+const wageConfig = { "마린": 10000, "송": 11000, "우주": 12000 };
 
-function recordTime(type) {
-    let name = "마린"; 
-    let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
-    if (!logs[name]) logs[name] = [];
-    let last = logs[name].length > 0 ? logs[name][logs[name].length-1] : null;
-    if(type === '출근' && last && last.type === '출근') return alert("이미 출근 중입니다!");
-    if(type === '퇴근' && (!last || last.type === '퇴근')) return alert("출근 기록이 없습니다!");
-    logs[name].push({type: type, time: new Date().getTime()});
-    localStorage.setItem('attendanceLogs', JSON.stringify(logs));
-    document.getElementById('statusMsg').innerText = "상태: " + type + " 완료";
-    alert(type + " 기록 성공");
+function showScreen(id) { 
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); 
+    document.getElementById(id).classList.add('active'); 
 }
 
 function manualAdd() {
     let name = document.getElementById('adminName').value;
     let timeStr = document.getElementById('adminTime').value;
     let type = document.getElementById('adminType').value;
-    if(!name || !timeStr) return alert("이름과 시간을 모두 선택해주세요.");
+    if(!name || !timeStr) return alert("항목을 모두 선택하세요.");
+    
     let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
     if (!logs[name]) logs[name] = [];
     logs[name].push({type: type, time: new Date(timeStr).getTime()});
@@ -168,58 +155,58 @@ function manualAdd() {
     alert("수동 기록 완료");
 }
 
-// 월별 정산 및 직원별 인건비 계산
 function calcSalary() {
     let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
-    let selectedMonth = document.getElementById('monthSelector').value; // YYYY-MM
-    if(!selectedMonth) return alert("정산할 월을 선택하세요.");
+    let selectedMonth = document.getElementById('monthSelector').value;
+    if(!selectedMonth) return alert("월을 선택하세요.");
 
-    let hourlyWage = 10000;
-    let grandTotal = 0;
     let html = `<h4>📅 ${selectedMonth} 상세 기록</h4>`;
+    let grandTotal = 0;
 
     for (let name in logs) {
+        let hourlyWage = wageConfig[name] || 10000; // 설정된 시급, 없으면 1만원
         let userTotalMins = 0;
         let userHtml = "";
-        
+        let hasData = false;
+
         logs[name].forEach((log, index) => {
             let logDate = new Date(log.time);
-            let logMonth = logDate.toISOString().slice(0, 7); // YYYY-MM 추출
-
-            if(logMonth === selectedMonth) {
-                userHtml += `
-                    <div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #222;">
-                        <span>${logDate.toLocaleDateString()} ${log.type}</span>
-                        <button onclick="deleteLog('${name}', ${index})" style="background:#cc0000; color:white; border:none; padding:2px 8px; border-radius:4px;">삭제</button>
-                    </div>`;
+            if(logDate.toISOString().slice(0, 7) === selectedMonth) {
+                hasData = true;
+                userHtml += `<div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #222;">
+                             <span>${logDate.toLocaleDateString()} ${log.type}</span>
+                             <button onclick="deleteLog('${name}', ${index})" style="background:#555; border:none; color:#fff; border-radius:4px;">삭제</button>
+                             </div>`;
             }
         });
 
-        // 출퇴근 쌍 계산 (간략화)
+        // 근무시간 계산
         for(let i=0; i<logs[name].length-1; i+=2) {
             if(logs[name][i].type === '출근' && logs[name][i+1].type === '퇴근') {
-                userTotalMins += (logs[name][i+1].time - logs[name][i].time) / 60000;
+                let start = new Date(logs[name][i].time);
+                let end = new Date(logs[name][i+1].time);
+                if(start.toISOString().slice(0, 7) === selectedMonth) {
+                    userTotalMins += (end - start) / 60000;
+                }
             }
         }
         
         let cost = Math.floor(userTotalMins * (hourlyWage/60));
-        if(userTotalMins > 0) {
+        if(hasData) {
             grandTotal += cost;
-            html += `<div class="card" style="margin:5px 0;"><strong>👤 ${name}: ${cost.toLocaleString()}원</strong>${userHtml}</div>`;
+            html += `<div class="card"><strong>👤 ${name} (시급:${hourlyWage.toLocaleString()})</strong><br>
+                     <strong>합계: ${cost.toLocaleString()}원</strong>${userHtml}</div>`;
         }
     }
-    document.getElementById('salaryResult').innerHTML = html + `<div style="margin-top:15px; font-size:1.2rem;"><strong>💰 월 총 인건비: ${grandTotal.toLocaleString()}원</strong></div>`;
+    document.getElementById('salaryResult').innerHTML = html + `<div style="padding:15px;"><strong>💰 총 인건비: ${grandTotal.toLocaleString()}원</strong></div>`;
 }
 
-// 개별 기록 삭제 함수
 function deleteLog(name, index) {
-    if(!confirm("이 기록을 삭제하시겠습니까?")) return;
     let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
     logs[name].splice(index, 1);
     localStorage.setItem('attendanceLogs', JSON.stringify(logs));
-    calcSalary(); // 즉시 새로고침
+    calcSalary();
 }
-
 </script>
 </body>
 </html>
