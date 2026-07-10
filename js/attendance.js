@@ -1,43 +1,26 @@
 // js/attendance.js
 import { supabaseClient } from './supabase.js';
+import { GLOBAL_USER } from './app.js';
 
-// ==========================================
-// [중요] 추후 로그인 기능이 생기면 이 부분을 실제 로그인 유저 데이터로 대체합니다.
-// 지금은 테스트를 위해 "타마"로 설정해 두겠습니다. (이름을 바꿔가며 테스트해 보세요!)
-// ==========================================
-const GLOBAL_USER = {
-  name: "타마",
-  role: "employee" // 또는 "admin"
-};
-
-// 1. 페이지가 로드되면 헤더에 이름을 자동으로 넣어주는 함수
-function initHeader() {
-  const staffSelectBox = document.querySelector(".staff-select-box");
-  if (staffSelectBox) {
-    // 기존의 select 상자를 없애고, 로그인한 유저의 이름을 텍스트로 띄웁니다.
-    staffSelectBox.innerHTML = `<span>👤 ${GLOBAL_USER.name}님 환영합니다</span>`;
-  }
-}
-
-// 2. 현재 시각 구하기 (화면 표시용: 오전 12:44)
+// 1. 현재 시각 구하기 (화면 표시용: 예 - 오전 09:45)
 function getNowTime() {
   const now = new Date();
   return now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
 }
 
-// 3. [출근하기] 버튼 함수
+// 2. [출근하기] 처리 함수
 export async function clockIn() {
   const time = getNowTime();
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
   try {
-    // 관리자가 정산하기 좋도록 정확한 표준시각(ISO)과 이름을 Supabase로 보냅니다.
+    // 중복 출근 방지 체크를 하고 싶다면 이곳에 로직 추가 가능
     const { data, error } = await supabaseClient
       .from('attendance')
       .insert([
         { 
           user_name: GLOBAL_USER.name, 
-          clock_in: new Date().toISOString(), // 관리자 확인용 (정확한 시간 계산 가능)
+          clock_in: new Date().toISOString(), // 관리자 정산용 표준 타임스탬프
           work_date: today 
         }
       ]);
@@ -48,17 +31,17 @@ export async function clockIn() {
     alert(`${GLOBAL_USER.name}님, 출근 등록 완료! (${time})`);
   } catch (err) {
     console.error("출근 기록 실패:", err);
-    alert("출근 등록 중 오류가 발생했습니다.");
+    alert("출근 등록 중 오류가 발생했습니다. 테이블 설정을 확인하세요.");
   }
 }
 
-// 4. [퇴근하기] 버튼 함수
+// 3. [퇴근하기] 처리 함수
 export async function clockOut() {
   const time = getNowTime();
   const today = new Date().toISOString().split('T')[0];
 
   try {
-    // 오늘 해당 유저가 출근한 기록 중, 퇴근 시간이 비어있는 행을 업데이트
+    // 오늘 출근한 기록 중 아직 퇴근 기록이 없는(null) 행을 업데이트
     const { data, error } = await supabaseClient
       .from('attendance')
       .update({ clock_out: new Date().toISOString() })
@@ -76,21 +59,18 @@ export async function clockOut() {
   }
 }
 
-// 5. 출퇴근 기록 화면 표시
+// 4. 출퇴근 상태 메시지 화면 표시
 export function renderClockLog(user, type, time) {
-  const clockLog = document.getElementById("clockLog");
-  if (!clockLog) return;
-  clockLog.textContent = `${user} ${type} 기록 · ${time}`;
+  const txtClockStatus = document.getElementById("txtClockStatus");
+  if (!txtClockStatus) return;
+  txtClockStatus.innerHTML = `✅ <strong>${user}</strong>님의 최근 기록: <span style="color:var(--primary); font-weight:bold;">${type} (${time})</span>`;
 }
 
-// 6. 이벤트 및 초기화 연결
+// 5. 페이지 로드 시 이벤트 리스너 바인딩 및 버튼 활성화
 document.addEventListener("DOMContentLoaded", () => {
-  // 헤더 이름 자동 반영 실행
-  initHeader();
+  const btnClockIn = document.getElementById("btnClockIn");
+  const btnClockOut = document.getElementById("btnClockOut");
 
-  const clockInBtn = document.getElementById("clockInBtn");
-  const clockOutBtn = document.getElementById("clockOutBtn");
-
-  if (clockInBtn) clockInBtn.addEventListener("click", clockIn);
-  if (clockOutBtn) clockOutBtn.addEventListener("click", clockOut);
+  if (btnClockIn) btnClockIn.addEventListener("click", clockIn);
+  if (btnClockOut) btnClockOut.addEventListener("click", clockOut);
 });
