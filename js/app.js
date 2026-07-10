@@ -1,7 +1,7 @@
 // js/app.js
 
 const GLOBAL_USER = {
-  name: "", // 테스트 시 "타마" 등 이름을 넣으면 정상 가동됩니다.
+  name: "마린", // 테스트 시 "타마" 등 이름을 넣으면 정상 가동됩니다.
   role: "employee"
 };
 
