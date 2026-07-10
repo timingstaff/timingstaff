@@ -1,23 +1,20 @@
 // js/app.js
-import { renderManagerDashboard } from './manager.js';
 
 // ==========================================================
-// [가상 로그인 세팅] 
-// 추후 Supabase Auth 연동 시 이 객체에 실제 유저 정보를 매핑하면 
-// 아래 코드는 하나도 수정할 필요가 없습니다.
+// [로그인 유저 정보 세팅]
+// 실제 로그인 성공 시 인증 모듈(Auth)에서 이 객체에 값을 넣어주면 됩니다.
+// 예시: GLOBAL_USER.name = 세션유저이름; GLOBAL_USER.role = 세션권한;
 // ==========================================================
 export const GLOBAL_USER = {
-  name: "타마",
-  role: "employee" // 'employee' (직원) 또는 'admin' (관리자)
+  name: "", // 로그인 전에는 비어있음 (예: "" 또는 "미인증 유저")
+  role: "employee" 
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("TimingStaff Pro가 정상 작동 중입니다.");
+  console.log("TimingStaff Pro 메인 허브 가동");
 
-  // 1. 헤더 유저 정보 및 날짜 초기화
   initHeader();
 
-  // 2. 화면 섹션 및 네비게이션 버튼 매핑
   const screens = {
     'nav-home': document.getElementById("homeScreen"),
     'nav-workLog': document.getElementById("workLogScreen"),
@@ -28,9 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const navItems = document.querySelectorAll(".nav-item");
 
-  // 3. 모바일 최적화 탭 전환 함수
-  function switchTab(targetId) {
-    // 모든 섹션 숨기고 선택된 것만 열기
+  async function switchTab(targetId) {
     Object.keys(screens).forEach(key => {
       if (screens[key]) {
         if (key === targetId) {
@@ -41,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // 버튼 활성화 스타일 제어
     navItems.forEach(item => {
       if (item.id === targetId) {
         item.classList.add("active");
@@ -50,13 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // [최적화 - 지연 로딩] 관리자 탭을 터치하는 순간에만 데이터를 가져옵니다.
     if (targetId === "nav-manager") {
-      renderManagerDashboard();
+      try {
+        const { renderManagerDashboard } = await import('./manager.js');
+        if (renderManagerDashboard) await renderManagerDashboard();
+      } catch (err) {
+        console.error("관리자 모듈 로드 실패:", err);
+      }
     }
   }
 
-  // 4. 이벤트 바인딩 (모바일 터치 씹힘 방지 전용 처리)
   navItems.forEach(item => {
     item.addEventListener("click", (e) => {
       e.preventDefault();
@@ -64,27 +61,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 5. 기본 시작 화면 강제 지정 (홈 화면)
   switchTab("nav-home");
 });
 
-// 상단 헤더 정보를 초기화하는 내부 헬퍼 함수
 function initHeader() {
   const userBadge = document.getElementById("userBadge");
   const headerDate = document.getElementById("headerDate");
 
   if (userBadge) {
-    userBadge.textContent = `👤 ${GLOBAL_USER.name}님`;
+    // 이름이 없을 때는 '로그인 필요'로 표시
+    userBadge.textContent = GLOBAL_USER.name ? `👤 ${GLOBAL_USER.name}님` : "👤 로그인 필요";
   }
 
   if (headerDate) {
     const now = new Date();
     const weeks = ['일', '월', '화', '수', '목', '금', '토'];
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const dd = String(now.getDate()).padStart(2, '0');
-    const week = weeks[now.getDay()];
-    
-    headerDate.textContent = `${yyyy}.${mm}.${dd} (${week})`;
+    headerDate.textContent = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')} (${weeks[now.getDay()]})`;
   }
 }
