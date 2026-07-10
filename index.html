@@ -101,14 +101,20 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
     <div class="card">
         <h3>👑 관리자 모드: 근무 수정</h3>
         <input type="text" id="adminName" placeholder="직원 이름">
-        <input type="text" id="adminTime" placeholder="YYYY-MM-DD HH:MM">
-        <select id="adminType"><option value="출근">출근</option><option value="퇴근">퇴근</option></select>
-        <button onclick="manualAdd()" style="background:#4f46e5; border:none; color:white; padding:10px; width:100%; border-radius:5px;">수동 기록 추가</button>
+        <input type="datetime-local" id="adminTime">
+        <select id="adminType">
+            <option value="출근">출근</option>
+            <option value="퇴근">퇴근</option>
+        </select>
+        <button onclick="manualAdd()" style="background:#4f46e5; border:none; color:white; padding:10px; width:100%; border-radius:5px; margin-top:5px;">수동 기록 추가</button>
+        
         <hr style="margin:15px 0; border:0; border-top:1px solid #333;">
+        
         <h3>💰 실시간 인건비</h3>
         <button onclick="calcSalary()" style="background:#28a745; border:none; color:white; padding:10px; width:100%; border-radius:5px;">데이터 정산하기</button>
         <div id="salaryResult" style="margin-top:10px; font-size:0.85rem;"></div>
     </div>
+</div>
 </div>
 
 <nav class="nav">
