@@ -1,77 +1,168 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>TimingStaff Pro</title>
-  <style>
-    body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 70px; }
-    .container { max-width: 600px; margin: 0 auto; }
-    /* 헤더 스타일 */
-    .header { padding: 20px; border-bottom: 1px solid #333; }
-    .header-top { display: flex; justify-content: space-between; align-items: center; }
-    .user-badge { background: #222; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; }
-    /* 카드 스타일 */
-    .card { background: #111; padding: 15px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
-    /* 네비게이션 스타일 */
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; display: flex; border-top: 1px solid #333; padding: 10px 0; z-index: 999; }
-    .nav button { flex: 1; border: none; background: none; color: #aaa; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-    .nav button.active { color: #fff; }
-    .hidden { display: none; }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<div class="container">
-  <header class="header">
-    <div class="header-top">
-      <h1>TimingStaff <span style="color:#6366f1">Pro</span></h1>
-      <div class="user-badge">👤 마린님</div>
-    </div>
-    <div style="font-size:0.8rem; color:#888; margin-top:5px;">2026.07.10 (금) | 🌤 31°C ☔ 20%</div>
-  </header>
-
-  <main id="view-home" class="view">
-    <div class="card">
-      <h3>📢 공지사항</h3>
-      <p id="notice-text">공지사항을 불러오는 중입니다...</p>
-      <button style="width:100%; padding:10px; background:#4f46e5; color:white; border:none; border-radius:6px;">확인했습니다</button>
-    </div>
-    <div class="card">
-      <h3>⏰ 출퇴근 기록</h3>
-      <div style="display:flex; gap:10px;">
-        <button style="flex:1; padding:15px; background:green; color:white; border:none; border-radius:8px;">출근하기</button>
-        <button style="flex:1; padding:15px; background:red; color:white; border:none; border-radius:8px;">퇴근하기</button>
+  <div class="app-container">
+    
+    <header class="main-header">
+      <div class="logo-row">
+        <h1>🎵 TimingStaff <span class="version-tag">Pro</span></h1>
+        <div id="userBadge" class="user-badge">👤 로그인 필요</div>
       </div>
-    </div>
-  </main>
+      <div class="info-row">
+        <span id="headerDate" class="date-text">0000.00.00 (-)</span>
+        <div class="weather-group">
+          <span>🌤 31°C</span>
+          <span>☔ 20%</span>
+          <span>😷 좋음</span>
+        </div>
+      </div>
+    </header>
 
-  <main id="view-schedule" class="view hidden">
-    <div class="card">
-      <h3>🗓️ 이번 주 근무 일정표</h3>
-      <input type="text" placeholder="근무자 이름 (예: 마린)" style="width:100%; padding:10px; margin:5px 0; background:#222; color:white; border:1px solid #444;">
-      <button style="width:100%; padding:10px; background:#4f46e5; color:white; border:none; margin-top:10px;">등록</button>
-      <p style="text-align:center; margin-top:20px; color:#666;">데이터를 로드하는 중입니다...</p>
-    </div>
-  </main>
+    <main class="content-body">
+      
+      <section id="homeScreen" class="app-screen">
+        <div class="card notice-card">
+          <div class="card-header">
+            <h3>📢 공지사항</h3>
+          </div>
+          <div class="notice-content">
+            <p id="noticeText">공지사항을 불러오는 중입니다...</p>
+          </div>
+          <button id="btnNoticeConfirm" class="btn btn-primary btn-block">확인했습니다</button>
+          <div id="noticeReadList" class="read-status-list"></div>
+        </div>
 
-  <nav class="nav">
-    <button onclick="showView('view-home', this)" class="active">🏠 홈</button>
-    <button onclick="showView('view-schedule', this)">🗓️ 일정표</button>
-    <button onclick="alert('업무일지')">📋 업무일지</button>
-    <button onclick="alert('재고')">📦 재고</button>
-    <button onclick="alert('고양이')">🐱 고양이</button>
-    <button onclick="alert('관리자')">👑 관리자</button>
-  </nav>
-</div>
+        <div class="card attendance-card">
+          <div class="card-header">
+            <h3>⏰ 출퇴근 기록</h3>
+          </div>
+          <div class="btn-grid">
+            <button id="btnClockIn" class="btn btn-success">출근하기</button>
+            <button id="btnClockOut" class="btn btn-danger">퇴근하기</button>
+          </div>
+          <div class="status-footer">
+            <p id="txtClockStatus" class="status-text">아직 출근 기록이 없습니다.</p>
+          </div>
+        </div>
 
-<script>
-  function showView(id, btn) {
-    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-</script>
+        <div class="card">
+          <div class="card-header">
+            <h3>💰 퇴근 시재금 점검</h3>
+          </div>
+          <p class="section-desc" style="margin-bottom: 16px;">금전함 및 금고의 현금 장수를 입력해 주세요. (상세 매출은 페이히어 포스를 확인하므로 입력하지 않습니다.)</p>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+            <h4 style="font-size: 0.9rem; color: var(--primary);">💼 준비시재 (매장 보관용)</h4>
+            <span id="readyTotalDisplay" style="font-size:0.9rem; font-weight:700; color:var(--primary);">0원</span>
+          </div>
+          <div class="form-group-grid" style="margin-bottom: 20px;">
+            <div class="form-group"><label>5만원권 (장)</label><input type="number" id="ready50k" placeholder="0" class="calc-ready"></div>
+            <div class="form-group"><label>1만원권 (장)</label><input type="number" id="ready10k" placeholder="0" class="calc-ready"></div>
+            <div class="form-group"><label>5천원권 (장)</label><input type="number" id="ready5k" placeholder="0" class="calc-ready"></div>
+            <div class="form-group"><label>1천원권 (장)</label><input type="number" id="ready1k" placeholder="0" class="calc-ready"></div>
+          </div>
+
+          <hr style="border: 0; border-top: 1px dashed var(--border); margin: 16px 0;">
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+            <h4 style="font-size: 0.9rem; color: var(--success);">🏦 예비시재 (금고/금전함용)</h4>
+            <span id="reserveTotalDisplay" style="font-size:0.9rem; font-weight:700; color:var(--success);">0원</span>
+          </div>
+          <div class="form-group-grid" style="margin-bottom: 16px;">
+            <div class="form-group"><label>5만원권 (장)</label><input type="number" id="reserve50k" placeholder="0" class="calc-reserve"></div>
+            <div class="form-group"><label>1만원권 (장)</label><input type="number" id="reserve10k" placeholder="0" class="calc-reserve"></div>
+            <div class="form-group"><label>5천원권 (장)</label><input type="number" id="reserve5k" placeholder="0" class="calc-reserve"></div>
+            <div class="form-group"><label>1천원권 (장)</label><input type="number" id="reserve1k" placeholder="0" class="calc-reserve"></div>
+          </div>
+
+          <button id="btnSaveSales" class="btn btn-primary btn-block" style="margin-top:12px;">시재 기록 저장하기</button>
+        </div>
+      </section>
+
+      <section id="workLogScreen" class="app-screen hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>📋 오늘 해야 할 일</h3>
+          </div>
+          <div id="divTaskList" class="list-group">
+            <p class="empty-text">업무 일지 기능을 준비 중입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="inventoryScreen" class="app-screen hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>📦 재고 현황</h3>
+          </div>
+          <div id="divInventoryList" class="list-group">
+            <p class="empty-text">재고 기능을 준비 중입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="catCareScreen" class="app-screen hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>🐱 냥케어 기록</h3>
+          </div>
+          <p class="section-desc">오픈/마감 케어 및 특이사항을 기록해 주세요.</p>
+        </div>
+      </section>
+
+      <section id="managerScreen" class="app-screen hidden">
+        <div class="card manager-summary-card">
+          <div class="card-header">
+            <h3>👑 관리자 대시보드</h3>
+          </div>
+          <div class="summary-grid">
+            <div class="summary-box"><h5>매출</h5><span id="mdSales">-</span></div>
+            <div class="summary-box"><h5>업무</h5><span id="mdTasks">-</span></div>
+            <div class="summary-box"><h5>공지미확인</h5><span id="mdNotice">-</span></div>
+            <div class="summary-box"><h5>재고확인</h5><span id="mdInventory">-</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>👤 실시간 직원 근무 현황</h3>
+          </div>
+          <div id="managerStaffStatus" class="status-log-list">
+            <p class="empty-text">데이터를 불러오는 중...</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h3>📊 월간 급여 정산</h3>
+            <button id="btnRefreshSalary" class="btn btn-sm btn-outline">🔄 갱신</button>
+          </div>
+          <div id="managerSalaryResult" class="salary-result-box">
+            <p class="empty-text">탭을 선택하면 자동으로 정산됩니다.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+      <button id="nav-home" class="nav-item active"><span>🏠</span><small>홈</small></button>
+      <button id="nav-workLog" class="nav-item"><span>📋</span><small>업무일지</small></button>
+      <button id="nav-inventory" class="nav-item"><span>📦</span><small>재고</small></button>
+      <button id="nav-catCare" class="nav-item"><span>🐱</span><small>고양이</small></button>
+      <button id="nav-manager" class="nav-item"><span>👑</span><small>관리자</small></button>
+    </nav>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
