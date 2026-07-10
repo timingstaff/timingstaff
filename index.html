@@ -5,107 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TimingStaff Pro</title>
   <style>
-    body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 80px; }
+    body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 90px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    .header { padding: 20px; border-bottom: 1px solid #333; }
     .card { background: #111; padding: 15px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
-    .tab-container { display: flex; gap: 10px; margin-bottom: 15px; }
-    .tab-btn { flex: 1; padding: 12px; border: none; background: #333; color: #fff; border-radius: 6px; cursor: pointer; }
-    .tab-btn.active { background: #4f46e5; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    input { background: #222; border: 1px solid #444; color: #fff; padding: 8px; width: 100%; border-radius: 4px; box-sizing: border-box; margin: 2px 0; }
-    .nav { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #333; display: flex; height: 70px; z-index: 9999; }
-    .nav button { flex: 1; background: none; border: none; color: #fff; font-size: 0.7rem; }
+    input { background: #222; border: 1px solid #444; color: #fff; padding: 8px; width: 100%; border-radius: 4px; box-sizing: border-box; }
+    .nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; border-top: 1px solid #333; display: flex; height: 70px; z-index: 999; }
+    .nav button { flex: 1; background: none; border: none; color: #fff; font-size: 0.7rem; cursor: pointer; }
+    .tab-btn { flex: 1; padding: 10px; border: none; background: #333; color: #fff; border-radius: 6px; }
+    .tab-btn.active { background: #4f46e5; }
   </style>
 </head>
 <body>
+<div class="container">
+  <header class="header">
+    <h1>TimingStaff <span style="color:#5856d6">Pro</span></h1>
+    <div style="color:#aaa; font-size:0.8rem;">2026.07.10 (금) | 🌤 31°C 👤 마린님</div>
+  </header>
 
-<div class="card">
-  <h3>💰 시재금 점검</h3>
-
-  <div style="border: 1px solid #444; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-    <h4 style="margin-top:0; color:#fbbf24;">🌅 오픈 (입력자: 마린)</h4>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-      <div>
-        <label style="font-size:0.75rem; color:#aaa;">준비시재</label>
-        <input type="number" placeholder="5만" class="open-r" oninput="calcOpen()">
-        <input type="number" placeholder="1만" class="open-r" oninput="calcOpen()">
-        <input type="number" placeholder="5천" class="open-r" oninput="calcOpen()">
-        <input type="number" placeholder="1천" class="open-r" oninput="calcOpen()">
-      </div>
-      <div>
-        <label style="font-size:0.75rem; color:#aaa;">예비시재</label>
-        <input type="number" placeholder="5만" class="open-v" oninput="calcOpen()">
-        <input type="number" placeholder="1만" class="open-v" oninput="calcOpen()">
-        <input type="number" placeholder="5천" class="open-v" oninput="calcOpen()">
-        <input type="number" placeholder="1천" class="open-v" oninput="calcOpen()">
-      </div>
+  <div class="card">
+    <h3>⏰ 출퇴근 기록</h3>
+    <div class="grid-2">
+      <button style="padding:15px; background:green; border:none; color:white; border-radius:8px;">출근하기</button>
+      <button style="padding:15px; background:red; border:none; color:white; border-radius:8px;">퇴근하기</button>
     </div>
-    <div style="text-align:right; margin-top:10px; font-weight:bold;">오픈 총액: <span id="open-total">0</span>원</div>
-    <button style="width:100%; padding:10px; margin-top:10px; background:#4338ca; border:none; border-radius:6px; color:white;">오픈 시재 저장</button>
   </div>
 
-  <div style="border: 1px solid #444; padding: 15px; border-radius: 10px;">
-    <h4 style="margin-top:0; color:#60a5fa;">🌙 마감 (입력자: 마린)</h4>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-      <div>
-        <label style="font-size:0.75rem; color:#aaa;">준비시재</label>
-        <input type="number" placeholder="5만" class="close-r" oninput="calcClose()">
-        <input type="number" placeholder="1만" class="close-r" oninput="calcClose()">
-        <input type="number" placeholder="5천" class="close-r" oninput="calcClose()">
-        <input type="number" placeholder="1천" class="close-r" oninput="calcClose()">
-      </div>
-      <div>
-        <label style="font-size:0.75rem; color:#aaa;">예비시재</label>
-        <input type="number" placeholder="5만" class="close-v" oninput="calcClose()">
-        <input type="number" placeholder="1만" class="close-v" oninput="calcClose()">
-        <input type="number" placeholder="5천" class="close-v" oninput="calcClose()">
-        <input type="number" placeholder="1천" class="close-v" oninput="calcClose()">
-      </div>
+  <div class="card">
+    <h3>💰 시재금 점검</h3>
+    <div style="display:flex; gap:10px; margin-bottom:15px;">
+      <button class="tab-btn active" onclick="switchTab('open')">오픈(Open)</button>
+      <button class="tab-btn" onclick="switchTab('close')">마감(Close)</button>
     </div>
-    <div style="text-align:right; margin-top:10px; font-weight:bold;">마감 총액: <span id="close-total">0</span>원</div>
-    <button style="width:100%; padding:10px; margin-top:10px; background:#1e40af; border:none; border-radius:6px; color:white;">마감 시재 저장</button>
+
+    <div id="openForm">
+      <div class="grid-2">
+        <div><label style="font-size:0.7rem;">준비시재</label>
+          <input type="number" class="calc-open" placeholder="5만" oninput="calc('open')">
+          <input type="number" class="calc-open" placeholder="1만" oninput="calc('open')">
+          <input type="number" class="calc-open" placeholder="5천" oninput="calc('open')">
+          <input type="number" class="calc-open" placeholder="1천" oninput="calc('open')">
+        </div>
+        <div><label style="font-size:0.7rem;">예비시재</label>
+          <input type="number" class="calc-open" placeholder="5만" oninput="calc('open')">
+          <input type="number" class="calc-open" placeholder="1만" oninput="calc('open')">
+          <input type="number" class="calc-open" placeholder="5천" oninput="calc('open')">
+          <input type="number" class="calc-open" placeholder="1천" oninput="calc('open')">
+        </div>
+      </div>
+      <div style="text-align:right; margin-top:10px;">오픈 총액: <span id="total-open">0</span>원</div>
+    </div>
+
+    <div id="closeForm" style="display:none;">
+      <div class="grid-2">
+        <div><label style="font-size:0.7rem;">준비시재</label>
+          <input type="number" class="calc-close" placeholder="5만" oninput="calc('close')">
+          <input type="number" class="calc-close" placeholder="1만" oninput="calc('close')">
+          <input type="number" class="calc-close" placeholder="5천" oninput="calc('close')">
+          <input type="number" class="calc-close" placeholder="1천" oninput="calc('close')">
+        </div>
+        <div><label style="font-size:0.7rem;">예비시재</label>
+          <input type="number" class="calc-close" placeholder="5만" oninput="calc('close')">
+          <input type="number" class="calc-close" placeholder="1만" oninput="calc('close')">
+          <input type="number" class="calc-close" placeholder="5천" oninput="calc('close')">
+          <input type="number" class="calc-close" placeholder="1천" oninput="calc('close')">
+        </div>
+      </div>
+      <div style="text-align:right; margin-top:10px;">마감 총액: <span id="total-close">0</span>원</div>
+    </div>
   </div>
 </div>
 
+<nav class="nav">
+  <button>🏠 홈</button><button>📋 업무</button><button>📦 재고</button><button>🐱 고양이</button><button onclick="alert('관리자 모드')">👑 관리자</button>
+</nav>
+
 <script>
-  function getVal(cls) {
-    let inputs = document.querySelectorAll(cls);
-    let total = 0;
-    inputs.forEach((el, idx) => {
-      let num = parseInt(el.value) || 0;
-      let unit = [50000, 10000, 5000, 1000][idx];
-      total += (num * unit);
-    });
-    return total;
+  function switchTab(mode) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i === (mode === 'open' ? 0 : 1))));
+    document.getElementById('openForm').style.display = (mode === 'open' ? 'block' : 'none');
+    document.getElementById('closeForm').style.display = (mode === 'close' ? 'block' : 'none');
   }
-
-  function calcOpen() {
-    let total = getVal('.open-r') + getVal('.open-v');
-    document.getElementById('open-total').innerText = total.toLocaleString();
-  }
-
-  function calcClose() {
-    let total = getVal('.close-r') + getVal('.close-v');
-    document.getElementById('close-total').innerText = total.toLocaleString();
+  function calc(mode) {
+    let inputs = document.querySelectorAll('.calc-' + mode);
+    let total = 0, units = [50000, 10000, 5000, 1000, 50000, 10000, 5000, 1000];
+    inputs.forEach((input, i) => total += (parseInt(input.value) || 0) * units[i]);
+    document.getElementById('total-' + mode).innerText = total.toLocaleString();
   }
 </script>
-
-  function setMode(mode) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-  }
-
-  function calc() {
-    let total = 0;
-    document.querySelectorAll('.calc-open').forEach(input => {
-      let val = parseInt(input.value) || 0;
-      let unit = parseInt(input.placeholder.replace(/[^0-9]/g, '')) * 10000;
-      if(input.placeholder.includes('5천')) unit = 5000;
-      if(input.placeholder.includes('1천')) unit = 1000;
-      total += (val * unit);
-    });
-    document.getElementById('totalDisplay').innerText = total.toLocaleString();
-  }
-</script>
-
 </body>
 </html>
