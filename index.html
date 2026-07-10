@@ -97,25 +97,23 @@ input, select { background: #222; border: 1px solid #444; color: #fff; padding: 
 <div id="inventoryScreen" class="screen"><div class="card"><h3>📦 재고관리</h3></div></div>
 <div id="catScreen" class="screen"><div class="card"><h3>🐱 고양이 기록</h3></div></div>
 
-<div id="adminScreen" class="screen">
-<div id="adminScreen" class="screen">
+<div id="adminScreen" class="screen" style="display: none;">
     <div class="card">
         <h3>👑 관리자 모드: 근무 수정</h3>
         <input type="text" id="adminName" placeholder="직원 이름">
-        <input type="datetime-local" id="adminTime">
-        <select id="adminType">
+        <input type="datetime-local" id="adminTime" style="width:100%; background:#222; color:#fff; border:1px solid #444; padding:8px; margin:5px 0;">
+        <select id="adminType" style="width:100%; background:#222; color:#fff; border:1px solid #444; padding:8px; margin:5px 0;">
             <option value="출근">출근</option>
             <option value="퇴근">퇴근</option>
         </select>
-        <button onclick="manualAdd()" style="background:#4f46e5; border:none; color:white; padding:10px; width:100%; border-radius:5px; margin-top:5px;">수동 기록 추가</button>
+        <button onclick="manualAdd()" style="background:#4f46e5; border:none; color:white; padding:12px; width:100%; border-radius:5px; margin-top:10px;">수동 기록 추가</button>
         
-        <hr style="margin:15px 0; border:0; border-top:1px solid #333;">
+        <hr style="margin:20px 0; border:0; border-top:1px solid #333;">
         
         <h3>💰 실시간 인건비 (월간 정산)</h3>
-        <button onclick="calcSalary()" style="background:#28a745; border:none; color:white; padding:10px; width:100%; border-radius:5px;">데이터 정산하기</button>
-        <div id="salaryResult" style="margin-top:10px; font-size:0.85rem; color:#ddd;"></div>
+        <button onclick="calcSalary()" style="background:#28a745; border:none; color:white; padding:12px; width:100%; border-radius:5px;">데이터 정산하기</button>
+        <div id="salaryResult" style="margin-top:15px; font-size:0.9rem; color:#fff;"></div>
     </div>
-</div>
 </div>
 
 <nav class="nav">
