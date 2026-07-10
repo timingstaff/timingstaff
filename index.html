@@ -1,155 +1,179 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TimingStaff Pro - 최종 통합본</title>
-  <style>
-    body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 90px; }
-    .container { max-width: 600px; margin: 0 auto; }
-    .header-main { padding: 20px; border-bottom: 1px solid #333; }
-    .header-row { display: flex; justify-content: space-between; align-items: center; }
-    .card { background: #111; padding: 15px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    input, select { background: #222; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; border-radius: 6px; box-sizing: border-box; margin: 5px 0; }
-    .screen { display: none; }
-    .screen.active { display: block; }
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; border-top: 1px solid #333; display: flex; height: 70px; z-index: 999; }
-    .nav button { flex: 1; background: none; border: none; color: #fff; font-size: 0.7rem; cursor: pointer; }
-    .tab-btn { flex: 1; padding: 10px; border: none; background: #333; color: #fff; border-radius: 6px; }
-    .tab-btn.active { background: #4f46e5; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimingStaff Pro</title>
+<style>
+body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 90px; }
+.container { max-width: 600px; margin: 0 auto; }
+/* 헤더 스타일 */
+.header-main { padding: 20px; border-bottom: 1px solid #333; }
+.header-row { display: flex; justify-content: space-between; align-items: center; }
+/* 파티션 스타일 */
+.card { background: #111; padding: 15px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+input, select { background: #222; border: 1px solid #444; color: #fff; padding: 8px; width: 100%; border-radius: 4px; box-sizing: border-box; margin: 2px 0; }
+.screen { display: none; }
+.screen.active { display: block; }
+/* 네비게이션 스타일 */
+.nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; border-top: 1px solid #333; display: flex; height: 70px; z-index: 999; }
+.nav button { flex: 1; background: none; border: none; color: #fff; font-size: 0.7rem; cursor: pointer; }
+.tab-btn { flex: 1; padding: 10px; border: none; background: #333; color: #fff; border-radius: 6px; }
+.tab-btn.active { background: #4f46e5; }
+</style>
 </head>
-<body>
+<body> 
 
 <div id="homeScreen" class="screen active">
-  <div class="container">
-    <header class="header-main">
-      <div class="header-row">
-        <div style="font-size: 1.2rem; font-weight: bold;">TimingStaff <span style="color:#5856d6">Pro</span></div>
-        <div style="font-weight:bold;">마린님</div>
-      </div>
-      <div style="color:#aaa; font-size:0.8rem; margin-top:8px;">2026.07.10 (금) | 🌤 31°C | 👤 마린님</div>
-    </header>
-
-    <div class="card">
-      <h3>⏰ 출퇴근 기록</h3>
-      <div id="currentStatus" style="font-size:0.8rem; color:#aaa; margin-bottom:10px;">상태: 대기 중</div>
-      <div class="grid-2">
-        <button onclick="recordTime('출근')" style="padding:12px; background:green; border:none; color:white; border-radius:8px;">출근하기</button>
-        <button onclick="recordTime('퇴근')" style="padding:12px; background:red; border:none; color:white; border-radius:8px;">퇴근하기</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>💰 시재금 점검</h3>
-      <div style="display:flex; gap:10px; margin-bottom:15px;">
-        <button id="btn-open" class="tab-btn active" onclick="switchTab('open')">오픈(Open)</button>
-        <button id="btn-close" class="tab-btn" onclick="switchTab('close')">마감(Close)</button>
-      </div>
-      <div id="form-open">
-        <input type="text" placeholder="오픈 입력자" id="openName">
-        <div class="grid-2">
-          <input type="number" class="calc-open" placeholder="5만" oninput="calc('open')">
-          <input type="number" class="calc-open" placeholder="1만" oninput="calc('open')">
-        </div>
-        <div style="text-align:right;">총액: <span id="total-open">0</span>원</div>
-      </div>
-      <div id="form-close" style="display:none;">
-        <input type="text" placeholder="마감 입력자" id="closeName">
-        <div class="grid-2">
-          <input type="number" class="calc-close" placeholder="5만" oninput="calc('close')">
-          <input type="number" class="calc-close" placeholder="1만" oninput="calc('close')">
-        </div>
-        <div style="text-align:right;">총액: <span id="total-close">0</span>원</div>
-      </div>
-    </div>
-  </div>
+<div class="container">
+<header class="header-main">
+<div class="header-row">
+<div style="font-size: 1.2rem; font-weight: bold;">TimingStaff <span style="color:#5856d6">Pro</span></div>
+<div style="font-weight:bold;">마린님</div>
 </div>
+<div style="color:#aaa; font-size:0.8rem; margin-top:8px;">2026.07.10 (금) | 🌤 31°C ☂️ 20% 😷 좋음</div>
+<div style="background:#222; padding:8px; border-radius:6px; margin-top:10px; font-size:0.85rem;">📢 [공지] 오늘 마감 시재 점검 필수!</div>
+</header> 
+
+<div class="card">
+<h3>⏰ 출퇴근 기록</h3>
+<div id="statusMsg" style="font-size:0.8rem; color:#ff9f43; margin-bottom:10px;">상태: 대기 중</div>
+<div class="grid-2">
+<button onclick="recordTime('출근')" style="padding:12px; background:green; border:none; color:white; border-radius:8px;">출근하기</button>
+<button onclick="recordTime('퇴근')" style="padding:12px; background:red; border:none; color:white; border-radius:8px;">퇴근하기</button>
+</div>
+</div> 
+
+<div class="card">
+<h3>💰 시재금 점검</h3>
+<div style="display:flex; gap:10px; margin-bottom:15px;">
+<button id="btn-open" class="tab-btn active" onclick="switchTab('open')">오픈(Open)</button>
+<button id="btn-close" class="tab-btn" onclick="switchTab('close')">마감(Close)</button>
+</div> 
+
+<div id="form-open">
+<input type="text" placeholder="오픈 입력자 이름" style="margin-bottom:10px;">
+<div class="grid-2">
+<div><label style="font-size:0.7rem;">준비</label>
+<input type="number" class="calc-open" placeholder="5만" oninput="calc('open')">
+<input type="number" class="calc-open" placeholder="1만" oninput="calc('open')">
+<input type="number" class="calc-open" placeholder="5천" oninput="calc('open')">
+<input type="number" class="calc-open" placeholder="1천" oninput="calc('open')">
+</div>
+<div><label style="font-size:0.7rem;">예비</label>
+<input type="number" class="calc-open" placeholder="5만" oninput="calc('open')">
+<input type="number" class="calc-open" placeholder="1만" oninput="calc('open')">
+<input type="number" class="calc-open" placeholder="5천" oninput="calc('open')">
+<input type="number" class="calc-open" placeholder="1천" oninput="calc('open')">
+</div>
+</div>
+<div style="text-align:right; margin-top:10px;">총 합계: <span id="total-open">0</span>원</div>
+</div> 
+
+<div id="form-close" style="display:none;">
+<input type="text" placeholder="마감 입력자 이름" style="margin-bottom:10px;">
+<div class="grid-2">
+<div><label style="font-size:0.7rem;">준비</label>
+<input type="number" class="calc-close" placeholder="5만" oninput="calc('close')">
+<input type="number" class="calc-close" placeholder="1만" oninput="calc('close')">
+<input type="number" class="calc-close" placeholder="5천" oninput="calc('close')">
+<input type="number" class="calc-close" placeholder="1천" oninput="calc('close')">
+</div>
+<div><label style="font-size:0.7rem;">예비</label>
+<input type="number" class="calc-close" placeholder="5만" oninput="calc('close')">
+<input type="number" class="calc-close" placeholder="1만" oninput="calc('close')">
+<input type="number" class="calc-close" placeholder="5천" oninput="calc('close')">
+<input type="number" class="calc-close" placeholder="1천" oninput="calc('close')">
+</div>
+</div>
+<div style="text-align:right; margin-top:10px;">총 합계: <span id="total-close">0</span>원</div>
+</div>
+</div>
+</div>
+</div> 
 
 <div id="workLogScreen" class="screen"><div class="card"><h3>📋 업무일지</h3></div></div>
 <div id="inventoryScreen" class="screen"><div class="card"><h3>📦 재고관리</h3></div></div>
 <div id="catScreen" class="screen"><div class="card"><h3>🐱 고양이 기록</h3></div></div>
 
 <div id="adminScreen" class="screen">
-  <div class="container">
     <div class="card">
-      <h3>👑 관리자 모드</h3>
-      <input type="text" id="editName" placeholder="직원 이름">
-      <input type="text" id="editTime" placeholder="날짜 (YYYY-MM-DD HH:MM)">
-      <select id="editType"><option value="출근">출근</option><option value="퇴근">퇴근</option></select>
-      <button onclick="manualRecord()" style="width:100%; padding:10px; background:#4f46e5; border:none; color:white;">수동 기록 수정</button>
+        <h3>👑 관리자 모드: 근무 수정</h3>
+        <input type="text" id="adminName" placeholder="직원 이름">
+        <input type="text" id="adminTime" placeholder="YYYY-MM-DD HH:MM">
+        <select id="adminType"><option value="출근">출근</option><option value="퇴근">퇴근</option></select>
+        <button onclick="manualAdd()" style="background:#4f46e5; border:none; color:white; padding:10px; width:100%; border-radius:5px;">수동 기록 추가</button>
+        <hr style="margin:15px 0; border:0; border-top:1px solid #333;">
+        <h3>💰 실시간 인건비</h3>
+        <button onclick="calcSalary()" style="background:#28a745; border:none; color:white; padding:10px; width:100%; border-radius:5px;">데이터 정산하기</button>
+        <div id="salaryResult" style="margin-top:10px; font-size:0.85rem;"></div>
     </div>
-    <div class="card">
-      <h3>💰 실시간 인건비</h3>
-      <button onclick="calculateSalary()" style="width:100%; padding:10px; background:#059669; border:none; color:white;">인건비 정산</button>
-      <div id="salary-result" style="margin-top:10px;"></div>
-    </div>
-  </div>
 </div>
 
 <nav class="nav">
-  <button onclick="showScreen('homeScreen')">🏠 홈</button>
-  <button onclick="showScreen('workLogScreen')">📋 업무</button>
-  <button onclick="showScreen('inventoryScreen')">📦 재고</button>
-  <button onclick="showScreen('catScreen')">🐱 고양이</button>
-  <button onclick="showScreen('adminScreen')">👑 관리자</button>
-</nav>
+<button onclick="showScreen('homeScreen')">🏠 홈</button>
+<button onclick="showScreen('workLogScreen')">📋 업무</button>
+<button onclick="showScreen('inventoryScreen')">📦 재고</button>
+<button onclick="showScreen('catScreen')">🐱 고양이</button>
+<button onclick="showScreen('adminScreen')">👑 관리자</button>
+</nav> 
 
 <script>
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-  function switchTab(mode) {
-    document.getElementById('btn-open').classList.toggle('active', mode === 'open');
-    document.getElementById('btn-close').classList.toggle('active', mode === 'close');
-    document.getElementById('form-open').style.display = (mode === 'open' ? 'block' : 'none');
-    document.getElementById('form-close').style.display = (mode === 'close' ? 'block' : 'none');
-  }
-  function calc(mode) {
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function switchTab(mode) { document.getElementById('btn-open').classList.toggle('active', mode === 'open'); document.getElementById('btn-close').classList.toggle('active', mode === 'close'); document.getElementById('form-open').style.display = (mode === 'open' ? 'block' : 'none'); document.getElementById('form-close').style.display = (mode === 'close' ? 'block' : 'none'); }
+function calc(mode) {
     let inputs = document.querySelectorAll('.calc-' + mode);
-    let total = 0, units = [50000, 10000];
+    let total = 0, units = [50000, 10000, 5000, 1000, 50000, 10000, 5000, 1000];
     inputs.forEach((input, i) => total += (parseInt(input.value) || 0) * units[i]);
     document.getElementById('total-' + mode).innerText = total.toLocaleString();
-  }
-  function recordTime(type) {
-    const name = "마린";
+}
+
+// 출퇴근 로직 (실수 방지 포함)
+function recordTime(type) {
+    let name = "마린"; 
     let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
     if (!logs[name]) logs[name] = [];
-    const lastLog = logs[name][logs[name].length - 1];
-    if (type === '출근' && lastLog && lastLog.type === '출근') return alert("이미 출근 중!");
-    if (type === '퇴근' && (!lastLog || lastLog.type === '퇴근')) return alert("출근 기록 없음!");
-    logs[name].push({ type, time: new Date().getTime() });
+    let last = logs[name].length > 0 ? logs[name][logs[name].length-1] : null;
+    if(type === '출근' && last && last.type === '출근') { alert("이미 출근 상태입니다!"); return; }
+    if(type === '퇴근' && (!last || last.type === '퇴근')) { alert("출근 기록이 없습니다!"); return; }
+    logs[name].push({type: type, time: new Date().getTime()});
     localStorage.setItem('attendanceLogs', JSON.stringify(logs));
-    document.getElementById('currentStatus').innerText = "상태: " + type + " 완료";
-    alert(type + " 처리 완료.");
-  }
-  function calculateSalary() {
-    const logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
-    const hourlyWage = 10000;
-    let html = "";
-    for (let name in logs) {
-      let totalMinutes = 0, userLogs = logs[name];
-      for (let i = 0; i < userLogs.length - 1; i++) {
-        if (userLogs[i].type === '출근' && userLogs[i+1].type === '퇴근')
-          totalMinutes += (userLogs[i+1].time - userLogs[i].time) / (1000 * 60);
-      }
-      html += `<div><strong>${name}</strong>: ${Math.floor(totalMinutes)}분 근무 | <strong>${Math.floor(totalMinutes * (hourlyWage/60)).toLocaleString()}원</strong></div>`;
-    }
-    document.getElementById('salary-result').innerHTML = html || "데이터 없음";
-  }
-  function manualRecord() {
-    const name = document.getElementById('editName').value;
-    const time = new Date(document.getElementById('editTime').value).getTime();
-    const type = document.getElementById('editType').value;
+    document.getElementById('statusMsg').innerText = "상태: " + type + " 완료";
+    alert(type + " 기록 성공");
+}
+
+// 관리자 수동 추가
+function manualAdd() {
+    let name = document.getElementById('adminName').value;
+    let time = new Date(document.getElementById('adminTime').value).getTime();
+    let type = document.getElementById('adminType').value;
     let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
     if (!logs[name]) logs[name] = [];
-    logs[name].push({ type, time });
+    logs[name].push({type: type, time: time});
     logs[name].sort((a,b) => a.time - b.time);
     localStorage.setItem('attendanceLogs', JSON.stringify(logs));
-    alert("수동 기록 완료.");
-  }
+    alert("수동 기록 추가 완료");
+}
+
+// 분 단위 급여 정산
+function calcSalary() {
+    let logs = JSON.parse(localStorage.getItem('attendanceLogs') || '{}');
+    let hourlyWage = 10000;
+    let result = "";
+    let grandTotal = 0;
+    for(let name in logs) {
+        let mins = 0;
+        for(let i=0; i<logs[name].length-1; i++) {
+            if(logs[name][i].type === '출근' && logs[name][i+1].type === '퇴근')
+                mins += (logs[name][i+1].time - logs[name][i].time) / 60000;
+        }
+        let cost = Math.floor(mins * (hourlyWage/60));
+        grandTotal += cost;
+        result += `<div><strong>${name}</strong>: ${Math.floor(mins)}분 (${cost.toLocaleString()}원)</div>`;
+    }
+    document.getElementById('salaryResult').innerHTML = result + `<hr><strong>총 인건비: ${grandTotal.toLocaleString()}원</strong>`;
+}
 </script>
 </body>
 </html>
