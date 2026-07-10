@@ -1,75 +1,245 @@
 <!DOCTYPE html>
+
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TimingStaff Pro</title>
-  <style>
-    body { background: #000; color: #fff; font-family: 'Pretendard', sans-serif; margin: 0; padding-bottom: 90px; }
-    .container { max-width: 600px; margin: 0 auto; padding: 10px; }
-    
-    /* 헤더 스타일 */
-    .header-box { background: #1a1a1a; padding: 20px; border-radius: 16px; margin-bottom: 15px; }
-    .brand { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .weather-info { font-size: 0.85rem; color: #aaa; display: flex; gap: 15px; }
-    
-    /* 공지사항 스타일 */
-    .notice { font-size: 0.9rem; border-left: 3px solid #5856d6; padding-left: 10px; margin-top: 15px; color: #eee; }
-    
-    /* 카드 및 입력 스타일 */
-    .card { background: #111; padding: 20px; margin-bottom: 15px; border-radius: 16px; border: 1px solid #333; }
-    h3 { margin-top: 0; font-size: 1.1rem; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    input { background: #222; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; border-radius: 8px; box-sizing: border-box; }
-    
-    /* 네비게이션 스타일 */
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; border-top: 1px solid #333; display: flex; height: 70px; align-items: center; z-index: 999; }
-    .nav button { flex: 1; background: none; border: none; color: #fff; font-size: 0.75rem; cursor: pointer; }
-    
-    .screen { display: none; }
-    .screen.active { display: block; }
-  </style>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TimingStaff Pro</title>
+
+<style>
+
+body { background: #000; color: #fff; font-family: sans-serif; margin: 0; padding-bottom: 90px; }
+
+.container { max-width: 600px; margin: 0 auto; }
+
+/* 헤더 스타일 /
+
+.header-main { padding: 20px; border-bottom: 1px solid #333; }
+
+.header-row { display: flex; justify-content: space-between; align-items: center; }
+
+/ 파티션 스타일 /
+
+.card { background: #111; padding: 15px; margin: 10px; border-radius: 12px; border: 1px solid #333; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+input { background: #222; border: 1px solid #444; color: #fff; padding: 8px; width: 100%; border-radius: 4px; box-sizing: border-box; margin: 2px 0; }
+
+.screen { display: none; }
+
+.screen.active { display: block; }
+
+/ 네비게이션 스타일 */
+
+.nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: #000; border-top: 1px solid #333; display: flex; height: 70px; z-index: 999; }
+
+.nav button { flex: 1; background: none; border: none; color: #fff; font-size: 0.7rem; cursor: pointer; }
+
+.tab-btn { flex: 1; padding: 10px; border: none; background: #333; color: #fff; border-radius: 6px; }
+
+.tab-btn.active { background: #4f46e5; }
+
+</style>
+
 </head>
+
 <body>
 
+
 <div id="homeScreen" class="screen active">
-  <div class="container">
-    
-    <header class="header-box">
-      <div class="brand">
-        <h1 style="font-size: 1.5rem; margin:0;">TimingStaff <span style="color:#5856d6">Pro</span></h1>
-        <div style="font-weight:bold;">마린님</div>
-      </div>
-      <div class="weather-info">
-        <span>📅 2026.07.10</span>
-        <span>🌤 31°C</span>
-        <span>☂️ 20%</span>
-      </div>
-      <div class="notice">📢 "오늘 마감 시재 점검 필수!"</div>
-    </header>
 
-    <div class="card">
-      <h3>⏰ 출퇴근</h3>
-      <div class="grid-2">
-        <button style="padding:15px; background:#166534; border:none; color:white; border-radius:10px; font-weight:bold;">출근</button>
-        <button style="padding:15px; background:#991b1b; border:none; color:white; border-radius:10px; font-weight:bold;">퇴근</button>
-      </div>
-    </div>
+<div class="container">
 
-    <div class="card">
-      <h3>💰 시재금 점검</h3>
-      <div style="display:flex; gap:10px; margin-bottom:15px;">
-        <button id="btn-open" class="tab-btn active" onclick="switchTab('open')">오픈(Open)</button>
-        <button id="btn-close" class="tab-btn" onclick="switchTab('close')">마감(Close)</button>
-      </div>
-      <p style="color:#666; font-size:0.8rem;">* 입력칸을 누르면 합계가 계산됩니다.</p>
-    </div>
+<header class="header-main">
 
-  </div>
+<div class="header-row">
+
+<div style="font-size: 1.2rem; font-weight: bold;">TimingStaff <span style="color:#5856d6">Pro</span></div>
+
+<div style="font-weight:bold;">마린님</div>
+
 </div>
 
+<div style="color:#aaa; font-size:0.8rem; margin-top:8px;">2026.07.10 (금) | 🌤 31°C ☂️ 20% 😷 좋음</div>
+
+<div style="background:#222; padding:8px; border-radius:6px; margin-top:10px; font-size:0.85rem;">📢 [공지] 오늘 마감 시재 점검 필수!</div>
+
+</header>
+
+
+<div class="card">
+
+<h3>⏰ 출퇴근 기록</h3>
+
+<div class="grid-2">
+
+<button style="padding:12px; background:green; border:none; color:white; border-radius:8px;">출근하기</button>
+
+<button style="padding:12px; background:red; border:none; color:white; border-radius:8px;">퇴근하기</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>💰 시재금 점검</h3>
+
+<div style="display:flex; gap:10px; margin-bottom:15px;">
+
+<button id="btn-open" class="tab-btn active" onclick="switchTab('open')">오픈(Open)</button>
+
+<button id="btn-close" class="tab-btn" onclick="switchTab('close')">마감(Close)</button>
+
+</div>
+
+
+<div id="form-open">
+
+<input type="text" placeholder="오픈 입력자 이름" style="margin-bottom:10px;">
+
+<div class="grid-2">
+
+<div><label style="font-size:0.7rem;">준비</label>
+
+<input type="number" class="calc-open" placeholder="5만" oninput="calc('open')">
+
+<input type="number" class="calc-open" placeholder="1만" oninput="calc('open')">
+
+<input type="number" class="calc-open" placeholder="5천" oninput="calc('open')">
+
+<input type="number" class="calc-open" placeholder="1천" oninput="calc('open')">
+
+</div>
+
+<div><label style="font-size:0.7rem;">예비</label>
+
+<input type="number" class="calc-open" placeholder="5만" oninput="calc('open')">
+
+<input type="number" class="calc-open" placeholder="1만" oninput="calc('open')">
+
+<input type="number" class="calc-open" placeholder="5천" oninput="calc('open')">
+
+<input type="number" class="calc-open" placeholder="1천" oninput="calc('open')">
+
+</div>
+
+</div>
+
+<div style="text-align:right; margin-top:10px;">총 합계: <span id="total-open">0</span>원</div>
+
+</div>
+
+
+<div id="form-close" style="display:none;">
+
+<input type="text" placeholder="마감 입력자 이름" style="margin-bottom:10px;">
+
+<div class="grid-2">
+
+<div><label style="font-size:0.7rem;">준비</label>
+
+<input type="number" class="calc-close" placeholder="5만" oninput="calc('close')">
+
+<input type="number" class="calc-close" placeholder="1만" oninput="calc('close')">
+
+<input type="number" class="calc-close" placeholder="5천" oninput="calc('close')">
+
+<input type="number" class="calc-close" placeholder="1천" oninput="calc('close')">
+
+</div>
+
+<div><label style="font-size:0.7rem;">예비</label>
+
+<input type="number" class="calc-close" placeholder="5만" oninput="calc('close')">
+
+<input type="number" class="calc-close" placeholder="1만" oninput="calc('close')">
+
+<input type="number" class="calc-close" placeholder="5천" oninput="calc('close')">
+
+<input type="number" class="calc-close" placeholder="1천" oninput="calc('close')">
+
+</div>
+
+</div>
+
+<div style="text-align:right; margin-top:10px;">총 합계: <span id="total-close">0</span>원</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div id="workLogScreen" class="screen"><div class="card"><h3>📋 업무일지</h3></div></div>
+
+<div id="inventoryScreen" class="screen"><div class="card"><h3>📦 재고관리</h3></div></div>
+
+<div id="catScreen" class="screen"><div class="card"><h3>🐱 고양이 기록</h3></div></div>
+
+<div id="adminScreen" class="screen"><div class="card"><h3>👑 관리자 모드</h3></div></div>
+
+
+<nav class="nav">
+
+<button onclick="showScreen('homeScreen')">🏠 홈</button>
+
+<button onclick="showScreen('workLogScreen')">📋 업무</button>
+
+<button onclick="showScreen('inventoryScreen')">📦 재고</button>
+
+<button onclick="showScreen('catScreen')">🐱 고양이</button>
+
+<button onclick="showScreen('adminScreen')">👑 관리자</button>
+
+</nav>
+
+
 <script>
-  // 기존 로직 유지...
+
+function showScreen(id) {
+
+document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+document.getElementById(id).classList.add('active');
+
+}
+
+function switchTab(mode) {
+
+document.getElementById('btn-open').classList.toggle('active', mode === 'open');
+
+document.getElementById('btn-close').classList.toggle('active', mode === 'close');
+
+document.getElementById('form-open').style.display = (mode === 'open' ? 'block' : 'none');
+
+document.getElementById('form-close').style.display = (mode === 'close' ? 'block' : 'none');
+
+}
+
+function calc(mode) {
+
+let inputs = document.querySelectorAll('.calc-' + mode);
+
+let total = 0, units = [50000, 10000, 5000, 1000, 50000, 10000, 5000, 1000];
+
+inputs.forEach((input, i) => total += (parseInt(input.value) || 0) * units[i]);
+
+document.getElementById('total-' + mode).innerText = total.toLocaleString();
+
+}
+
 </script>
+
 </body>
+
 </html>
