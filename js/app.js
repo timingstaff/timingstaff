@@ -1,61 +1,90 @@
 // js/app.js
 import { renderManagerDashboard } from './manager.js';
 
+// ==========================================================
+// [가상 로그인 세팅] 
+// 추후 Supabase Auth 연동 시 이 객체에 실제 유저 정보를 매핑하면 
+// 아래 코드는 하나도 수정할 필요가 없습니다.
+// ==========================================================
+export const GLOBAL_USER = {
+  name: "타마",
+  role: "employee" // 'employee' (직원) 또는 'admin' (관리자)
+};
+
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. 화면 섹션 요소 가져오기
+  console.log("TimingStaff Pro가 정상 작동 중입니다.");
+
+  // 1. 헤더 유저 정보 및 날짜 초기화
+  initHeader();
+
+  // 2. 화면 섹션 및 네비게이션 버튼 매핑
   const screens = {
-    homeBtn: document.getElementById("homeScreen"),
-    workLogBtn: document.getElementById("workLogScreen"),
-    inventoryBtn: document.getElementById("inventoryScreen"),
-    catCareBtn: document.getElementById("catCareScreen"),
-    managerBtn: document.getElementById("managerScreen")
+    'nav-home': document.getElementById("homeScreen"),
+    'nav-workLog': document.getElementById("workLogScreen"),
+    'nav-inventory': document.getElementById("inventoryScreen"),
+    'nav-catCare': document.getElementById("catCareScreen"),
+    'nav-manager': document.getElementById("managerScreen")
   };
 
-  // 2. 하단 탭 버튼 요소 가져오기
-  const buttons = {
-    homeBtn: document.getElementById("homeBtn"),
-    workLogBtn: document.getElementById("workLogBtn"),
-    inventoryBtn: document.getElementById("inventoryScreen") ? document.getElementById("inventoryBtn") : null,
-    catCareBtn: document.getElementById("catCareBtn"),
-    managerBtn: document.getElementById("managerBtn")
-  };
+  const navItems = document.querySelectorAll(".nav-item");
 
-  // 3. 탭 전환 처리 함수
-  function switchTab(targetKey) {
+  // 3. 모바일 최적화 탭 전환 함수
+  function switchTab(targetId) {
+    // 모든 섹션 숨기고 선택된 것만 열기
     Object.keys(screens).forEach(key => {
       if (screens[key]) {
-        if (key === targetKey) {
-          screens[key].classList.remove("hidden"); // 선택한 섹션 보이기
+        if (key === targetId) {
+          screens[key].classList.remove("hidden");
         } else {
-          screens[key].classList.add("hidden");    // 나머지 섹션 숨기기
-        }
-      }
-
-      if (buttons[key]) {
-        if (key === targetKey) {
-          buttons[key].classList.add("active");    // 클릭된 버튼 활성화 스타일
-        } else {
-          buttons[key].classList.remove("active");
+          screens[key].classList.add("hidden");
         }
       }
     });
 
-    // 관리자 탭을 누른 경우에만 대시보드 데이터 수집 실행
-    if (targetKey === "managerBtn") {
+    // 버튼 활성화 스타일 제어
+    navItems.forEach(item => {
+      if (item.id === targetId) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+
+    // [최적화 - 지연 로딩] 관리자 탭을 터치하는 순간에만 데이터를 가져옵니다.
+    if (targetId === "nav-manager") {
       renderManagerDashboard();
     }
   }
 
-  // 4. 모바일 터치/클릭 이벤트 바인딩
-  Object.keys(buttons).forEach(key => {
-    if (buttons[key]) {
-      buttons[key].onclick = (e) => {
-        e.preventDefault();
-        switchTab(key);
-      };
-    }
+  // 4. 이벤트 바인딩 (모바일 터치 씹힘 방지 전용 처리)
+  navItems.forEach(item => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      switchTab(item.id);
+    });
   });
 
-  // 5. 앱이 켜지면 강제로 '홈' 화면이 먼저 보이도록 고정
-  switchTab("homeBtn");
+  // 5. 기본 시작 화면 강제 지정 (홈 화면)
+  switchTab("nav-home");
 });
+
+// 상단 헤더 정보를 초기화하는 내부 헬퍼 함수
+function initHeader() {
+  const userBadge = document.getElementById("userBadge");
+  const headerDate = document.getElementById("headerDate");
+
+  if (userBadge) {
+    userBadge.textContent = `👤 ${GLOBAL_USER.name}님`;
+  }
+
+  if (headerDate) {
+    const now = new Date();
+    const weeks = ['일', '월', '화', '수', '목', '금', '토'];
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const week = weeks[now.getDay()];
+    
+    headerDate.textContent = `${yyyy}.${mm}.${dd} (${week})`;
+  }
+}
