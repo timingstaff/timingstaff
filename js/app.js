@@ -1,7 +1,7 @@
 // js/app.js
 
 const GLOBAL_USER = {
-  name: "", // 테스트할 때 "마린" 혹은 "타마" 등을 기입하고 테스트해보세요!
+  name: "", // 테스트 목적의 가상 유저 이름 기입창
   role: "employee"
 };
 
@@ -24,9 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
     headerDate.textContent = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')} (${weeks[now.getDay()]})`;
   }
 
-  // 2. 탭 화면 제어 요소 매핑
+  // 2. 탭 화면 제어 요소 매핑 (일정표 화면 추가 완료)
   const screens = {
     'nav-home': document.getElementById("homeScreen"),
+    'nav-schedule': document.getElementById("scheduleScreen"),
     'nav-workLog': document.getElementById("workLogScreen"),
     'nav-inventory': document.getElementById("inventoryScreen"),
     'nav-catCare': document.getElementById("catCareScreen"),
@@ -56,8 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // 특정 탭 이동 시 비동기 로딩 트리거
     if (targetId === "nav-manager") {
       renderManagerDashboard();
+    } else if (targetId === "nav-schedule") {
+      loadSchedules();
     }
   }
 
@@ -75,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnClockIn) {
     btnClockIn.onclick = async function() {
       if (!GLOBAL_USER.name) {
-        alert("로그인된 직원 정보가 없습니다. 소스코드 상단의 GLOBAL_USER.name에 가상 이름을 적고 테스트해 보세요!");
+        alert("로그인된 직원 정보가 없습니다.");
         return;
       }
       const today = new Date().toISOString().split('T')[0];
@@ -120,51 +124,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================
-  // 4. [실시간 권종별 금액 계산기 시스템 구현 - 오류 철통 방어형]
+  // 4. [실시간 권종별 금액 계산기 시스템]
   // ==========================================================
   function updateRealtimeTotal() {
-    console.log("실시간 계산기 동작 중...");
+    const r50 = (Number(document.getElementById("ready50k").value) || 0) * 50000;
+    const r10 = (Number(document.getElementById("ready10k").value) || 0) * 10000;
+    const r5  = (Number(document.getElementById("ready5k").value) || 0) * 5000;
+    const r1  = (Number(document.getElementById("ready1k").value) || 0) * 1000;
+    const readySum = r50 + r10 + r5 + r1;
+    document.getElementById("readyTotalDisplay").textContent = readySum.toLocaleString() + "원";
 
-    // 준비시재 엘리먼트 가져오기
-    const r50_el = document.getElementById("ready50k");
-    const r10_el = document.getElementById("ready10k");
-    const r5_el  = document.getElementById("ready5k");
-    const r1_el  = document.getElementById("ready1k");
-
-    if (r50_el && r10_el && r5_el && r1_el) {
-      const r50 = (Number(r50_el.value) || 0) * 50000;
-      const r10 = (Number(r10_el.value) || 0) * 10000;
-      const r5  = (Number(r5_el.value) || 0) * 5000;
-      const r1  = (Number(r1_el.value) || 0) * 1000;
-      const readySum = r50 + r10 + r5 + r1;
-
-      const readyDisplay = document.getElementById("readyTotalDisplay");
-      if (readyDisplay) {
-        readyDisplay.textContent = readySum.toLocaleString() + "원";
-      }
-    }
-
-    // 예비시재 엘리먼트 가져오기
-    const v50_el = document.getElementById("reserve50k");
-    const v10_el = document.getElementById("reserve10k");
-    const v5_el  = document.getElementById("reserve5k");
-    const v1_el  = document.getElementById("reserve1k");
-
-    if (v50_el && v10_el && v5_el && v1_el) {
-      const v50 = (Number(v50_el.value) || 0) * 50000;
-      const v10 = (Number(v10_el.value) || 0) * 10000;
-      const v5  = (Number(v5_el.value) || 0) * 5000;
-      const v1  = (Number(v1_el.value) || 0) * 1000;
-      const reserveSum = v50 + v10 + v5 + v1;
-
-      const reserveDisplay = document.getElementById("reserveTotalDisplay");
-      if (reserveDisplay) {
-        reserveDisplay.textContent = reserveSum.toLocaleString() + "원";
-      }
-    }
+    const v50 = (Number(document.getElementById("reserve50k").value) || 0) * 50000;
+    const v10 = (Number(document.getElementById("reserve10k").value) || 0) * 10000;
+    const v5  = (Number(document.getElementById("reserve5k").value) || 0) * 5000;
+    const v1  = (Number(document.getElementById("reserve1k").value) || 0) * 1000;
+    const reserveSum = v50 + v10 + v5 + v1;
+    document.getElementById("reserveTotalDisplay").textContent = reserveSum.toLocaleString() + "원";
   }
 
-  // [중요] 사용자가 키보드를 칠 때(input), 값을 바꿀 때(change), 클릭에서 뗄 때(keyup) 모두 강제 계산 트리거
   const inputFields = document.querySelectorAll(".calc-ready, .calc-reserve");
   inputFields.forEach(input => {
     input.addEventListener("input", updateRealtimeTotal);
@@ -172,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("keyup", updateRealtimeTotal);
   });
 
-  // 매출 및 시재 통합 저장 처리 기능
   const btnSaveSales = document.getElementById("btnSaveSales");
   if (btnSaveSales) {
     btnSaveSales.onclick = async function() {
@@ -180,19 +156,12 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("로그인이 필요합니다.");
         return;
       }
-
-      const card = Number(document.getElementById("salesCard").value) || 0;
-      const cash = Number(document.getElementById("salesCash").value) || 0;
-      const transfer = Number(document.getElementById("salesTransfer").value) || 0;
-
-      // 준비시재 데이터 추출 및 합산
       const r50_count = Number(document.getElementById("ready50k").value) || 0;
       const r10_count = Number(document.getElementById("ready10k").value) || 0;
       const r5_count  = Number(document.getElementById("ready5k").value) || 0;
       const r1_count  = Number(document.getElementById("ready1k").value) || 0;
       const totalReadyCash = (r50_count * 50000) + (r10_count * 10000) + (r5_count * 5000) + (r1_count * 1000);
 
-      // 예비시재 데이터 추출 및 합산
       const v50_count = Number(document.getElementById("reserve50k").value) || 0;
       const v10_count = Number(document.getElementById("reserve10k").value) || 0;
       const v5_count  = Number(document.getElementById("reserve5k").value) || 0;
@@ -207,44 +176,96 @@ document.addEventListener("DOMContentLoaded", () => {
           .insert([{
             work_date: today,
             user_name: GLOBAL_USER.name,
-            card_sales: card,
-            cash_sales: cash,
-            transfer_sales: transfer,
-            
-            // 준비시재 (총액 및 권종 장수 수량 DB 백업)
-            ready_cash: totalReadyCash, 
-            ready_50k: r50_count,
-            ready_10k: r10_count,
-            ready_5k: r5_count,
-            ready_1k: r1_count,
-
-            // 예비시재 (총액 및 권종 장수 수량 DB 백업)
-            reserve_cash: totalReserveCash,
-            reserve_50k: v50_count,
-            reserve_10k: v10_count,
-            reserve_5k: v5_count,
-            reserve_1k: v1_count,
-
+            ready_cash: totalReadyCash, ready_50k: r50_count, ready_10k: r10_count, ready_5k: r5_count, ready_1k: r1_count,
+            reserve_cash: totalReserveCash, reserve_50k: v50_count, reserve_10k: v10_count, reserve_5k: v5_count, reserve_1k: v1_count,
             created_at: new Date().toISOString()
           }]);
-
         if (error) throw error;
-        
-        alert(
-          `🎉 매출 및 시재 기록 완료!\n\n` +
-          `💼 [준비시재 합계]: ${totalReadyCash.toLocaleString()}원\n` +
-          `🏦 [예비시재 합계]: ${totalReserveCash.toLocaleString()}원\n\n` +
-          `장수 기록과 자동 환산 금액이 모두 데이터베이스에 안전하게 기록되었습니다.`
-        );
-
+        alert(`🎉 퇴근 시재 기록 완료!\n💼 준비시재: ${totalReadyCash.toLocaleString()}원\n🏦 예비시재: ${totalReserveCash.toLocaleString()}원`);
       } catch (err) {
-        console.error("매출 기록 저장 에러:", err);
-        alert("저장 실패: Supabase 테이블 컬럼 설정을 확인해 주세요.");
+        console.error(err);
+        alert("저장 실패");
       }
     };
   }
 
-  // 5. 관리자 대시보드 연동
+  // ==========================================================
+  // 5. [근무 일정표 비동기 제어 로직]
+  // ==========================================================
+  const btnAddSchedule = document.getElementById("btnAddSchedule");
+  const scheduleForm = document.getElementById("scheduleForm");
+  const btnSaveSchedule = document.getElementById("btnSaveSchedule");
+  const btnCancelSchedule = document.getElementById("btnCancelSchedule");
+
+  if (btnAddSchedule && scheduleForm) {
+    btnAddSchedule.onclick = () => scheduleForm.classList.remove("hidden");
+  }
+  if (btnCancelSchedule && scheduleForm) {
+    btnCancelSchedule.onclick = () => scheduleForm.classList.add("hidden");
+  }
+
+  if (btnSaveSchedule) {
+    btnSaveSchedule.onclick = async function() {
+      const name = document.getElementById("schName").value.trim();
+      const date = document.getElementById("schDate").value;
+      const time = document.getElementById("schTime").value.trim();
+
+      if (!name || !date || !time) {
+        alert("모든 빈칸을 빠짐없이 채워주세요.");
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('schedules')
+          .insert([{ user_name: name, work_date: date, work_time: time, created_at: new Date().toISOString() }]);
+
+        if (error) throw error;
+        alert("스케줄 등록 성공!");
+        scheduleForm.classList.add("hidden");
+        loadSchedules();
+      } catch (err) {
+        console.error(err);
+        alert("일정 저장 실패: Supabase에 'schedules' 테이블이 준비되어 있는지 확인해 주세요.");
+      }
+    };
+  }
+
+  async function loadSchedules() {
+    const listDiv = document.getElementById("divScheduleList");
+    if (!listDiv) return;
+
+    try {
+      // 최신 등록 순 및 날짜순 정렬 조회
+      const { data, error } = await supabaseClient
+        .from('schedules')
+        .select('*')
+        .order('work_date', { ascending: true });
+
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        listDiv.innerHTML = `<p class="empty-text">다가오는 예정된 근무 일정이 없습니다.</p>`;
+        return;
+      }
+
+      listDiv.innerHTML = data.map(item => `
+        <div style="padding:14px; background:var(--bg-card); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span style="font-size:0.75rem; background:var(--primary); padding:2px 6px; border-radius:4px; font-weight:bold;">${item.work_date}</span>
+            <div style="margin-top:6px; font-weight:700; font-size:1rem;">👤 ${item.user_name}</div>
+          </div>
+          <div style="font-size:0.9rem; color:var(--text-muted); font-weight:500;">⏰ ${item.work_time}</div>
+        </div>
+      `).join("");
+
+    } catch (err) {
+      console.error(err);
+      listDiv.innerHTML = `<p class="empty-text" style="color:var(--danger);">데이터를 로드하지 못했습니다.</p>`;
+    }
+  }
+
+  // 6. 관리자 대시보드 연동
   async function renderManagerDashboard() {
     try {
       const today = new Date().toISOString().split('T')[0];
