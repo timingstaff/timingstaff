@@ -1,7 +1,7 @@
 // js/app.js
 
 const GLOBAL_USER = {
-  name: "", // 테스트할 때 가상 이름을 기입해 보세요!
+  name: "", // 테스트할 때 "마린" 혹은 "타마" 등을 기입하고 테스트해보세요!
   role: "employee"
 };
 
@@ -120,10 +120,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================
-  // 4. [실시간 권종별 금액 계산기 시스템]
+  // 4. [실시간 권종별 금액 계산기 시스템 구현 - 오류 철통 방어형]
   // ==========================================================
   function updateRealtimeTotal() {
-    // 준비시재 실시간 계산
+    console.log("실시간 계산기 동작 중...");
+
+    // 준비시재 엘리먼트 가져오기
     const r50_el = document.getElementById("ready50k");
     const r10_el = document.getElementById("ready10k");
     const r5_el  = document.getElementById("ready5k");
@@ -142,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 예비시재 실시간 계산
+    // 예비시재 엘리먼트 가져오기
     const v50_el = document.getElementById("reserve50k");
     const v10_el = document.getElementById("reserve10k");
     const v5_el  = document.getElementById("reserve5k");
@@ -162,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 실시간 계산용 이벤트 감지
+  // [중요] 사용자가 키보드를 칠 때(input), 값을 바꿀 때(change), 클릭에서 뗄 때(keyup) 모두 강제 계산 트리거
   const inputFields = document.querySelectorAll(".calc-ready, .calc-reserve");
   inputFields.forEach(input => {
     input.addEventListener("input", updateRealtimeTotal);
@@ -170,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("keyup", updateRealtimeTotal);
   });
 
-  // 시재금 기록 저장 기능 (매출 컬럼 제거 버전)
+  // 매출 및 시재 통합 저장 처리 기능
   const btnSaveSales = document.getElementById("btnSaveSales");
   if (btnSaveSales) {
     btnSaveSales.onclick = async function() {
@@ -178,6 +180,10 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("로그인이 필요합니다.");
         return;
       }
+
+      const card = Number(document.getElementById("salesCard").value) || 0;
+      const cash = Number(document.getElementById("salesCash").value) || 0;
+      const transfer = Number(document.getElementById("salesTransfer").value) || 0;
 
       // 준비시재 데이터 추출 및 합산
       const r50_count = Number(document.getElementById("ready50k").value) || 0;
@@ -201,15 +207,18 @@ document.addEventListener("DOMContentLoaded", () => {
           .insert([{
             work_date: today,
             user_name: GLOBAL_USER.name,
+            card_sales: card,
+            cash_sales: cash,
+            transfer_sales: transfer,
             
-            // 준비시재 기록
+            // 준비시재 (총액 및 권종 장수 수량 DB 백업)
             ready_cash: totalReadyCash, 
             ready_50k: r50_count,
             ready_10k: r10_count,
             ready_5k: r5_count,
             ready_1k: r1_count,
 
-            // 예비시재 기록
+            // 예비시재 (총액 및 권종 장수 수량 DB 백업)
             reserve_cash: totalReserveCash,
             reserve_50k: v50_count,
             reserve_10k: v10_count,
@@ -222,15 +231,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (error) throw error;
         
         alert(
-          `🎉 퇴근 시재 기록 완료!\n\n` +
+          `🎉 매출 및 시재 기록 완료!\n\n` +
           `💼 [준비시재 합계]: ${totalReadyCash.toLocaleString()}원\n` +
           `🏦 [예비시재 합계]: ${totalReserveCash.toLocaleString()}원\n\n` +
-          `포스기 마감 금액과 정확히 맞는지 최종 확인해 보세요!`
+          `장수 기록과 자동 환산 금액이 모두 데이터베이스에 안전하게 기록되었습니다.`
         );
 
       } catch (err) {
-        console.error("시재 기록 저장 에러:", err);
-        alert("저장 실패: Supabase 테이블 설정을 확인해 주세요.");
+        console.error("매출 기록 저장 에러:", err);
+        alert("저장 실패: Supabase 테이블 컬럼 설정을 확인해 주세요.");
       }
     };
   }
